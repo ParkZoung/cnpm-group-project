@@ -2,7 +2,7 @@
 
 **Dự án:** GoStay — ứng dụng web đặt phòng khách sạn (MVP)  
 **Tuần:** 02  
-**Ngày ghi:** 24/05/2026  
+**Ngày ghi:** 31/05/2026  
 
 ---
 
@@ -91,7 +91,7 @@ Các bước review của nhóm:
 - **Giữ AI features nhỏ, kiểm soát được** — không chatbot tự đặt phòng; AI chỉ gợi ý / tóm tắt / hỗ trợ viết text.
 - **Quyết định cuối do nhóm** — chốt out-of-scope, ưu tiên AI gợi ý phòng, và timeline tuần sau (có thể bắt đầu thiết kế/code khi giảng viên yêu cầu).
 
-*Người review:* _(điền tên thành viên sau họp nhóm)_
+*Người review:* _Các thành viên nhóm Gostay_
 
 ---
 
