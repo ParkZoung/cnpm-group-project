@@ -26,7 +26,7 @@ Các chức năng như chatbot, voucher phức tạp, tích điểm thành viên
 - Cursor
 - ChatGPT / AI Agent
 
-## 4. Kết quả tuần 1
+## 4. Kết quả tuần 2
 
 
 Nhóm đã hoàn thành các tài liệu phân tích sản phẩm và đề xuất tính năng AI cho GoStay:
