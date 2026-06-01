@@ -28,13 +28,13 @@ Các chức năng như chatbot, voucher phức tạp, tích điểm thành viên
 
 ## 4. Kết quả tuần 1
 
-Nhóm đã hoàn thành các tài liệu khởi động dự án:
 
-- PRODUCT_DIRECTION.md
-- AGENT_GUIDE.md
-- AI_USAGE_POLICY.md
-- ai-logs/week-01.md
+Nhóm đã hoàn thành các tài liệu phân tích sản phẩm và đề xuất tính năng AI cho GoStay:
 
+- PRODUCT_ANALYSIS.md
+- AI_FEATURE_PROPOSAL.md
+- ai-logs/week-02.md
+  
 ## 5. Ghi chú
 
 Dự án hiện đang ở giai đoạn tuần 2: phân tích ý tưởng sản phẩm, xác định MVP và đề xuất tính năng AI. Nhóm chưa tập trung vào code, mà tập trung làm rõ phạm vi sản phẩm và cách sử dụng AI Agent trong quá trình phát triển phần mềm.
