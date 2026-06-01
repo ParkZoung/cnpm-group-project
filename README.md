@@ -37,4 +37,4 @@ Nhóm đã hoàn thành các tài liệu khởi động dự án:
 
 ## 5. Ghi chú
 
-Dự án hiện đang ở giai đoạn tuần 1: Agent onboarding và chọn hướng project. Nhóm chưa tập trung vào code, mà tập trung vào định hướng sản phẩm, phạm vi MVP và cách sử dụng AI Agent trong quá trình phát triển phần mềm.
+Dự án hiện đang ở giai đoạn tuần 2: phân tích ý tưởng sản phẩm, xác định MVP và đề xuất tính năng AI. Nhóm chưa tập trung vào code, mà tập trung làm rõ phạm vi sản phẩm và cách sử dụng AI Agent trong quá trình phát triển phần mềm.
