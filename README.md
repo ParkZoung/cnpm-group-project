@@ -1,40 +1,91 @@
-# GoStay - Hotel Booking MVP
+# GoStay - Ứng dụng đặt phòng khách sạn
 
-GoStay là dự án môn Công nghệ phần mềm, xây dựng MVP cho ứng dụng đặt phòng khách sạn.
+## 1. Giới thiệu dự án
 
-## 1. Mục tiêu dự án
+GoStay là một website/app đặt phòng khách sạn được xây dựng theo hướng MVP dành cho đồ án môn Công nghệ phần mềm.
 
-GoStay giúp người dùng tìm kiếm khách sạn, xem thông tin phòng, chọn thời gian nhận/trả phòng và đặt phòng một cách nhanh chóng, tiện lợi.
+Dự án lấy ý tưởng từ các nền tảng như Booking, Traveloka hoặc Agoda, nhưng được đơn giản hóa để phù hợp với phạm vi sinh viên. Mục tiêu của GoStay là giúp người dùng tìm kiếm khách sạn/phòng, xem thông tin chi tiết, đặt phòng và quản lý lịch sử đặt phòng một cách nhanh chóng, rõ ràng và dễ sử dụng.
 
-## 2. Phạm vi MVP ban đầu
+## 2. Mục tiêu sản phẩm
 
-Trong phiên bản MVP, nhóm tập trung vào các chức năng chính:
+GoStay tập trung giải quyết các vấn đề chính:
 
-- Đăng ký / đăng nhập
-- Tìm kiếm khách sạn
-- Xem danh sách khách sạn
-- Xem chi tiết phòng
-- Đặt phòng theo ngày hoặc theo giờ
-- Xem lịch sử đặt phòng
-- Chủ khách sạn quản lý thông tin phòng
+* Người dùng mất nhiều thời gian để tìm phòng phù hợp.
+* Thông tin phòng, giá, tiện nghi và trạng thái phòng chưa rõ ràng.
+* Quy trình đặt phòng còn nhiều bước.
+* Chủ khách sạn/admin cần công cụ đơn giản để quản lý phòng.
+* Người dùng cần gợi ý phòng phù hợp với nhu cầu cá nhân.
 
-Các chức năng như chatbot, voucher phức tạp, tích điểm thành viên, AI gợi ý nâng cao và nhiều cổng thanh toán sẽ được xem xét ở các giai đoạn sau.
+## 3. Đối tượng người dùng
 
-## 3. Công cụ sử dụng
+Các nhóm người dùng chính của GoStay gồm:
 
-- GitHub
-- Cursor
-- ChatGPT / AI Agent
+* Khách du lịch.
+* Người đi công tác.
+* Sinh viên hoặc người cần chỗ ở ngắn hạn.
+* Chủ khách sạn/đối tác.
+* Admin hệ thống.
 
-## 4. Kết quả tuần 2
+## 4. Phạm vi MVP
 
+Các chức năng chính trong MVP:
 
-Nhóm đã hoàn thành các tài liệu phân tích sản phẩm và đề xuất tính năng AI cho GoStay:
+* Đăng ký, đăng nhập.
+* Xem danh sách khách sạn/phòng.
+* Tìm kiếm và lọc phòng theo địa điểm, mức giá, loại phòng.
+* Xem chi tiết phòng.
+* Đặt phòng.
+* Xem lịch sử đặt phòng.
+* Admin thêm, sửa, xóa và cập nhật trạng thái phòng.
+* AI gợi ý phòng phù hợp theo nhu cầu người dùng.
 
-- PRODUCT_ANALYSIS.md
-- AI_FEATURE_PROPOSAL.md
-- ai-logs/week-02.md
-  
-## 5. Ghi chú
+Các chức năng chưa làm trong MVP:
 
-Dự án hiện đang ở giai đoạn tuần 2: phân tích ý tưởng sản phẩm, xác định MVP và đề xuất tính năng AI. Nhóm chưa tập trung vào code, mà tập trung làm rõ phạm vi sản phẩm và cách sử dụng AI Agent trong quá trình phát triển phần mềm.
+* Thanh toán online thật.
+* Voucher/mã giảm giá.
+* Tích điểm thành viên.
+* QR check-in.
+* Chatbot hỗ trợ.
+* Bản đồ vị trí khách sạn.
+
+## 5. Kết quả tuần 1
+
+Nhóm đã hoàn thành các tài liệu định hướng ban đầu:
+
+* PRODUCT_DIRECTION.md
+* AGENT_GUIDE.md
+* AI_USAGE_POLICY.md
+* ai-logs/week-01.md
+
+## 6. Kết quả tuần 2
+
+Nhóm đã hoàn thành phân tích ý tưởng sản phẩm và đề xuất tính năng AI:
+
+* PRODUCT_ANALYSIS.md
+* AI_FEATURE_PROPOSAL.md
+* ai-logs/week-02.md
+
+## 7. Kết quả tuần 3
+
+Nhóm đã hoàn thành tài liệu UX prototype và cập nhật yêu cầu chức năng cho GoStay:
+
+* UX_PROTOTYPE.md
+* REQUIREMENTS.md
+* ai-logs/week-03.md
+
+Trong tuần 3, nhóm tập trung vào việc mô tả prototype giao diện, luồng người dùng, mock data và cập nhật requirements cho MVP. Nhóm chưa tập trung vào backend phức tạp mà ưu tiên làm rõ phạm vi sản phẩm và trải nghiệm người dùng.
+
+## 8. Công cụ sử dụng
+
+Nhóm sử dụng các công cụ hỗ trợ trong quá trình làm đồ án:
+
+* GitHub để quản lý source code và tài liệu.
+* Cursor/AI Agent để hỗ trợ tạo tài liệu, phân tích yêu cầu và đề xuất prototype.
+* Figma để thiết kế wireframe/prototype.
+* Markdown để viết tài liệu dự án.
+
+## 9. Ghi chú
+
+Dự án hiện đang ở giai đoạn tuần 3: thiết kế UX prototype, mô tả luồng người dùng, cập nhật requirements và user stories cho MVP.
+
+Nhóm sử dụng AI như một công cụ hỗ trợ, nhưng vẫn kiểm tra, chỉnh sửa và chịu trách nhiệm với nội dung cuối cùng.
