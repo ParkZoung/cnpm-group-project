@@ -2,11 +2,9 @@
 
 ## 1. Tổng quan dự án
 
-**GoStay** là ứng dụng đặt phòng khách sạn giúp người dùng tìm khách sạn, xem thông tin phòng, so sánh thông tin cơ bản, chọn thời gian nhận/trả phòng và đặt phòng nhanh.
+**GoStay** là website đặt phòng cho một chuỗi khách sạn nhỏ mang thương hiệu GoStay. Hệ thống giúp khách hàng tìm chi nhánh/phòng trong chuỗi GoStay, xem thông tin phòng, chọn thời gian nhận/trả phòng và đặt phòng nhanh. Ở phía quản trị, admin hoặc nhân viên quản lý chuỗi GoStay có thể quản lý chi nhánh, phòng, giá, tiện ích, hình ảnh và trạng thái phòng.
 
-Ứng dụng hướng tới người cần chỗ ở ngắn hạn (du lịch, công tác, sinh viên, khách lẻ) và hỗ trợ chủ khách sạn/đối tác quản lý thông tin phòng cùng tình trạng phòng trống.
-
-**Mục tiêu giai đoạn đầu:** Xây dựng **MVP** — phiên bản tối thiểu chỉ đủ luồng đặt phòng cốt lõi, phù hợp dự án môn Công nghệ phần mềm (nhóm sinh viên), **không** xây nền tảng đặt phòng đầy đủ như các ứng dụng thương mại lớn.
+**Mục tiêu giai đoạn đầu:** Xây dựng **MVP** — phiên bản tối thiểu đủ luồng đặt phòng cốt lõi, phù hợp dự án môn Công nghệ phần mềm. GoStay không xây marketplace trung gian nhiều khách sạn độc lập như Booking/Traveloka/Agoda.
 
 ---
 
@@ -16,16 +14,16 @@
 |------|----------------|
 | **Khách hàng cá nhân** | Đặt phòng nhanh theo giờ hoặc theo ngày |
 | **Du khách / người đi công tác** | Quy trình đặt phòng đơn giản, ít bước |
-| **Chủ khách sạn / đối tác** | Thêm/sửa thông tin phòng, giá, tiện ích; cập nhật phòng trống/đã đặt |
+Admin / nhân viên quản lý chuỗi GoStay | Quản lý chi nhánh, phòng, giá, tiện ích, hình ảnh; cập nhật trạng thái phòng và đơn đặt phòng
 
 ---
 
 ## 3. Vấn đề cần giải quyết (Problems)
 
-- Người dùng mất nhiều thời gian tìm phòng phù hợp từ nhiều nguồn khác nhau.
+- Người dùng mất nhiều thời gian tìm chi nhánh/phòng phù hợp nếu thông tin trong hệ thống không rõ ràng.
 - Giá và thông tin phòng không luôn rõ ràng, dễ gây nhầm lẫn.
 - Một số nền tảng không linh hoạt cho đặt phòng ngắn hạn hoặc theo giờ.
-- Chủ khách sạn cần cách đơn giản để cập nhật phòng trống và tránh trùng đặt.
+- Admin cần cách đơn giản để cập nhật trạng thái phòng và tránh trùng đặt trong chuỗi GoStay.
 - Quy trình đặt phòng cần ngắn gọn, dễ hiểu cho người dùng mới.
 
 GoStay tập trung giải quyết các vấn đề trên **ở mức cơ bản** trong MVP, không giải quyết toàn bộ thị trường đặt phòng.
@@ -36,14 +34,13 @@ GoStay tập trung giải quyết các vấn đề trên **ở mức cơ bản**
 
 Phiên bản MVP đầu tiên chỉ gồm **luồng đặt phòng cốt lõi**:
 
-1. **Đăng ký / đăng nhập** người dùng (khách và chủ khách sạn nếu nhóm phân quyền đơn giản).
-2. **Tìm kiếm khách sạn** theo tên, địa điểm hoặc khoảng giá.
-3. **Xem chi tiết** khách sạn và phòng (mô tả cơ bản, giá, tiện ích chính).
+1.**Đăng ký / đăng nhập** người dùng với hai vai trò chính: Khách hàng và Admin.
+2. **Tìm kiếm chi nhánh/phòng GoStay** theo khu vực, tên chi nhánh, loại phòng hoặc khoảng giá.
+3. **Xem chi tiết** chi nhánh và phòng
 4. **Chọn thời gian** nhận phòng (check-in) và trả phòng (check-out).
 5. **Tạo đặt phòng** (booking) — có thể ghi nhận trạng thái “chờ xác nhận” hoặc “đã đặt” tùy thiết kế nhóm, **chưa** tích hợp thanh toán trực tuyến phức tạp.
 6. **Xem lịch sử đặt phòng** của khách.
-7. **Chủ khách sạn:** thêm/sửa thông tin phòng và **cập nhật trạng thái phòng** (ví dụ: trống, đã đặt, bảo trì).
-
+7. **Admin** thêm/sửa thông tin chi nhánh/phòng và cập nhật trạng thái phòng.
 ### Nguyên tắc thiết kế MVP
 
 - Giao diện và luồng nghiệp vụ **đơn giản**, dễ demo cho giảng viên.
@@ -81,8 +78,8 @@ Nếu nhóm muốn mở rộng sau khi MVP ổn định, cần cập nhật lạ
 
 ## 7. Tiêu chí thành công MVP (đề xuất cho nhóm)
 
-- Một khách có thể **đăng nhập**, **tìm khách sạn**, **đặt phòng** với ngày/giờ rõ ràng và **xem lại** trong lịch sử.
-- Một chủ khách sạn có thể **thêm/sửa phòng** và **đổi trạng thái** để tránh hiển thị phòng đã đặt là còn trống.
+- Một khách có thể **đăng nhập**, **tìm chi nhánh/phòng GoStay**, **đặt phòng** với ngày/giờ rõ ràng và **xem lại** trong lịch sử.
+- Một admin có thể **thêm/sửa chi nhánh/phòng** và **đổi trạng thái** để tránh hiển thị phòng đã đặt là còn trống.
 - Demo được end-to-end trong buổi báo cáo tuần/milestone của môn học.
 
 ---
