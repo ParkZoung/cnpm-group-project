@@ -36,15 +36,9 @@ GoStay tập trung giải quyết các vấn đề trên **ở mức cơ bản**
 
 Phiên bản MVP đầu tiên chỉ gồm **luồng đặt phòng cốt lõi**:
 
-<<<<<<< HEAD
-1.**Đăng ký / đăng nhập** người dùng với hai vai trò chính: Khách hàng và Admin.
+1. **Đăng ký / đăng nhập** người dùng với hai vai trò chính: Khách hàng và Admin.
 2. **Tìm kiếm chi nhánh/phòng GoStay** theo khu vực, tên chi nhánh, loại phòng hoặc khoảng giá.
-3. **Xem chi tiết** chi nhánh và phòng
-=======
-1. **Đăng ký / đăng nhập** người dùng (khách và chủ khách sạn nếu nhóm phân quyền đơn giản).
-2. **Tìm kiếm chi nhánh hoặc phòng** theo tên, địa điểm hoặc khoảng giá.
-3. **Xem chi tiết** khách sạn và phòng (mô tả cơ bản, giá, tiện ích chính).
->>>>>>> 669c682 (Update GoStay docs for hotel chain direction)
+3. **Xem chi tiết** chi nhánh và phòng.
 4. **Chọn thời gian** nhận phòng (check-in) và trả phòng (check-out).
 5. **Tạo đặt phòng** (booking) — có thể ghi nhận trạng thái “chờ xác nhận” hoặc “đã đặt” tùy thiết kế nhóm, **chưa** tích hợp thanh toán trực tuyến phức tạp.
 6. **Xem lịch sử đặt phòng** của khách.
