@@ -8,9 +8,9 @@
 
 ## 1. Giới thiệu ngắn về GoStay
 
-**GoStay** là website đặt phòng khách sạn đơn giản, lấy cảm hứng từ Booking.com, Traveloka và Agoda nhưng chỉ làm **phiên bản MVP** phù hợp nhóm sinh viên.
+**GoStay** là website đặt phòng dành cho một chuỗi khách sạn nhỏ, chỉ xây dựng **phiên bản MVP** phù hợp nhóm sinh viên.
 
-Ứng dụng giúp người dùng tìm phòng, xem chi tiết, đặt phòng theo ngày hoặc giờ, xem lịch sử đặt phòng. Chủ khách sạn và admin có thể quản lý thông tin phòng. Tính năng **AI gợi ý phòng** chỉ hỗ trợ tìm kiếm — người dùng vẫn tự xem chi tiết và xác nhận đặt phòng.
+Ứng dụng giúp người dùng tìm chi nhánh/phòng của GoStay, xem chi tiết, đặt phòng theo ngày hoặc giờ, xem lịch sử đặt phòng. Admin và chủ chuỗi khách sạn có thể quản lý chi nhánh, phòng, giá và trạng thái. Tính năng **AI gợi ý phòng** chỉ hỗ trợ tìm kiếm — người dùng vẫn tự xem chi tiết và xác nhận đặt phòng.
 
 ---
 
@@ -34,8 +34,8 @@
 |-----|----------|-----------|---------|
 | 1 | Home | Khách | Trang chủ, ô tìm kiếm nhanh |
 | 2 | Login / Register | Tất cả | Đăng nhập, đăng ký |
-| 3 | Hotel / Room List | Khách | Danh sách khách sạn/phòng |
-| 4 | Search / Filter | Khách | Tìm theo địa điểm, giá, loại phòng |
+| 3 | Branch / Room List | Khách | Danh sách chi nhánh/phòng GoStay |
+| 4 | Search / Filter | Khách | Tìm theo chi nhánh/phòng, giá, loại phòng |
 | 5 | Room Detail | Khách | Chi tiết một phòng |
 | 6 | Booking Form | Khách | Chọn ngày/giờ, xác nhận thông tin |
 | 7 | Booking Confirmation | Khách | Xem lại trước khi gửi đặt phòng |
@@ -93,7 +93,7 @@
 **Thành phần mỗi card phòng:**
 
 - Ảnh thumbnail
-- Tên phòng / tên khách sạn
+- Tên phòng / tên chi nhánh GoStay
 - Địa điểm (text, không dùng bản đồ trong MVP)
 - Giá: theo **đêm** hoặc **giờ**
 - Loại phòng (Single, Double, Deluxe…)

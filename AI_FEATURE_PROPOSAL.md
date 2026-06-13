@@ -184,7 +184,7 @@ Nếu nhóm có thêm thời gian sau khi MVP booking chạy ổn, nên ưu tiê
 | Lý do | Giải thích |
 |-------|------------|
 | **Đúng domain booking** | Trực tiếp hỗ trợ bước “tìm phòng” — trọng tâm của GoStay |
-| **Giúp tìm phòng nhanh hơn** | Giảm ma sát so với lọc thủ công; thể hiện giá trị so với Booking.com/Traveloka ở mức đơn giản |
+| **Giúp tìm phòng nhanh hơn** | Giảm ma sát so với lọc thủ công; thể hiện giá trị tìm phòng trong chuỗi GoStay ở mức đơn giản |
 | **Dễ demo hơn chatbot** | Một form + danh sách kết quả; không cần hội thoại đa vòng, không cần xử lý nhiều intent |
 | **Không tự đặt phòng** | AI chỉ gợi ý `room_id`; booking vẫn do user xác nhận — an toàn về nghiệp vụ và pháp lý học thuật |
 | **Người dùng vẫn kiểm soát** | Có thể bỏ qua gợi ý, xem chi tiết, đổi tiêu chí; phù hợp nguyên tắc “human in the loop” |

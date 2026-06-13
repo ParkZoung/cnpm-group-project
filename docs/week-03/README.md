@@ -2,7 +2,7 @@
 
 ## Dự án: GoStay
 
-GoStay là một ứng dụng/web đặt phòng khách sạn, được xây dựng dựa trên ý tưởng từ các nền tảng như Booking, Traveloka và Agoda. Mục tiêu của GoStay là giúp người dùng tìm kiếm khách sạn, xem thông tin phòng, so sánh giá, đặt phòng và quản lý lịch sử đặt phòng một cách đơn giản, rõ ràng và nhanh chóng.
+GoStay là một ứng dụng/web đặt phòng khách sạn cho một chuỗi khách sạn nhỏ. Mục tiêu của GoStay là giúp người dùng tìm kiếm chi nhánh/phòng trong chuỗi, xem thông tin chi tiết, đặt phòng và quản lý lịch sử đặt phòng một cách đơn giản, rõ ràng và nhanh chóng.
 
 ## Thành viên và nhiệm vụ
 

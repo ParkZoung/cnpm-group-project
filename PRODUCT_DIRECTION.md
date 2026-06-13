@@ -4,7 +4,9 @@
 
 **GoStay** là website đặt phòng cho một chuỗi khách sạn nhỏ mang thương hiệu GoStay. Hệ thống giúp khách hàng tìm chi nhánh/phòng trong chuỗi GoStay, xem thông tin phòng, chọn thời gian nhận/trả phòng và đặt phòng nhanh. Ở phía quản trị, admin hoặc nhân viên quản lý chuỗi GoStay có thể quản lý chi nhánh, phòng, giá, tiện ích, hình ảnh và trạng thái phòng.
 
-**Mục tiêu giai đoạn đầu:** Xây dựng **MVP** — phiên bản tối thiểu đủ luồng đặt phòng cốt lõi, phù hợp dự án môn Công nghệ phần mềm. GoStay không xây marketplace trung gian nhiều khách sạn độc lập như Booking/Traveloka/Agoda.
+**Mục tiêu giai đoạn đầu:** Xây dựng **MVP** – phiên bản tối thiểu đủ luồng đặt phòng cốt lõi, phù hợp dự án môn Công nghệ phần mềm. GoStay không xây marketplace trung gian nhiều khách sạn độc lập như Booking/Traveloka/Agoda, mà tập trung vào một chuỗi khách sạn nhỏ với các chi nhánh và phòng thuộc hệ thống GoStay.
+
+Ứng dụng hướng tới người cần chỗ ở ngắn hạn như khách du lịch, người đi công tác, sinh viên, khách lẻ; đồng thời hỗ trợ admin/chủ chuỗi khách sạn quản lý thông tin chi nhánh, phòng, giá, tình trạng phòng trống và đơn đặt phòng.
 
 ---
 
@@ -14,7 +16,7 @@
 |------|----------------|
 | **Khách hàng cá nhân** | Đặt phòng nhanh theo giờ hoặc theo ngày |
 | **Du khách / người đi công tác** | Quy trình đặt phòng đơn giản, ít bước |
-Admin / nhân viên quản lý chuỗi GoStay | Quản lý chi nhánh, phòng, giá, tiện ích, hình ảnh; cập nhật trạng thái phòng và đơn đặt phòng
+| **Admin / chủ chuỗi khách sạn** | Quản lý chi nhánh, phòng, giá, tiện ích, trạng thái phòng và đơn đặt phòng |
 
 ---
 
@@ -34,9 +36,15 @@ GoStay tập trung giải quyết các vấn đề trên **ở mức cơ bản**
 
 Phiên bản MVP đầu tiên chỉ gồm **luồng đặt phòng cốt lõi**:
 
+<<<<<<< HEAD
 1.**Đăng ký / đăng nhập** người dùng với hai vai trò chính: Khách hàng và Admin.
 2. **Tìm kiếm chi nhánh/phòng GoStay** theo khu vực, tên chi nhánh, loại phòng hoặc khoảng giá.
 3. **Xem chi tiết** chi nhánh và phòng
+=======
+1. **Đăng ký / đăng nhập** người dùng (khách và chủ khách sạn nếu nhóm phân quyền đơn giản).
+2. **Tìm kiếm chi nhánh hoặc phòng** theo tên, địa điểm hoặc khoảng giá.
+3. **Xem chi tiết** khách sạn và phòng (mô tả cơ bản, giá, tiện ích chính).
+>>>>>>> 669c682 (Update GoStay docs for hotel chain direction)
 4. **Chọn thời gian** nhận phòng (check-in) và trả phòng (check-out).
 5. **Tạo đặt phòng** (booking) — có thể ghi nhận trạng thái “chờ xác nhận” hoặc “đã đặt” tùy thiết kế nhóm, **chưa** tích hợp thanh toán trực tuyến phức tạp.
 6. **Xem lịch sử đặt phòng** của khách.

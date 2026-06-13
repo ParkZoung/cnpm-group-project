@@ -2,7 +2,7 @@
 
 > **Dự án:** GoStay — ứng dụng web đặt phòng khách sạn (MVP)  
 > **Vai trò tài liệu:** Phân tích sản phẩm (Business Analyst / Product Owner)  
-> **Lưu ý:** GoStay học hỏi cách các nền tảng như Booking.com, Traveloka, Agoda giải quyết bài toán đặt phòng, nhưng **không** nhắm tới việc sao chép toàn bộ tính năng. Mục tiêu là xây một **MVP đơn giản**, phù hợp nhóm sinh viên môn Công nghệ phần mềm.
+> **Lưu ý:** GoStay học hỏi một số ý tưởng thiết kế từ các app đặt phòng lớn, nhưng chỉ tập trung vào một chuỗi khách sạn nhỏ với **MVP đơn giản** phù hợp nhóm sinh viên môn Công nghệ phần mềm.
 
 ---
 
@@ -29,7 +29,7 @@ GoStay không cạnh tranh trực tiếp với các nền tảng thương mại 
 | **Du khách (Tourists)** | Tìm phòng theo địa điểm/tên khách sạn; quy trình đặt ngắn gọn khi đi du lịch |
 | **Người đi công tác (Business travelers)** | Đặt phòng theo ngày hoặc vài giờ nghỉ giữa chuyến; cần thông tin rõ, ít bước |
 | **Sinh viên / người cần ở ngắn hạn** | Giá phù hợp túi tiền; đặt theo giờ hoặc theo ngày; giao diện dễ hiểu |
-| **Chủ khách sạn / đối tác (Hotel owners / partners)** | Thêm/sửa phòng, giá, ảnh, tiện ích; cập nhật trạng thái phòng (trống, đã đặt, bảo trì) |
+| **Admin / chủ chuỗi khách sạn (Hotel chain owner)** | Thêm/sửa phòng, giá, ảnh, tiện ích; cập nhật trạng thái phòng (trống, đã đặt, bảo trì) |
 | **Quản trị hệ thống (System admin)** | Quản lý tài khoản cơ bản; duy trì dữ liệu mẫu; hỗ trợ demo và vận hành MVP |
 
 **Tóm lại:** Phía khách tập trung vào **tìm → so sánh cơ bản → đặt → xem lại**; phía chủ KS/admin tập trung vào **quản lý thông tin phòng và tình trạng trống** — không cần dashboard phức tạp như app thương mại.
@@ -38,7 +38,7 @@ GoStay không cạnh tranh trực tiếp với các nền tảng thương mại 
 
 ## 3. Pain Points in Existing Products
 
-Phân tích các điểm yếu thường gặp trên Booking.com, Traveloka, Agoda và nền tảng tương tự — từ đó rút ra hướng đơn giản hóa cho GoStay:
+Phân tích các điểm yếu thường gặp trên các app đặt phòng lớn — từ đó rút ra hướng đơn giản hóa cho GoStay:
 
 | Pain point | Mô tả | Gợi ý hướng GoStay (MVP) |
 |------------|--------|---------------------------|
@@ -167,7 +167,7 @@ Các mục trên có thể ghi vào backlog **sau khi** MVP chạy ổn và đư
 
 ## 9. Final MVP Decision
 
-**Quyết định MVP cuối cùng:** GoStay sẽ là **ứng dụng web đặt phòng tập trung**, không phải bản sao Booking.com, Traveloka hay Agoda. Phiên bản đầu tiên cho phép **khách hàng** đăng ký/đăng nhập, tìm và lọc khách sạn/phòng, xem chi tiết và so sánh thông tin cơ bản (giá, tiện ích), **đặt phòng theo ngày hoặc giờ**, và **xem lịch sử đặt phòng**. **Chủ khách sạn hoặc admin** có thể quản lý thông tin phòng, giá, hình ảnh và **cập nhật trạng thái phòng** để tránh hiển thị sai tình trạng còn trống. Hệ thống có thể chạy với **dữ liệu mẫu** để demo ổn định. Các tính năng nặng như **thanh toán thật, voucher, loyalty, bản đồ nâng cao, chatbot và AI pricing** được **loại khỏi MVP**; AI chỉ xem xét ở dạng **tính năng nhỏ, demo được** sau khi luồng booking cốt lõi hoạt động tốt. Mục tiêu là nhóm sinh viên hoàn thành **một luồng end-to-end rõ ràng**, đủ báo cáo và bảo vệ đồ án, đồng thời học được cách phân tích sản phẩm từ các nền tảng lớn rồi **đơn giản hóa** cho phạm vi thực tế.
+**Quyết định MVP cuối cùng:** GoStay sẽ là **ứng dụng web đặt phòng tập trung cho một chuỗi khách sạn nhỏ**, không phải một marketplace hay nền tảng tổng hợp. Phiên bản đầu tiên cho phép **khách hàng** đăng ký/đăng nhập, tìm và lọc chi nhánh/phòng trong GoStay, xem chi tiết và so sánh thông tin cơ bản giữa các phòng hoặc chi nhánh (giá, tiện ích), **đặt phòng theo ngày hoặc giờ**, và **xem lịch sử đặt phòng**. **Admin hoặc chủ chuỗi khách sạn** có thể quản lý thông tin phòng, giá, hình ảnh và **cập nhật trạng thái phòng** để tránh hiển thị sai tình trạng còn trống. Hệ thống có thể chạy với **dữ liệu mẫu** để demo ổn định. Các tính năng nặng như **thanh toán thật, voucher, loyalty, bản đồ nâng cao, chatbot và AI pricing** được **loại khỏi MVP**; AI chỉ xem xét ở dạng **tính năng nhỏ, demo được** sau khi luồng booking cốt lõi hoạt động tốt. Mục tiêu là nhóm sinh viên hoàn thành **một luồng end-to-end rõ ràng**, đủ báo cáo và bảo vệ đồ án, đồng thời học được cách phân tích sản phẩm từ các nền tảng lớn rồi **đơn giản hóa** cho phạm vi thực tế.
 
 ---
 

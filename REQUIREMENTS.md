@@ -7,7 +7,7 @@
 
 ## 1. Product Vision
 
-**GoStay** là nền tảng web đặt phòng khách sạn **đơn giản và tập trung**, giúp người dùng tìm phòng, xem thông tin rõ ràng, đặt phòng theo ngày hoặc giờ và quản lý lịch sử đặt phòng. Hệ thống hỗ trợ chủ khách sạn và admin quản lý phòng, giá và trạng thái. GoStay học hỏi từ các app lớn (Booking, Traveloka, Agoda) nhưng **không** nhắm tới bản sao đầy đủ tính năng — chỉ **MVP phù hợp nhóm sinh viên**.
+**GoStay** là website đặt phòng khách sạn cho một chuỗi khách sạn nhỏ, giúp người dùng tìm chi nhánh/phòng, xem thông tin rõ ràng, đặt phòng theo ngày hoặc giờ và quản lý lịch sử đặt phòng. Hệ thống hỗ trợ admin và chủ chuỗi khách sạn quản lý chi nhánh, phòng, giá và trạng thái. GoStay tham khảo một số ý tưởng từ các app lớn nhưng **không** nhắm tới bản sao đầy đủ tính năng — chỉ **MVP phù hợp nhóm sinh viên**.
 
 ---
 
@@ -18,7 +18,7 @@
 | **Khách du lịch** | Tìm KS gần địa điểm du lịch, giá hợp lý, xem ảnh, đặt nhanh |
 | **Người đi công tác** | Đặt gần nơi làm việc/họp, quản lý lịch đặt phòng |
 | **Sinh viên / ở ngắn hạn** | Giá phù hợp, đặt theo giờ hoặc ngày, thao tác đơn giản |
-| **Chủ khách sạn / đối tác** | Quản lý phòng trống, giá, tiện ích, ảnh, tình trạng đặt |
+| **Admin / chủ chuỗi khách sạn** | Quản lý chi nhánh, phòng trống, giá, tiện ích, ảnh, tình trạng đặt |
 | **Admin hệ thống** | Quản lý người dùng, danh sách KS/phòng, theo dõi hoạt động cơ bản |
 
 ---
