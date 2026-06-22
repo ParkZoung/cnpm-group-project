@@ -8,7 +8,7 @@ Tài liệu này giúp nhóm dự án **GoStay** dùng AI Agent (ví dụ: Curso
 
 - Tăng tốc viết tài liệu, thiết kế, và mã nguồn **trong phạm vi MVP**.
 - Giữ chất lượng và tính nhất quán giữa các thành viên.
-- Tránh AI “thêm” quá nhiều tính năng ngoài `PRODUCT_DIRECTION.md`.
+- Tránh AI “thêm” quá nhiều tính năng ngoài `docs/product/PRODUCT_DIRECTION.md`.
 
 ---
 
@@ -32,7 +32,7 @@ Agent **không** thay thế việc nhóm tự hiểu yêu cầu, phân công và
 Mỗi prompt nên nêu rõ:
 
 - Tên dự án: **GoStay**
-- Việc cần làm thuộc MVP hay không (tham chiếu `PRODUCT_DIRECTION.md`)
+- Việc cần làm thuộc MVP hay không (tham chiếu `docs/product/PRODUCT_DIRECTION.md`)
 - Vai trò: khách hàng / chủ khách sạn (nếu liên quan)
 
 **Ví dụ prompt tốt:**
@@ -87,7 +87,7 @@ Yêu cầu / issue → Prompt có ngữ cảnh GoStay + MVP
 
 ## 5. Việc nên nhờ Agent
 
-- Soạn hoặc chỉnh `PRODUCT_DIRECTION.md`, README, hướng dẫn cài đặt
+- Soạn hoặc chỉnh `docs/product/PRODUCT_DIRECTION.md`, README, hướng dẫn cài đặt
 - Skeleton API: đăng ký, đăng nhập, tìm khách sạn, tạo booking
 - Form chọn check-in / check-out
 - Trang danh sách booking history
@@ -110,11 +110,12 @@ Yêu cầu / issue → Prompt có ngữ cảnh GoStay + MVP
 Khi nhóm bắt đầu code, có thể yêu cầu Agent tuân theo hướng đơn giản, ví dụ:
 
 ```text
-/backend    — API, database
-/frontend   — giao diện người dùng
-/docs       — tài liệu bổ sung (nếu cần)
-/ai-logs    — nhật ký sử dụng AI theo tuần
+/docs/product      — tài liệu sản phẩm
+/docs/weekly       — bài nộp theo tuần
+/ai-logs           — nhật ký sử dụng AI theo tuần
 ```
+
+Không tạo backend implementation cho đến khi nhóm thống nhất và phê duyệt rõ ràng.
 
 Chi tiết stack do nhóm và giảng viên quyết định; Agent chỉ triển khai **sau khi** nhóm thống nhất.
 
@@ -123,14 +124,14 @@ Chi tiết stack do nhóm và giảng viên quyết định; Agent chỉ triển
 ## 8. Xử lý khi Agent làm sai phạm vi
 
 1. Dừng merge
-2. Prompt lại: “Chỉ làm MVP GoStay, bỏ [tính năng X], tham chiếu PRODUCT_DIRECTION.md”
+2. Prompt lại: “Chỉ làm MVP GoStay, bỏ [tính năng X], tham chiếu docs/product/PRODUCT_DIRECTION.md”
 3. Ghi lại lesson learned trong `ai-logs/` tuần đó
 
 ---
 
 ## 9. Liên kết tài liệu liên quan
 
-- `PRODUCT_DIRECTION.md` — phạm vi sản phẩm
+- `docs/product/PRODUCT_DIRECTION.md` — phạm vi sản phẩm
 - `AI_USAGE_POLICY.md` — quy tắc dùng AI an toàn, có trách nhiệm
 - `ai-logs/week-XX.md` — nhật ký từng tuần
 

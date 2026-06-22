@@ -2,7 +2,7 @@
 
 > **Dự án:** GoStay — ứng dụng web đặt phòng khách sạn (MVP)  
 > **Vai trò tài liệu:** Phân tích sản phẩm (Business Analyst / Product Owner)  
-> **Lưu ý:** GoStay học hỏi một số ý tưởng thiết kế từ các app đặt phòng lớn, nhưng chỉ tập trung vào một chuỗi khách sạn nhỏ với **MVP đơn giản** phù hợp nhóm sinh viên môn Công nghệ phần mềm.
+> **Lưu ý:** GoStay học hỏi một số ý tưởng thiết kế từ các app đặt phòng lớn, nhưng chỉ tập trung vào một chuỗi khách sạn nhỏ với **MVP đơn giản** phù hợp nhóm sinh viên .
 
 ---
 
