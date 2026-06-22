@@ -50,7 +50,7 @@ Các chức năng chưa làm trong MVP:
 
 Nhóm đã hoàn thành các tài liệu định hướng ban đầu:
 
-* PRODUCT_DIRECTION.md
+* docs/product/PRODUCT_DIRECTION.md
 * AGENT_GUIDE.md
 * AI_USAGE_POLICY.md
 * ai-logs/week-01.md
@@ -59,21 +59,40 @@ Nhóm đã hoàn thành các tài liệu định hướng ban đầu:
 
 Nhóm đã hoàn thành phân tích ý tưởng sản phẩm và đề xuất tính năng AI:
 
-* PRODUCT_ANALYSIS.md
-* AI_FEATURE_PROPOSAL.md
+* docs/product/PRODUCT_ANALYSIS.md
+* docs/product/AI_FEATURE_PROPOSAL.md
 * ai-logs/week-02.md
 
 ## 7. Kết quả tuần 3
 
 Nhóm đã hoàn thành tài liệu UX prototype và cập nhật yêu cầu chức năng cho GoStay:
 
-* UX_PROTOTYPE.md
-* REQUIREMENTS.md
+* docs/product/UX_PROTOTYPE.md
+* docs/product/REQUIREMENTS.md
 * ai-logs/week-03.md
 
 Trong tuần 3, nhóm tập trung vào việc mô tả prototype giao diện, luồng người dùng, mock data và cập nhật requirements cho MVP. Nhóm chưa tập trung vào backend phức tạp mà ưu tiên làm rõ phạm vi sản phẩm và trải nghiệm người dùng.
 
-## 8. Công cụ sử dụng
+## 8. Cấu trúc repository
+
+```text
+GoStay/
+├── README.md
+├── AGENT_GUIDE.md
+├── AI_USAGE_POLICY.md
+├── PROMPTS.md
+├── .gitignore
+├── ai-logs/
+├── docs/
+│   ├── product/
+│   └── weekly/
+```
+
+* `docs/product/` chứa tài liệu sản phẩm như định hướng, phân tích, requirements, UX prototype và đề xuất tính năng AI.
+* `docs/weekly/` chứa các bài nộp theo tuần cho môn Công nghệ phần mềm.
+* `ai-logs/` chứa nhật ký sử dụng AI theo tuần.
+
+## 9. Công cụ sử dụng
 
 Nhóm sử dụng các công cụ hỗ trợ trong quá trình làm đồ án:
 
@@ -82,7 +101,7 @@ Nhóm sử dụng các công cụ hỗ trợ trong quá trình làm đồ án:
 * Figma để thiết kế wireframe/prototype.
 * Markdown để viết tài liệu dự án.
 
-## 9. Ghi chú
+## 10. Ghi chú
 
 Dự án hiện đang ở giai đoạn tuần 3: thiết kế UX prototype, mô tả luồng người dùng, cập nhật requirements và user stories cho MVP.
 
