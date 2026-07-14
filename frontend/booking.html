@@ -1,0 +1,136 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>GoStay - Thông tin đặt phòng</title>
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/duy.css">
+</head>
+<body>
+  <header class="site-header">
+    <div class="container header-inner">
+      <a href="index.html" class="logo">
+        <img src="images/logo-gostay.png" alt="GoStay Logo">
+      </a>
+
+      <nav class="main-nav">
+        <a href="index.html">Trang chủ</a>
+        <a href="search.html">Tìm kiếm phòng</a>
+        <a href="cart.html" class="active-nav">Đặt phòng</a>
+        <a href="booking-history.html">Lịch sử đặt phòng</a>
+      </nav>
+
+      <div class="auth">
+        <a class="btn btn-outline" href="login.html">Đăng nhập</a>
+        <a class="btn btn-primary" href="register.html">Đăng ký</a>
+      </div>
+    </div>
+  </header>
+
+  <main class="container page-main-wrap">
+    <div class="page-header-block">
+      <h2 class="page-main-title">Thông tin xác nhận & Thanh toán</h2>
+      <p class="page-main-desc">Vui lòng điền chính xác thông tin để chúng tôi chuẩn bị phòng đón tiếp bạn chu đáo nhất.</p>
+    </div>
+
+    <form action="bookingsuccess.html" method="get" class="cart-split-layout">
+      <div class="cart-left-block">
+        <div class="checkout-form-panel">
+          <h3>1. Thông tin khách đại diện lưu trú</h3>
+          <div class="checkout-grid-fields">
+            <div class="checkout-field">
+              <label for="full_name">Họ và tên khách hàng *</label>
+              <input type="text" id="full_name" placeholder="Ví dụ: Nguyễn Văn A" >
+            </div>
+            <div class="checkout-field">
+              <label for="phone_number">Số điện thoại liên hệ *</label>
+              <input type="tel" id="phone_number" placeholder="Nhập số điện thoại" >
+            </div>
+            <div class="checkout-field span-2">
+              <label for="email_address">Địa chỉ Email (Để nhận phiếu xác nhận phòng) *</label>
+              <input type="email" id="email_address" placeholder="nguyenvana@gmail.com">
+            </div>
+            <div class="checkout-field">
+              <label for="checkin_date">Ngay nhan phong *</label>
+              <input type="date" id="checkin_date">
+            </div>
+            <div class="checkout-field">
+              <label for="checkout_date">Ngay tra phong *</label>
+              <input type="date" id="checkout_date">
+            </div>
+            <div class="checkout-field span-2">
+              <label for="special_requests">Yêu cầu đặc biệt bổ sung (Không bắt buộc)</label>
+              <textarea id="special_requests" rows="3" placeholder="Ghi chú thêm: Phòng tầng cao, nôi em bé, check-in muộn..."></textarea>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <aside class="cart-right-sidebar">
+        <div class="billing-summary-card">
+          <h3>Chi tiết phòng đặt</h3>
+          <div class="mini-rooms-summary">
+            <div class="mini-room-line">✓ 1x Deluxe Ocean View (2 đêm)</div>
+            <div class="mini-room-line">✓ 1x Premier Suite (1 đêm)</div>
+          </div>
+          <div class="billing-divider"></div>
+          <div class="billing-row">
+            <span>Tiền phòng tạm tính</span>
+            <span>9.270.000 VND</span>
+          </div>
+          <div class="billing-row">
+            <span>Thuế & Phí dịch vụ (10%)</span>
+            <span>927.000 VND</span>
+          </div>
+          <div class="billing-divider"></div>
+          <div class="billing-row total-row">
+            <span>Cần thanh toán</span>
+            <span class="billing-final-price">10.197.000 VND</span>
+          </div>
+          <button type="submit" class="btn-checkout-action-submit">Xác nhận đặt phòng ✓</button>
+        </div>
+      </aside>
+    </form>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-grid">
+      <div class="footer-col">
+        <a href="index.html" class="logo-footer-link">
+          <img src="images/sos.png" alt="GoStay Logo">
+        </a>
+        <p>GoStay hỗ trợ khách hàng tìm kiếm, xem thông tin và đặt phòng nhanh trong hệ thống chi nhánh khách sạn.</p>
+      </div>
+
+      <div class="footer-col">
+        <h4>Khách hàng</h4>
+        <ul>
+          <li><a href="index.html">Trang chủ</a></li>
+          <li><a href="search.html">Tìm kiếm phòng</a></li>
+          <li><a href="booking-history.html">Lịch sử đặt phòng</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h4>Tài khoản</h4>
+        <ul>
+          <li><a href="login.html">Đăng nhập</a></li>
+          <li><a href="register.html">Đăng ký</a></li>
+          <li><a href="cart.html">Giỏ đặt phòng</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h4>Liên hệ GoStay</h4>
+        <p>1900 1234<br>info@gostay.vn<br>Hệ thống chi nhánh GoStay Việt Nam</p>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <div class="container">© 2025 GoStay. All rights reserved.</div>
+    </div>
+  </footer>
+  <script src="js/booking.js"></script>
+  <script src="js/header-auth.js"></script>
+</body>
+</html>

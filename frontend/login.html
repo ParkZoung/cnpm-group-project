@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>GoStay - Đăng nhập</title>
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/duong.css">
+</head>
+<body>
+  <header class="site-header">
+    <div class="container header-inner">
+      <a href="index.html" class="logo"><img src="images/logo-gostay.png" alt="GoStay Logo"></a>
+      <nav class="main-nav">
+        <a href="index.html">Trang chủ</a>
+        <a href="search.html">Tìm kiếm phòng</a>
+        <a href="cart.html">Đặt phòng</a>
+        <a href="booking-history.html">Lịch sử đặt phòng</a>
+      </nav>
+      <div class="auth">
+        <a class="btn btn-outline" href="login.html">Đăng nhập</a>
+        <a class="btn btn-primary" href="register.html">Đăng ký</a>
+      </div>
+    </div>
+  </header>
+
+  <main class="auth-page-container">
+    <div class="auth-card">
+      <h2>Đăng Nhập</h2>
+      <p class="auth-subtitle">Chào mừng bạn quay trở lại với GoStay</p>
+      
+      <form action="index.html" method="GET" class="auth-form">
+        <div class="form-group">
+          <label>Tên đăng nhập hoặc Email</label>
+          <input type="text" placeholder="Nhập tài khoản hoặc email" >
+        </div>
+        <div class="form-group">
+          <label>Mật khẩu</label>
+          <input type="password" placeholder="Nhập mật khẩu" >
+        </div>
+        <div class="form-actions-row">
+          <label class="remember-me"><input type="checkbox"> Ghi nhớ đăng nhập</label>
+          <a href="forgot-password.html" class="forgot-pass">Quên mật khẩu?</a>
+        </div>
+        <button type="submit" class="btn-auth-submit">Đăng Nhập</button>
+      </form>
+      <div class="auth-footer-text">Chưa có tài khoản? <a href="register.html">Đăng ký ngay</a></div>
+    </div>
+  </main>
+  <footer class="site-footer">
+    <div class="container footer-grid">
+      <div class="footer-col">
+        <a href="index.html" class="logo-footer-link">
+          <img src="images/sos.png" alt="GoStay Logo">
+        </a>
+        <p>GoStay hỗ trợ khách hàng tìm kiếm, xem thông tin và đặt phòng nhanh trong hệ thống chi nhánh khách sạn.</p>
+      </div>
+
+      <div class="footer-col">
+        <h4>Khách hàng</h4>
+        <ul>
+          <li><a href="index.html">Trang chủ</a></li>
+          <li><a href="rooms.html">Danh sách phòng</a></li>
+          <li><a href="search.html">Tìm kiếm phòng</a></li>
+          <li><a href="booking-history.html">Lịch sử đặt phòng</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h4>Tài khoản</h4>
+        <ul>
+          <li><a href="login.html">Đăng nhập</a></li>
+          <li><a href="register.html">Đăng ký</a></li>
+          <li><a href="cart.html">Giỏ đặt phòng</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h4>Liên hệ GoStay</h4>
+        <p>1900 1234<br>info@gostay.vn<br>Hệ thống chi nhánh GoStay Việt Nam</p>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <div class="container">© 2025 GoStay. All rights reserved.</div>
+    </div>
+  </footer>
+  <script src="js/auth.js"></script>
+  <script src="js/header-auth.js"></script>
+</body>
+</html>

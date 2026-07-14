@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>GoStay Admin - Thành viên</title>
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/duong.css">
+</head>
+<body class="admin-dashboard-body">
+
+  <aside class="admin-sidebar">
+    <div class="sidebar-brand">
+      <img src="images/sos.png" alt="GoStay Logo" class="sidebar-logo">
+    </div>
+    <nav class="sidebar-menu">
+      <a href="admin-dashboard.html" class="menu-item"><span class="icon">📊</span> Dashboard</a>
+      <a href="admin-products.html" class="menu-item"><span class="icon">🛏️</span> Quản lý phòng</a>
+      <a href="admin-categories.html" class="menu-item"><span class="icon">📁</span> Quản lý danh mục</a>
+      <a href="admin-invoices.html" class="menu-item"><span class="icon">📄</span> Quản lý hóa đơn</a>
+      <a href="admin-users.html" class="menu-item active"><span class="icon">👥</span> Khách hàng</a>
+      <hr class="sidebar-divider">
+      <a href="login.html" class="menu-item logout-item"><span class="icon">🚪</span> Đăng xuất</a>
+    </nav>
+  </aside>
+
+  <div class="admin-main-content">
+    <header class="admin-topbar">
+      <div class="topbar-left"><h1 class="topbar-title">Quản lý khách hàng</h1></div>
+      <div class="topbar-right">
+        <div class="topbar-search"><input type="text" placeholder="Tìm kiếm nhanh..."></div>
+        <div class="topbar-user"><span class="user-name">Admin Khánh ▾</span></div>
+      </div>
+    </header>
+
+    <main class="admin-page-container">
+      <div class="admin-card-section">
+        <div class="section-header-row">
+          <h2>Danh sách thành viên hệ thống</h2>
+          <button class="btn-primary-admin">+ Thêm khách hàng</button>
+        </div>
+
+        <div class="admin-filter-bar">
+          <input type="text" placeholder="Tìm kiếm tên, email, số điện thoại..." class="admin-search-input">
+          <select class="admin-select-filter">
+            <option>Tất cả vai trò</option>
+            <option>Admin</option>
+            <option>User</option>
+          </select>
+          <button class="btn-outline" style="padding:11px 20px; font-weight:600; border:1px solid #cbd5e1; background:#fff; border-radius:8px; cursor:pointer;">Lọc</button>
+        </div>
+
+        <div class="admin-table-wrapper">
+          <table class="admin-table">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Họ và tên</th>
+                <th>Tên tài khoản</th>
+                <th>Email</th>
+                <th>Số điện thoại</th>
+                <th>Vai trò</th>
+                <th>Trạng thái</th>
+                <th>Thao tác</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>#USR01</td>
+                <td><strong>Nguyễn Văn Quản Trị</strong></td>
+                <td>admin_gostay</td>
+                <td>admin@gostay.com</td>
+                <td>0901 234 567</td>
+                <td><span class="badge badge-admin">Admin</span></td>
+                <td><span class="status-badge status-success">Hoạt động</span></td>
+                <td>
+                  <div class="action-buttons">
+                    <button class="btn-action edit">Sửa</button>
+                    <button class="btn-action delete">Xóa</button>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td>#USR02</td>
+                <td>Trần Minh Hoàng</td>
+                <td>hoangtm99</td>
+                <td>hoangtm@gmail.com</td>
+                <td>0988 777 666</td>
+                <td><span class="badge badge-user">User</span></td>
+                <td><span class="status-badge status-success">Hoạt động</span></td>
+                <td>
+                  <div class="action-buttons">
+                    <button class="btn-action edit">Sửa</button>
+                    <button class="btn-action delete">Xóa</button>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td>#USR03</td>
+                <td>Lê Thị Mai Anh</td>
+                <td>maianh_le</td>
+                <td>maianh@yahoo.com</td>
+                <td>0912 345 678</td>
+                <td><span class="badge badge-user">User</span></td>
+                <td><span class="status-badge status-danger">Bị khóa</span></td>
+                <td>
+                  <div class="action-buttons">
+                    <button class="btn-action edit">Sửa</button>
+                    <button class="btn-action delete">Xóa</button>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </main>
+
+    <footer class="admin-footer">
+      <p>© 2026 GoStay Admin Control Panel. <span style="float: right;">Version 1.2.0</span></p>
+    </footer>
+  </div>
+  <script src="js/admin-auth.js"></script>
+</body>
+</html>

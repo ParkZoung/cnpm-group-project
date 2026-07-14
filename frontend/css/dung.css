@@ -1,0 +1,475 @@
+/* ==========================================================================
+   CUSTOM CSS - LUỒNG TÌM KIẾM VÀ XEM DANH SÁCH PHÒNG (BẢN FULL FIX LỖI)
+   ========================================================================== */
+
+/* --- BỐ CỤC CHÍNH (2 CỘT CHO TRANG TÌM KIẾM) --- */
+.search-page-container {
+  display: flex;
+  gap: 24px;
+  padding-top: 30px;
+  padding-bottom: 50px;
+  align-items: flex-start;
+}
+
+/* --- CỘT TRÁI: BỘ LỌC (SIDEBAR) --- */
+.filter-sidebar {
+  width: 260px;
+  min-width: 260px;
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  padding: 20px 16px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+}
+
+.filter-sidebar h2 {
+  font-size: 16px;
+  color: #0b3558;
+  font-weight: 700;
+  margin-bottom: 20px;
+  border-bottom: 2px solid #2bb3b3;
+  padding-bottom: 8px;
+}
+
+.filter-group {
+  margin-bottom: 18px;
+}
+
+.filter-group label {
+  display: block;
+  font-size: 13px;
+  font-weight: 700;
+  color: #333333;
+  margin-bottom: 8px;
+}
+
+/* Kiểu dáng cho ô nhập tìm kiếm từ khóa văn bản mới */
+.filter-group input[type="text"] {
+  width: 100%;
+  padding: 8px 10px;
+  border: 1px solid #cbd5e1;
+  border-radius: 6px;
+  font-size: 13px;
+  color: #475569;
+  outline: none;
+  background-color: #ffffff;
+  transition: border-color 0.2s;
+}
+
+.filter-group input[type="text"]:focus {
+  border-color: #2bb3b3;
+}
+
+.filter-group select {
+  width: 100%;
+  padding: 8px 10px;
+  border: 1px solid #cbd5e1;
+  border-radius: 6px;
+  font-size: 13px;
+  color: #475569;
+  outline: none;
+  background-color: #fff;
+}
+
+.checkbox-group label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: normal;
+  font-size: 13px;
+  color: #475569;
+  margin-bottom: 6px;
+  cursor: pointer;
+}
+
+.btn-apply-filter {
+  width: 100%;
+  background: #0b3558;
+  color: #ffffff;
+  border: none;
+  padding: 10px;
+  border-radius: 6px;
+  font-weight: 700;
+  font-size: 13px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.btn-apply-filter:hover {
+  background: #12a6b8;
+}
+
+/* --- CỘT PHẢI: DANH SÁCH PHÒNG KẾT QUẢ --- */
+.search-results-section {
+  flex-grow: 1;
+}
+
+.results-header {
+  margin-bottom: 16px;
+  font-size: 14px;
+  color: #64748b;
+}
+
+
+/* ==========================================================================
+   MỚI CHỈNH SỬA: ĐƯA DANH SÁCH PHÒNG VỀ DẠNG LƯỚI KHUNG BỌC CÁCH NHAU THOÁNG MẮT
+   ========================================================================== */
+
+/* Ép danh sách phòng hiển thị dạng Lưới (Grid) - Tự động chia cột theo màn hình */
+.rooms-search-grid {
+  display: grid !important;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)) !important; /* Chia 2-3 cột tăm tắp */
+  gap: 30px !important;                 /* Tạo khoảng trống 30px GIỮA CÁC Ô PHÒNG rất thoáng */
+  width: 100% !important;
+  margin-top: 20px !important;
+  margin-bottom: 50px !important;
+}
+
+/* Định dạng cấu trúc từng ô Card phòng đơn lẻ */
+.room-search-card {
+  display: flex !important;
+  flex-direction: column !important;    /* Ảnh nằm ở trên, chữ nằm ở dưới */
+  background: #ffffff !important;
+  border: 1px solid #e2e8f0 !important;
+  border-radius: 12px !important;       /* Bo góc tròn mềm mại */
+  overflow: hidden !important;          /* Giấu phần thừa lồi ra ngoài */
+  box-shadow: 0 4px 12px rgba(11, 53, 88, 0.04) !important; /* Đổ bóng mờ luxury */
+  transition: transform 0.3s ease, box-shadow 0.3s ease !important;
+}
+
+/* Hiệu ứng nhấc nhẹ ô phòng lên khi người dùng rê chuột vào */
+.room-search-card:hover {
+  transform: translateY(-5px) !important;
+  box-shadow: 0 8px 24px rgba(11, 53, 88, 0.1) !important;
+}
+
+/* KHỐNG CHẾ KHUNG ẢNH PHÒNG - Tuyệt đối không cho ảnh tràn tự do */
+.room-img-wrap {
+  width: 100% !important;
+  height: 220px !important;             /* Ép tất cả các ảnh cao bằng chằn chặn nhau 220px */
+  overflow: hidden !important;          /* Cắt bỏ phần rìa thừa */
+  position: relative !important;
+  background: #f1f5f9;
+  flex-shrink: 0 !important;
+}
+
+/* Ép bức ảnh thực tế khớp hoàn toàn vào khung chứa */
+.room-img-wrap img {
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover !important;         /* Cắt ảnh thông minh, không lo bị bóp móp méo hình */
+  transition: transform 0.4s ease !important;
+}
+
+/* Ảnh hơi phóng to nhẹ hướng về người dùng khi hover */
+.room-search-card:hover .room-img-wrap img {
+  transform: scale(1.06) !important;
+}
+
+/* Định dạng khoảng đệm chữ và nội dung thông tin bên trong Card phòng */
+.room-search-body {
+  padding: 20px !important;             /* Tạo khoảng cách trống từ viền vào trong chữ */
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 10px !important;                 /* Các dòng chữ cách đều nhau một khoảng nhỏ gọn gàng */
+  flex-grow: 1 !important;
+}
+
+.room-search-body h3 {
+  font-size: 19px !important;
+  color: #0b3558 !important;
+  margin: 0 !important;
+  font-weight: 700 !important;
+}
+
+.room-meta {
+  font-size: 13px !important;
+  color: #64748b !important;
+  margin: 0 !important;
+}
+
+.room-meta .icon-pin {
+  color: #e53935;
+  margin-right: 2px;
+}
+
+.room-price {
+  font-size: 18px !important;
+  font-weight: 700 !important;
+  color: #12a6b8 !important;            /* Đồng bộ màu xanh chủ đạo */
+  margin: 5px 0 0 0 !important;
+}
+
+.room-status {
+  font-size: 12px !important;
+  font-weight: 700 !important;
+  margin-bottom: 8px !important;
+}
+
+.status-available {
+  color: #2e7d32 !important;
+}
+
+.status-unavailable {
+  color: #c62828 !important;
+}
+
+/* Nút xem chi tiết phòng kéo rộng full chiều ngang cho cân xứng */
+.btn-view-detail {
+  display: block !important;
+  text-align: center !important;
+  align-self: unset !important;
+  width: 100% !important;
+  padding: 10px 0 !important;
+  background: #2bb3b3 !important;
+  color: #ffffff !important;
+  text-decoration: none !important;
+  font-size: 13px !important;
+  font-weight: 700 !important;
+  border-radius: 6px !important;
+  margin-top: auto !important;          /* Luôn ghim chặt nút ở đáy ô */
+  transition: background 0.2s !important;
+}
+
+.btn-view-detail:hover {
+  background: #1f8f8f !important;
+}
+
+
+/* --- TRANG CHI TIẾT PHÒNG KHÁCH SẠN (ROOM-DETAIL.HTML) --- */
+.detail-layout {
+  display: flex;
+  gap: 30px;
+  margin: 40px auto 60px auto;
+  align-items: flex-start;
+}
+
+.detail-main {
+  flex-grow: 1;
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+  padding: 24px;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.02);
+}
+
+.detail-gallery img {
+  width: 100%;
+  height: 400px;
+  object-fit: cover;
+  border-radius: 8px;
+  margin-bottom: 24px;
+}
+
+.detail-header-info h1 {
+  color: #0b3558;
+  font-size: 24px;
+  font-weight: 700;
+  margin-bottom: 12px;
+}
+
+.detail-meta-row {
+  display: flex;
+  gap: 15px;
+  font-size: 13px;
+  color: #64748b;
+  margin-bottom: 24px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid #f1f5f9;
+}
+
+.detail-description, .detail-amenities, .detail-reviews {
+  margin-bottom: 30px;
+}
+
+.detail-description h3, .detail-amenities h3, .detail-reviews h3 {
+  font-size: 16px;
+  color: #0b3558;
+  font-weight: 700;
+  margin-bottom: 12px;
+}
+
+.detail-description p {
+  font-size: 14px;
+  color: #475569;
+  line-height: 1.6;
+}
+
+.amenities-list {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+}
+
+.amenities-list li {
+  font-size: 13px;
+  color: #475569;
+}
+
+/* KHỐI ĐÁNH GIÁ KHÁCH HÀNG */
+.detail-reviews {
+  border-top: 1px solid #e2e8f0;
+  padding-top: 24px;
+}
+
+.review-list {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.review-item {
+  background: #f8fafc;
+  border-radius: 8px;
+  padding: 16px;
+  border: 1px solid #f1f5f9;
+}
+
+.review-header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 6px;
+}
+
+.reviewer-name {
+  font-weight: 700;
+  color: #334155;
+  font-size: 13px;
+}
+
+.review-rating {
+  color: #ffb400;
+  font-size: 12px;
+}
+
+.review-content {
+  color: #475569;
+  font-size: 13px;
+  line-height: 1.5;
+  margin-bottom: 6px;
+}
+
+.review-date {
+  font-size: 11px;
+  color: #94a3b8;
+}
+
+/* CỘT WIDGET ĐẶT PHÒNG BÊN PHẢI */
+.booking-widget {
+  width: 320px;
+  min-width: 320px;
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+  padding: 24px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.04);
+  position: sticky;
+  top: 20px;
+}
+
+.widget-price {
+  font-size: 22px;
+  font-weight: 700;
+  color: #d32f2f;
+  margin-bottom: 20px;
+  border-bottom: 1px solid #f1f5f9;
+  padding-bottom: 12px;
+}
+
+.widget-price span {
+  font-size: 14px;
+  color: #64748b;
+  font-weight: normal;
+}
+
+.booking-form .form-group {
+  margin-bottom: 16px;
+}
+
+.booking-form label {
+  display: block;
+  font-size: 12px;
+  font-weight: 700;
+  color: #333333;
+  margin-bottom: 6px;
+}
+
+.booking-form input, .booking-form select {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #cbd5e1;
+  border-radius: 6px;
+  font-size: 13px;
+  outline: none;
+}
+
+.btn-book-now {
+  width: 100%;
+  background: #12a6b8;
+  color: #ffffff;
+  border: none;
+  padding: 12px;
+  border-radius: 6px;
+  font-weight: 700;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background 0.2s;
+  margin-top: 10px;
+}
+
+.btn-book-now:hover {
+  background: #1f8f8f;
+}
+
+
+/* ==========================================================================
+   ÉP ĐÈ KHỐI CHỮ SANG BỘ FONT BRAND MỚI CHẤT LƯỢNG (PLAYFAIR & POPPINS)
+   ========================================================================== */
+
+/* Ép font Playfair Display cho toàn bộ các khu vực Tiêu đề lớn nhỏ */
+.filter-sidebar h2,
+.room-search-body h3,
+.rooms-page-title,
+.detail-header-info h1,
+.detail-description h3, 
+.detail-amenities h3, 
+.detail-reviews h3,
+.widget-price,
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Playfair Display', Georgia, serif !important;
+}
+
+/* Ép font Poppins mềm mại hiện đại cho toàn bộ nội dung văn bản text */
+.filter-group,
+.filter-sidebar label,
+.filter-group input,
+.filter-group select,
+.btn-apply-filter,
+.room-meta,
+.room-price,
+.room-status,
+.btn-view-detail,
+.detail-meta-row,
+.detail-description p,
+.amenities-list li,
+.review-item,
+.booking-form label,
+.booking-form input,
+.booking-form select,
+.btn-book-now,
+body, p, span, label, input, select, button {
+  font-family: 'Poppins', Arial, Helvetica, sans-serif !important;
+}
+
+
+/* --- ĐÁP ỨNG MÀN HÌNH NHỎ (RESPONSIVE) --- */
+@media (max-width: 768px) {
+  .search-page-container, .detail-layout {
+    flex-direction: column;
+  }
+  .filter-sidebar, .booking-widget {
+    width: 100%;
+    min-width: 100%;
+    position: static;
+  }
+}

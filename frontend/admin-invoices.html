@@ -1,0 +1,136 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>GoStay Admin - Quản lý hóa đơn</title>
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/bach.css">
+</head>
+<body class="admin-dashboard-body">
+
+  <aside class="admin-sidebar">
+    <div class="sidebar-brand">
+      <img src="images/sos.png" alt="GoStay Logo" class="sidebar-logo">
+    </div>
+    <nav class="sidebar-menu">
+      <a href="admin-dashboard.html" class="menu-item"><span class="icon">📊</span> Dashboard</a>
+      <a href="admin-products.html" class="menu-item"><span class="icon">🛏️</span> Quản lý phòng</a>
+      <a href="admin-categories.html" class="menu-item"><span class="icon">📁</span> Quản lý danh mục</a>
+      <a href="admin-invoices.html" class="menu-item active"><span class="icon">📄</span> Quản lý hóa đơn</a>
+      <a href="admin-users.html" class="menu-item"><span class="icon">👥</span> Khách hàng</a>
+      <hr class="sidebar-divider">
+      <a href="login.html" class="menu-item logout-item"><span class="icon">🚪</span> Đăng xuất</a>
+    </nav>
+  </aside>
+
+  <div class="admin-main-content">
+    <header class="admin-topbar">
+      <div class="topbar-left"><h1 class="topbar-title">Quản lý hóa đơn</h1></div>
+      <div class="topbar-right">
+        <div class="topbar-search"><input type="text" placeholder="Tìm kiếm hóa đơn..."></div>
+        <div class="topbar-user"><span class="user-name">Admin Khánh ▾</span></div>
+      </div>
+    </header>
+
+    <main class="admin-page-container">
+      <div class="admin-card-section">
+        <div class="section-header-row">
+          <h2>Danh sách hóa đơn</h2>
+          <button class="btn-primary-admin">+ Tạo hóa đơn</button>
+        </div>
+
+        <div class="admin-filter-bar">
+          <input type="text" placeholder="Tìm theo mã hóa đơn, tên khách hàng..." class="admin-search-input">
+          <select class="admin-select-filter">
+            <option>Tất cả trạng thái</option>
+            <option>Đã thanh toán</option>
+            <option>Chờ thanh toán</option>
+            <option>Đã hủy</option>
+          </select>
+          <button class="btn-primary-admin">Lọc</button>
+        </div>
+
+        <div class="admin-table-wrapper">
+          <table class="admin-table">
+            <thead>
+              <tr>
+                <th>Mã HĐ</th>
+                <th>Khách hàng</th>
+                <th>Phòng</th>
+                <th>Ngày tạo</th>
+                <th>Tổng tiền</th>
+                <th>Thanh toán</th>
+                <th>Thao tác</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>#HD2001</td>
+                <td><strong>Trần Minh Hoàng</strong></td>
+                <td>Deluxe Premium - Nha Trang</td>
+                <td>16/06/2026</td>
+                <td>2.400.000đ</td>
+                <td><span class="status-badge status-success">Đã thanh toán</span></td>
+                <td>
+                  <div class="action-buttons">
+                    <button class="btn-action edit">Xem</button>
+                    <button class="btn-action delete">Xóa</button>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td>#HD2002</td>
+                <td><strong>Lê Thị Mai Anh</strong></td>
+                <td>Standard Room - Phú Quốc</td>
+                <td>16/06/2026</td>
+                <td>1.200.000đ</td>
+                <td><span class="status-badge status-warning">Chờ thanh toán</span></td>
+                <td>
+                  <div class="action-buttons">
+                    <button class="btn-action edit">Xem</button>
+                    <button class="btn-action delete">Xóa</button>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td>#HD2003</td>
+                <td><strong>Nguyễn Văn An</strong></td>
+                <td>Deluxe Premium - Phú Quốc</td>
+                <td>15/06/2026</td>
+                <td>3.600.000đ</td>
+                <td><span class="status-badge status-success">Đã thanh toán</span></td>
+                <td>
+                  <div class="action-buttons">
+                    <button class="btn-action edit">Xem</button>
+                    <button class="btn-action delete">Xóa</button>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td>#HD2004</td>
+                <td><strong>Phạm Thu Hà</strong></td>
+                <td>Standard Room - Nha Trang</td>
+                <td>15/06/2026</td>
+                <td>900.000đ</td>
+                <td><span class="status-badge status-danger">Đã hủy</span></td>
+                <td>
+                  <div class="action-buttons">
+                    <button class="btn-action edit">Xem</button>
+                    <button class="btn-action delete">Xóa</button>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </main>
+
+    <footer class="admin-footer">
+      <p>© 2026 GoStay Admin Control Panel. <span style="float: right;">Version 1.2.0</span></p>
+    </footer>
+  </div>
+  <script src="js/admin-auth.js"></script>
+</body>
+</html>
