@@ -1,108 +1,100 @@
-# GoStay - Ứng dụng đặt phòng khách sạn
+# GoStay - Website đặt phòng khách sạn
 
-## 1. Giới thiệu dự án
+## 1. Giới thiệu
 
-GoStay là một website đặt phòng cho chuỗi khách sạn nhỏ mang thương hiệu GoStay, được xây dựng theo hướng MVP cho đồ án môn Công nghệ phần mềm. Trong phạm vi MVP, GoStay gồm nhiều chi nhánh và nhiều loại phòng thuộc cùng một hệ thống. Mục tiêu của GoStay là giúp khách hàng tìm chi nhánh/phòng phù hợp, xem thông tin chi tiết, đặt phòng theo ngày hoặc theo giờ và quản lý lịch sử đặt phòng một cách nhanh chóng, rõ ràng và dễ sử dụng.
+GoStay là website hỗ trợ khách hàng tìm kiếm và đặt phòng trong một chuỗi khách sạn nhỏ.
 
+Hệ thống có hai vai trò chính:
 
-## 2. Mục tiêu sản phẩm
+- Khách hàng: tìm kiếm phòng, xem chi tiết phòng, đặt phòng và xem lịch sử đặt phòng.
+- Admin: quản lý chi nhánh, phòng, giá phòng, trạng thái phòng và booking.
 
-GoStay tập trung giải quyết các vấn đề chính:
+GoStay được xây dựng theo phạm vi MVP, tập trung vào các chức năng đặt phòng cơ bản và một tính năng AI gợi ý phòng.
 
-* Người dùng mất nhiều thời gian để tìm phòng phù hợp.
-* Thông tin phòng, giá, tiện nghi và trạng thái phòng chưa rõ ràng.
-* Quy trình đặt phòng còn nhiều bước.
-* Admin / nhân viên quản lý chuỗi GoStay cần công cụ đơn giản để quản lý chi nhánh, phòng, giá và trạng thái phòng.
-* Người dùng cần gợi ý phòng phù hợp với nhu cầu cá nhân.
+## 2. Chức năng chính
 
-## 3. Đối tượng người dùng
+### Khách hàng
 
-Các nhóm người dùng chính của GoStay gồm:
+- Đăng ký, đăng nhập và đăng xuất.
+- Tìm kiếm và lọc phòng.
+- Xem danh sách phòng còn trống.
+- Xem thông tin chi tiết phòng.
+- Chọn ngày nhận phòng và trả phòng.
+- Đặt phòng.
+- Xem và hủy booking.
+- Nhận gợi ý phòng từ AI.
 
-* Khách du lịch.
-* Người đi công tác.
-* Sinh viên hoặc người cần chỗ ở ngắn hạn.
-* Admin / nhân viên quản lý chuỗi GoStay.
+### Admin
 
-## 4. Phạm vi MVP
+- Quản lý chi nhánh.
+- Quản lý phòng.
+- Cập nhật giá và trạng thái phòng.
+- Xem và quản lý booking.
+- Xem thống kê cơ bản.
 
-Các chức năng chính trong MVP:
+## 3. Tính năng AI
 
-* Đăng ký, đăng nhập.
-* Xem danh sách chi nhánh/phòng thuộc chuỗi GoStay.
-* Tìm kiếm và lọc chi nhánh/phòng theo khu vực, mức giá, loại phòng.
-* Xem chi tiết phòng.
-* Đặt phòng.
-* Xem lịch sử đặt phòng.
-* Admin thêm, sửa, xóa chi nhánh/phòng và cập nhật giá, hình ảnh, trạng thái phòng.
-* AI gợi ý phòng phù hợp theo nhu cầu người dùng.
+Tính năng AI hỗ trợ gợi ý phòng phù hợp dựa trên:
 
-Các chức năng chưa làm trong MVP:
+- Khu vực hoặc chi nhánh.
+- Ngân sách.
+- Số lượng khách.
+- Thời gian lưu trú.
+- Tiện nghi mong muốn.
 
-* Thanh toán online thật.
-* Voucher/mã giảm giá.
-* Tích điểm thành viên.
-* QR check-in.
-* Chatbot hỗ trợ.
-* Bản đồ vị trí khách sạn.
+AI chỉ gợi ý từ danh sách phòng có thật trong hệ thống và không tự tạo thông tin phòng mới.
 
-## 5. Kết quả tuần 1
+Kết quả được đánh dấu là nội dung do AI tạo. Người dùng có thể bỏ qua kết quả và tự lựa chọn phòng.
 
-Nhóm đã hoàn thành các tài liệu định hướng ban đầu:
+## 4. Tiến độ hiện tại - Tuần 8
 
-* docs/product/PRODUCT_DIRECTION.md
-* AGENT_GUIDE.md
-* AI_USAGE_POLICY.md
-* ai-logs/week-01.md
+Dự án hiện đang ở tuần 8 theo lộ trình học phần.
 
-## 6. Kết quả tuần 2
+Nhóm đã hoàn thành:
 
-Nhóm đã hoàn thành phân tích ý tưởng sản phẩm và đề xuất tính năng AI:
+- Phân tích sản phẩm và xác định phạm vi MVP.
+- Persona, Scenario, User Story và Product Backlog.
+- Thiết kế giao diện và luồng người dùng.
+- Thiết kế kiến trúc hệ thống và mô hình dữ liệu.
+- Triển khai chức năng cốt lõi của hệ thống.
+- Triển khai tính năng AI gợi ý phòng.
+- Tạo các GitHub Issues và Pull Requests cho từng chức năng.
 
-* docs/product/PRODUCT_ANALYSIS.md
-* docs/product/AI_FEATURE_PROPOSAL.md
-* ai-logs/week-02.md
+Trong tuần 8, nhóm tập trung:
 
-## 7. Kết quả tuần 3
+- Kiểm thử các luồng chức năng chính.
+- Kiểm tra đăng nhập và phân quyền.
+- Kiểm tra dữ liệu đầu vào.
+- Kiểm tra nguy cơ đặt trùng phòng.
+- Rà soát bảo mật và thông tin cấu hình.
+- Kiểm tra AI có tạo thông tin sai hoặc gây hiểu nhầm hay không.
+- Hoàn thiện tài liệu kiểm thử và an toàn AI.
 
-Nhóm đã hoàn thành tài liệu UX prototype và cập nhật yêu cầu chức năng cho GoStay:
+## 5. Công nghệ sử dụng
 
-* docs/product/UX_PROTOTYPE.md
-* docs/product/REQUIREMENTS.md
-* ai-logs/week-03.md
+- Frontend: HTML, CSS, JavaScript.
+- Database và Authentication: Supabase.
+- Quản lý mã nguồn: GitHub.
+- Thiết kế giao diện: Figma.
+- AI Agent: Codex, Cursor hoặc công cụ tương đương.
+- AI Feature: API mô hình ngôn ngữ hoặc SDK phù hợp.
 
-Trong tuần 3, nhóm tập trung vào việc mô tả prototype giao diện, luồng người dùng, mock data và cập nhật requirements cho MVP. Nhóm chưa tập trung vào backend phức tạp mà ưu tiên làm rõ phạm vi sản phẩm và trải nghiệm người dùng.
-
-## 8. Cấu trúc repository
+## 6. Cấu trúc repository
 
 ```text
 GoStay/
+├── frontend/
+│   ├── css/
+│   ├── js/
+│   ├── images/
+│   └── các trang HTML
+├── docs/
+│   ├── product/
+│   ├── architecture/
+│   └── testing/
+├── ai-logs/
 ├── README.md
 ├── AGENT_GUIDE.md
 ├── AI_USAGE_POLICY.md
 ├── PROMPTS.md
-├── .gitignore
-├── ai-logs/
-├── docs/
-│   ├── product/
-│   └── weekly/
-```
-
-* `docs/product/` chứa tài liệu sản phẩm như định hướng, phân tích, requirements, UX prototype và đề xuất tính năng AI.
-* `docs/weekly/` chứa các bài nộp theo tuần cho môn Công nghệ phần mềm.
-* `ai-logs/` chứa nhật ký sử dụng AI theo tuần.
-
-## 9. Công cụ sử dụng
-
-Nhóm sử dụng các công cụ hỗ trợ trong quá trình làm đồ án:
-
-* GitHub để quản lý source code và tài liệu.
-* Cursor/AI Agent để hỗ trợ tạo tài liệu, phân tích yêu cầu và đề xuất prototype.
-* Figma để thiết kế wireframe/prototype.
-* Markdown để viết tài liệu dự án.
-
-## 10. Ghi chú
-
-Dự án hiện đang ở giai đoạn tuần 3: thiết kế UX prototype, mô tả luồng người dùng, cập nhật requirements và user stories cho MVP.
-
-Nhóm sử dụng AI như một công cụ hỗ trợ, nhưng vẫn kiểm tra, chỉnh sửa và chịu trách nhiệm với nội dung cuối cùng.
+└── .gitignore
