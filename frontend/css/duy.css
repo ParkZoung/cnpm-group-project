@@ -1,0 +1,536 @@
+/* ==========================================================================
+   STYLE SẢN PHẨM HOÀN THIỆN - HỆ THỐNG ĐẶT PHÒNG GOSTAY
+   ========================================================================== */
+
+/* Trạng thái Menu đang được chọn */
+.active-nav {
+  color: #12a6b8 !important;
+  border-bottom: 2px solid #12a6b8;
+  padding-bottom: 4px;
+}
+
+/* Khối header tiêu đề trang con */
+.page-main-wrap {
+  padding-top: 10px;
+  padding-bottom: 300px;
+}
+.page-header-block {
+  margin: 34px 0 24px 0;
+}
+.page-main-title {
+  font-family: Georgia, serif;
+  color: var(--navy);
+  font-size: 28px;
+  font-weight: 700;
+  margin-bottom: 6px;
+}
+.page-main-desc {
+  color: var(--muted);
+  font-size: 14px;
+}
+
+/* Kiến trúc Layout chia 2 Cột phẳng */
+.cart-split-layout {
+  display: flex;
+  gap: 30px;
+  align-items: flex-start;
+}
+.cart-left-block {
+  flex: 2;
+}
+.cart-right-sidebar {
+  flex: 1;
+  position: sticky;
+  top: 30px;
+}
+
+/* Thẻ phòng sang trọng nằm trong Giỏ hàng */
+.cart-bundle-item {
+  display: flex;
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 20px;
+  margin-bottom: 18px;
+  align-items: center;
+  gap: 22px;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.01), 0 2px 4px -1px rgba(0, 0, 0, 0.01);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.cart-bundle-item:hover {
+  box-shadow: 0 10px 15px -3px rgba(16, 42, 67, 0.04);
+}
+.cart-item-img-container {
+  width: 150px;
+  height: 100px;
+  flex-shrink: 0;
+}
+.cart-item-img-container img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 8px;
+}
+.cart-item-info-container {
+  flex: 1;
+}
+.cart-item-info-container h3 {
+  color: var(--navy);
+  font-size: 19px;
+  margin-bottom: 4px;
+  font-family: Arial, sans-serif;
+}
+.cart-item-sub {
+  font-size: 13px;
+  color: var(--muted);
+  margin-bottom: 12px;
+}
+.cart-date-meta {
+  display: flex;
+  gap: 16px;
+  font-size: 13px;
+  color: #4a5568;
+  flex-wrap: wrap;
+}
+.nights-count {
+  background: #e6f6f6;
+  padding: 1px 8px;
+  border-radius: 4px;
+  font-weight: 700;
+  color: #1f8f8f;
+}
+
+/* Khu vực hiển thị giá tiền của phòng */
+.cart-item-price-container {
+  text-align: right;
+  min-width: 170px;
+}
+.cart-item-price {
+  font-size: 19px;
+  font-weight: 700;
+  color: var(--navy);
+  margin-bottom: 8px;
+}
+.cart-item-price small {
+  font-size: 12px;
+  color: var(--muted);
+  font-weight: 400;
+}
+.btn-remove-cart {
+  background: none;
+  border: none;
+  color: #e53e3e;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 700;
+  padding: 4px 0;
+}
+.btn-remove-cart:hover {
+  text-decoration: underline;
+}
+.cart-left-footer {
+  margin-top: 22px;
+}
+.btn-back-to-rooms {
+  color: #12a6b8;
+  text-decoration: none;
+  font-weight: 700;
+  font-size: 14px;
+}
+.btn-back-to-rooms:hover {
+  text-decoration: underline;
+}
+
+/* Widget Tóm tắt hóa đơn thanh toán bên phải */
+.billing-summary-card {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 24px;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.01);
+}
+.billing-summary-card h3 {
+  font-size: 18px;
+  color: var(--navy);
+  margin-bottom: 16px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid #edf2f7;
+  font-family: Georgia, serif;
+}
+.mini-rooms-summary {
+  font-size: 13px;
+  color: #4a5568;
+  line-height: 1.7;
+  margin-bottom: 16px;
+}
+.mini-room-line {
+  margin-bottom: 4px;
+}
+.billing-row {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 12px;
+  font-size: 14px;
+  color: #4a5568;
+}
+.billing-divider {
+  height: 1px;
+  background: #edf2f7;
+  margin: 16px 0;
+}
+.total-row {
+  font-weight: 700;
+  color: #111111;
+  font-size: 16px;
+}
+.billing-final-price {
+  color: #e53e3e;
+  font-size: 22px;
+  font-weight: 700;
+}
+.btn-checkout-action {
+  display: block;
+  text-align: center;
+  background: #12a6b8;
+  color: #ffffff;
+  padding: 14px;
+  border-radius: 8px;
+  font-weight: 700;
+  font-size: 16px;
+  text-decoration: none;
+  margin-top: 20px;
+  transition: background 0.2s ease;
+}
+.btn-checkout-action:hover {
+  background: #108e9e;
+}
+
+/* Nút Submit riêng cho form trang booking */
+.btn-checkout-action-submit {
+  display: block;
+  width: 100%;
+  border: none;
+  text-align: center;
+  background: #12a6b8;
+  color: #ffffff;
+  padding: 14px;
+  border-radius: 8px;
+  font-weight: 700;
+  font-size: 16px;
+  cursor: pointer;
+  margin-top: 20px;
+  transition: background 0.2s ease;
+}
+.btn-checkout-action-submit:hover {
+  background: #108e9e;
+}
+
+/* Khối panel form nhập liệu (booking.html) */
+.checkout-form-panel {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 26px;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.01);
+}
+.checkout-form-panel h3 {
+  font-size: 18px;
+  color: var(--navy);
+  margin-bottom: 22px;
+  font-family: Georgia, serif;
+}
+.checkout-grid-fields {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 18px;
+}
+.checkout-field.span-2 {
+  grid-column: span 2;
+}
+.checkout-field label {
+  display: block;
+  font-size: 13px;
+  font-weight: 700;
+  margin-bottom: 6px;
+  color: #2d3748;
+}
+.checkout-field input,
+.checkout-field textarea {
+  width: 100%;
+  padding: 12px 14px;
+  border: 1px solid #cbd5e0;
+  border-radius: 8px;
+  font-family: inherit;
+  font-size: 14px;
+  color: #111111;
+  background: #ffffff;
+  transition: border-color 0.15s ease;
+}
+.checkout-field input:focus,
+.checkout-field textarea:focus {
+  outline: none;
+  border-color: #12a6b8;
+}
+
+/* Các phương thức thanh toán dạng danh sách thẻ */
+.payment-group-list {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+.payment-row-card {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  border: 1px solid #edf2f7;
+  padding: 18px;
+  border-radius: 8px;
+  cursor: pointer;
+  background: #fafbfe;
+  transition: border-color 0.2s;
+}
+.payment-row-card:hover {
+  border-color: #cbd5e0;
+}
+.payment-row-card input[type="radio"] {
+  margin-top: 4px;
+  accent-color: #12a6b8;
+}
+.payment-card-content strong {
+  display: block;
+  font-size: 14px;
+  color: #2d3748;
+  margin-bottom: 4px;
+}
+.payment-card-content p {
+  font-size: 12px;
+  color: var(--muted);
+  line-height: 1.5;
+}
+
+/* Giao diện trang đặt phòng thành công */
+.success-screen-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 58vh;
+  padding: 40px 20px;
+}
+.success-card-panel {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 16px;
+  padding: 45px 40px;
+  text-align: center;
+  max-width: 700px;
+  width: 100%;
+  box-shadow: 0 10px 25px -5px rgba(16, 42, 67, 0.05);
+}
+.success-check-icon {
+  width: 64px;
+  height: 64px;
+  background: #38a169;
+  color: #ffffff;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 32px;
+  margin: 0 auto 24px auto;
+}
+.success-card-panel h2 {
+  color: var(--navy);
+  margin-bottom: 10px;
+  font-family: Georgia, serif;
+}
+.success-subtitle {
+  font-size: 15px;
+  color: #4a5568;
+}
+.booking-id-highlight {
+  background: #e6f6f6;
+  border: 1px dashed #2bb3b3;
+  color: var(--navy);
+  padding: 14px;
+  border-radius: 8px;
+  font-weight: 700;
+  margin: 24px 0;
+  font-size: 15px;
+}
+.booking-id-highlight span {
+  color: #1f8f8f;
+  font-size: 19px;
+}
+.success-alert-info {
+  font-size: 13px;
+  color: var(--muted);
+  line-height: 1.6;
+  margin-bottom: 34px;
+}
+.success-actions-row {
+  display: flex;
+  justify-content: center;
+  gap: 14px;
+}
+.btn-history-redirect {
+  border: 1px solid #0b3558;
+  color: #0b3558;
+  background: #ffffff;
+}
+.btn-history-redirect:hover {
+  background: #f7fafc;
+}
+.btn-home-redirect {
+  background: #12a6b8;
+  color: #ffffff;
+}
+.btn-home-redirect:hover {
+  background: #108e9e;
+}
+
+/* Khung bảng hiển thị Lịch sử đặt phòng */
+.history-table-container {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  overflow-x: auto;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.01);
+}
+.history-grid-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+  font-size: 14px;
+}
+.history-grid-table th {
+  background: #f8fafc;
+  color: var(--navy);
+  padding: 18px 16px;
+  font-weight: 700;
+  border-bottom: 2px solid #e2e8f0;
+}
+.history-grid-table td {
+  padding: 18px 16px;
+  border-bottom: 1px solid #edf2f7;
+  vertical-align: middle;
+}
+.history-grid-table tr:last-child td {
+  border-bottom: none;
+}
+.col-code {
+  font-weight: 700;
+  color: #12a6b8;
+}
+.table-room-name {
+  font-weight: 700;
+  color: #2d3748;
+}
+.table-branch-name {
+  font-size: 12px;
+  color: var(--muted);
+  margin-top: 4px;
+}
+.table-price {
+  font-weight: 700;
+  color: #111111;
+}
+
+/* Các nhãn Trạng thái Đơn hàng (Badges) */
+.status-pill {
+  display: inline-block;
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 700;
+  text-align: center;
+}
+.status-pill.waiting {
+  background: #feebc8;
+  color: #c05621;
+}
+.status-pill.completed {
+  background: #c6f6d5;
+  color: #22543d;
+}
+.status-pill.cancelled {
+  background: #fed7d7;
+  color: #9b2c2c;
+}
+
+/* ==========================================================================
+   XỬ LÝ RESPONSIVE (MÀN HÌNH DI ĐỘNG & TABLET)
+   ========================================================================== */
+@media (max-width: 900px) {
+  .cart-split-layout {
+    flex-direction: column;
+  }
+  .cart-right-sidebar {
+    width: 100%;
+    position: static;
+  }
+  .cart-bundle-item {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+  }
+  .cart-item-img-container {
+    width: 100%;
+    height: 160px;
+  }
+  .cart-item-price-container {
+    text-align: left;
+    width: 100%;
+    border-top: 1px dashed #e2e8f0;
+    padding-top: 14px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .checkout-grid-fields {
+    grid-template-columns: 1fr;
+  }
+  .checkout-field.span-2 {
+    grid-column: span 1;
+  }
+  .success-actions-row {
+    flex-direction: column;
+    gap: 10px;
+  }
+  .success-actions-row .btn {
+    display: block;
+    width: 100%;
+    text-align: center;
+  }
+}
+/* ==========================================================================
+   SỬA LỖI TRANG BOOKING SUCCESS ĐÈ LÊN FOOTER
+   ========================================================================== */
+
+/* Ép thẻ main của trang success quay về hiển thị khối chuẩn và tạo khoảng cách */
+main.success-screen-container {
+  display: block !important;
+  position: relative !important;
+  width: 100% !important;
+  min-height: auto !important;
+  /* Tạo khoảng đệm cực lớn phía dưới nội dung để đẩy footer xuống */
+  padding-top: 40px !important;
+  padding-bottom: 250px !important; 
+}
+
+/* Định dạng lại khối bo góc màu trắng không cho phép nó thả trôi tự do */
+main.success-screen-container .success-card-panel {
+  position: relative !important;
+  top: unset !important;
+  left: unset !important;
+  transform: unset !important;
+  /* Căn giữa khối màu trắng ra giữa màn hình */
+  margin: 0 auto 40px auto !important; 
+  box-shadow: 0 10px 30px rgba(11, 53, 88, 0.05) !important;
+}
+
+/* Đảm bảo thanh footer tự động nhận diện và đứng xếp hàng phía sau */
+.site-footer {
+  clear: both !important;
+  position: relative !important;
+  display: block !important;
+}

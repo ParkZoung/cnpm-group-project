@@ -1,0 +1,140 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>GoStay Admin - Quản lý phòng</title>
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/bach.css">
+</head>
+<body class="admin-dashboard-body">
+
+  <aside class="admin-sidebar">
+    <div class="sidebar-brand">
+      <img src="images/sos.png" alt="GoStay Logo" class="sidebar-logo">
+    </div>
+    <nav class="sidebar-menu">
+      <a href="admin-dashboard.html" class="menu-item"><span class="icon">📊</span> Dashboard</a>
+      <a href="admin-products.html" class="menu-item active"><span class="icon">🛏️</span> Quản lý phòng</a>
+      <a href="admin-categories.html" class="menu-item"><span class="icon">📁</span> Quản lý danh mục</a>
+      <a href="admin-invoices.html" class="menu-item"><span class="icon">📄</span> Quản lý hóa đơn</a>
+      <a href="admin-users.html" class="menu-item"><span class="icon">👥</span> Khách hàng</a>
+      <hr class="sidebar-divider">
+      <a href="login.html" class="menu-item logout-item"><span class="icon">🚪</span> Đăng xuất</a>
+    </nav>
+  </aside>
+
+  <div class="admin-main-content">
+    <header class="admin-topbar">
+      <div class="topbar-left"><h1 class="topbar-title">Quản lý phòng</h1></div>
+      <div class="topbar-right">
+        <div class="topbar-search"><input type="text" placeholder="Tìm kiếm phòng..."></div>
+        <div class="topbar-user"><span class="user-name">Admin Khánh ▾</span></div>
+      </div>
+    </header>
+
+    <main class="admin-page-container">
+      <div class="admin-card-section">
+        <div class="section-header-row">
+          <h2>Danh sách phòng</h2>
+          <button class="btn-primary-admin">+ Thêm phòng</button>
+        </div>
+
+        <div class="admin-filter-bar">
+          <input type="text" placeholder="Tìm theo mã, tên phòng..." class="admin-search-input">
+          <select class="admin-select-filter">
+            <option>Tất cả chi nhánh</option>
+            <option>GoStay Nha Trang</option>
+            <option>GoStay Phú Quốc</option>
+          </select>
+          <select class="admin-select-filter">
+            <option>Tất cả trạng thái</option>
+            <option>Còn trống</option>
+            <option>Hết phòng</option>
+          </select>
+          <button class="btn-primary-admin">Lọc</button>
+        </div>
+
+        <div class="admin-table-wrapper">
+          <table class="admin-table">
+            <thead>
+              <tr>
+                <th>Mã phòng</th>
+                <th>Tên phòng</th>
+                <th>Hạng phòng</th>
+                <th>Chi nhánh</th>
+                <th>Giá / đêm</th>
+                <th>Trạng thái</th>
+                <th>Thao tác</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>P101</td>
+                <td><strong>Deluxe Sea View 101</strong></td>
+                <td>Deluxe Premium</td>
+                <td>GoStay Nha Trang</td>
+                <td>1.800.000đ</td>
+                <td><span class="status-badge status-success">Còn trống</span></td>
+                <td>
+                  <div class="action-buttons">
+                    <button class="btn-action edit">Sửa</button>
+                    <button class="btn-action delete">Xóa</button>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td>P102</td>
+                <td><strong>Standard Garden 102</strong></td>
+                <td>Standard Room</td>
+                <td>GoStay Nha Trang</td>
+                <td>900.000đ</td>
+                <td><span class="status-badge status-danger">Hết phòng</span></td>
+                <td>
+                  <div class="action-buttons">
+                    <button class="btn-action edit">Sửa</button>
+                    <button class="btn-action delete">Xóa</button>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td>P201</td>
+                <td><strong>Deluxe Ocean 201</strong></td>
+                <td>Deluxe Premium</td>
+                <td>GoStay Phú Quốc</td>
+                <td>2.200.000đ</td>
+                <td><span class="status-badge status-success">Còn trống</span></td>
+                <td>
+                  <div class="action-buttons">
+                    <button class="btn-action edit">Sửa</button>
+                    <button class="btn-action delete">Xóa</button>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td>P202</td>
+                <td><strong>Standard Twin 202</strong></td>
+                <td>Standard Room</td>
+                <td>GoStay Phú Quốc</td>
+                <td>1.100.000đ</td>
+                <td><span class="status-badge status-warning">Đang dọn</span></td>
+                <td>
+                  <div class="action-buttons">
+                    <button class="btn-action edit">Sửa</button>
+                    <button class="btn-action delete">Xóa</button>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </main>
+
+    <footer class="admin-footer">
+      <p>© 2026 GoStay Admin Control Panel. <span style="float: right;">Version 1.2.0</span></p>
+    </footer>
+  </div>
+  <script src="js/admin-auth.js"></script>
+</body>
+</html>

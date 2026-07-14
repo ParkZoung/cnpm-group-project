@@ -1,0 +1,129 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>GoStay Admin - Danh mục</title>
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/duong.css">
+</head>
+<body class="admin-dashboard-body">
+
+  <aside class="admin-sidebar">
+    <div class="sidebar-brand">
+      <img src="images/sos.png" alt="GoStay Logo" class="sidebar-logo">
+    </div>
+    <nav class="sidebar-menu">
+      <a href="admin-dashboard.html" class="menu-item"><span class="icon">📊</span> Dashboard</a>
+      <a href="admin-products.html" class="menu-item"><span class="icon">🛏️</span> Quản lý phòng</a>
+      <a href="admin-categories.html" class="menu-item active"><span class="icon">📁</span> Quản lý danh mục</a>
+      <a href="admin-invoices.html" class="menu-item"><span class="icon">📄</span> Quản lý hóa đơn</a>
+      <a href="admin-users.html" class="menu-item"><span class="icon">👥</span> Khách hàng</a>
+      <hr class="sidebar-divider">
+      <a href="login.html" class="menu-item logout-item"><span class="icon">🚪</span> Đăng xuất</a>
+    </nav>
+  </aside>
+
+  <div class="admin-main-content">
+    <header class="admin-topbar">
+      <div class="topbar-left"><h1 class="topbar-title">Quản lý danh mục hệ thống</h1></div>
+      <div class="topbar-right">
+        <div class="topbar-search"><input type="text" placeholder="Tìm kiếm danh mục..."></div>
+        <div class="topbar-user"><span class="user-name">Admin Khánh ▾</span></div>
+      </div>
+    </header>
+
+    <main class="admin-page-container admin-two-columns-layout">
+      
+      <section class="admin-card-section">
+        <div class="section-header-row">
+          <h2>Hạng Phòng Nghỉ</h2>
+          <button class="btn-primary-admin" style="padding: 6px 14px; font-size:12px;">+ Thêm hạng phòng</button>
+        </div>
+        <div class="admin-table-wrapper">
+          <table class="admin-table">
+            <thead>
+              <tr>
+                <th>Mã</th>
+                <th>Tên loại phòng</th>
+                <th>Thao tác</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>CAT01</td>
+                <td><strong>Phòng Deluxe Premium</strong></td>
+                <td>
+                  <div class="action-buttons">
+                    <button class="btn-action edit">Sửa</button>
+                    <button class="btn-action delete">Xóa</button>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td>CAT02</td>
+                <td><strong>Phòng Standard Room</strong></td>
+                <td>
+                  <div class="action-buttons">
+                    <button class="btn-action edit">Sửa</button>
+                    <button class="btn-action delete">Xóa</button>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="admin-card-section">
+        <div class="section-header-row">
+          <h2>Chi Nhánh Khách Sạn</h2>
+          <button class="btn-primary-admin" style="padding: 6px 14px; font-size:12px;">+ Thêm chi nhánh</button>
+        </div>
+        <div class="admin-table-wrapper">
+          <table class="admin-table">
+            <thead>
+              <tr>
+                <th>Mã</th>
+                <th>Tên chi nhánh</th>
+                <th>Địa điểm</th>
+                <th>Thao tác</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>CN01</td>
+                <td><strong>GoStay Nha Trang</strong></td>
+                <td>Khánh Hòa</td>
+                <td>
+                  <div class="action-buttons">
+                    <button class="btn-action edit">Sửa</button>
+                    <button class="btn-action delete">Xóa</button>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td>CN02</td>
+                <td><strong>GoStay Phú Quốc</strong></td>
+                <td>Kiên Giang</td>
+                <td>
+                  <div class="action-buttons">
+                    <button class="btn-action edit">Sửa</button>
+                    <button class="btn-action delete">Xóa</button>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+    </main>
+
+    <footer class="admin-footer">
+      <p>© 2026 GoStay Admin Control Panel. <span style="float: right;">Version 1.2.0</span></p>
+    </footer>
+  </div>
+  <script src="js/admin-auth.js"></script>
+</body>
+</html>

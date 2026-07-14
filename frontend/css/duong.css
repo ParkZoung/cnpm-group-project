@@ -1,0 +1,513 @@
+/* ==========================================================================
+   HỆ THỐNG CSS AUTHENTICATION & ADMIN DASHBOARD - BẢN FULL CODE HOÀN THIỆN
+   ========================================================================== */
+
+/* --- 1. KHUNG DIỆN MẠO AUTH (ĐĂNG NHẬP / ĐĂNG KÝ / QUÊN MẬT KHẨU) --- */
+.auth-page-container {
+  min-height: calc(100vh - 220px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 40px 20px;
+  background: radial-gradient(circle at top right, #eef9f9 0%, #f6fbff 100%);
+}
+
+.auth-card {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  box-shadow: 0 10px 25px rgba(6, 36, 61, 0.05);
+  width: 100%;
+  max-width: 460px;
+  padding: 35px 30px;
+}
+
+.auth-card h2 {
+  font-family: Georgia, serif;
+  color: #0b3558;
+  font-size: 26px;
+  text-align: center;
+  margin-bottom: 8px;
+}
+
+.auth-subtitle {
+  text-align: center;
+  color: #7a8a8f;
+  font-size: 13px;
+  margin-bottom: 25px;
+  line-height: 1.4;
+}
+
+.auth-form .form-group {
+  margin-bottom: 18px;
+}
+
+.auth-form label {
+  display: block;
+  font-size: 13px;
+  font-weight: 700;
+  color: #0b3558;
+  margin-bottom: 6px;
+}
+
+.auth-form input[type="text"],
+.auth-form input[type="email"],
+.auth-form input[type="tel"],
+.auth-form input[type="password"] {
+  width: 100%;
+  padding: 12px 14px;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  font-size: 14px;
+  color: #334155;
+  outline: none;
+  box-sizing: border-box;
+  transition: border-color 0.2s;
+}
+
+.auth-form input:focus {
+  border-color: #12a6b8;
+}
+
+/* NÚT SUBMIT LỚN (ĐĂNG NHẬP / ĐĂNG KÝ / ĐỔI MẬT KHẨU) */
+.btn-auth-submit {
+  width: 100%;
+  background: #12a6b8;
+  color: #ffffff;
+  border: none;
+  padding: 12px;
+  border-radius: 8px;
+  font-weight: 700;
+  font-size: 15px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.btn-auth-submit:hover {
+  background: #0f8e9e;
+}
+
+.auth-footer-text {
+  text-align: center;
+  font-size: 13px;
+  color: #7a8a8f;
+  margin-top: 20px;
+  border-top: 1px solid #f1f5f9;
+  padding-top: 15px;
+}
+
+
+/* --- 2. BIẾN CÁC CHỮ TÍM GẠCH CHÂN THÀNH NÚT KHUNG NHỎ XINH --- */
+.form-actions-row {
+  display: flex !important;
+  justify-content: space-between !important;
+  align-items: center !important;
+  margin-bottom: 22px !important;
+}
+
+.remember-me {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  font-weight: normal;
+  color: #556b73;
+  font-size: 13px;
+}
+
+/* Nhắm mục tiêu chính xác vào link Quên Mật Khẩu và các link Quay Lại trong thẻ Auth */
+.auth-form a.forgot-pass,
+.form-actions-row a,
+.auth-card a,
+.resend-text a,
+.auth-footer-text a {
+  display: inline-block !important;
+  padding: 6px 14px !important;       /* Tạo độ rộng khung nhỏ nhắn vừa vặn */
+  font-size: 13px !important;          /* Chữ nhỏ gọn, thanh thoát */
+  font-weight: 700 !important;
+  text-decoration: none !important;    /* BIẾN MẤT HOÀN TOÀN DẤU GẠCH CHÂN TÍM CŨ */
+  border-radius: 6px !important;       /* Bo góc mềm mại ăn rơ với nút lớn */
+  
+  /* Trạng thái mặc định: Nền trắng, khung viền mảnh màu xanh Teal, chữ xanh Teal */
+  background-color: #ffffff !important;
+  color: #12a6b8 !important;
+  border: 1px solid #12a6b8 !important;
+  
+  transition: all 0.2s ease-in-out !important;
+  cursor: pointer !important;
+}
+
+/* Hiệu ứng mượt mà khi di chuột (Hover) vào các nút nhỏ */
+.auth-form a.forgot-pass:hover,
+.form-actions-row a:hover,
+.auth-card a:hover,
+.resend-text a:hover,
+.auth-footer-text a:hover {
+  /* Khi rê chuột: Nút đổ đầy màu nền xanh Teal, chữ chuyển sang trắng như nút Đăng nhập */
+  background-color: #12a6b8 !important;
+  color: #ffffff !important;
+  border-color: #12a6b8 !important;
+  box-shadow: 0 2px 8px rgba(18, 166, 184, 0.15) !important;
+}
+
+
+/* --- 3. PHẦN GIAO DIỆN BOX NHẬP MÃ XÁC THỰC OTP --- */
+.otp-input-group {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  margin: 20px 0;
+}
+
+.otp-box {
+  width: 55px !important;
+  height: 55px !important;
+  text-align: center;
+  font-size: 24px !important;
+  font-weight: 700;
+  color: #0b3558;
+  border: 2px solid #cbd5e1 !important;
+  border-radius: 10px !important;
+  background-color: #f8fafc;
+  outline: none;
+  transition: all 0.2s ease;
+}
+
+.otp-box:focus {
+  border-color: #12a6b8 !important;
+  background-color: #ffffff;
+  box-shadow: 0 0 0 4px rgba(18, 166, 184, 0.1);
+}
+
+.countdown-text {
+  text-align: center;
+  font-size: 13px;
+  color: #64748b;
+  margin-top: 10px;
+}
+
+#timer {
+  color: #ef4444;
+  font-weight: 700;
+}
+
+.resend-text {
+  text-align: center;
+  font-size: 13px;
+  color: #64748b;
+  margin-top: 15px;
+}
+
+.site-header a.logo {
+  min-width: 160px !important;
+}
+
+.site-header a.logo img {
+  height: 70px !important;
+  width: auto !important;
+  max-width: none !important;
+}
+
+/* Ép thanh Header trang chủ luôn xếp ngay ngắn trên cùng một hàng ngang */
+.site-header .header-inner {
+  display: flex !important;
+  flex-direction: row !important;
+  flex-wrap: nowrap !important;   /* Tuyệt đối cấm rớt hàng xuống đáy */
+  justify-content: space-between !important;
+  align-items: center !important;
+}
+
+
+/* --- 5. HỆ THỐNG GIAO DIỆN QUẢN TRỊ ADMIN (MÀU CHUẨN THỰC TẾ) --- */
+.admin-dashboard-body {
+  margin: 0 !important;
+  padding: 0 !important;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif !important;
+  background-color: #f6fbff !important;
+  display: block !important;
+  min-height: 100vh;
+  box-sizing: border-box;
+}
+
+.admin-sidebar {
+  position: fixed !important;
+  top: 0 !important;
+  left: 0 !important;
+  bottom: 0 !important;
+  width: 260px !important;
+  background-color: #0b3558 !important;
+  z-index: 999 !important;
+  display: flex !important;
+  flex-direction: column !important;
+  padding: 0 !important;
+  box-sizing: border-box;
+}
+
+.admin-sidebar .sidebar-brand {
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+
+  width: 100% !important;
+  height: 90px !important;
+
+  padding: 0 !important;
+  margin-bottom: 10px !important;
+
+  border-bottom: 1px solid rgba(255,255,255,0.1) !important;
+  box-sizing: border-box;
+}
+
+.admin-sidebar .sidebar-brand img {
+  display: block !important;
+  max-width: 130px !important;
+  width: auto !important;
+  height: auto !important;
+  margin: 0 auto !important;
+}
+
+.sidebar-menu {
+  flex-grow: 1;
+  padding: 10px 16px 0 16px;
+}
+
+/* MENU TRÊN SIDEBAR */
+.sidebar-menu {
+  flex-grow: 1;
+  padding: 0 16px;
+}
+
+.sidebar-menu .menu-item {
+  display: flex;
+  align-items: center;
+  padding: 12px 16px;
+  color: rgba(255, 255, 255, 0.7);
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 500;
+  border-radius: 8px;
+  margin-bottom: 4px;
+  transition: all 0.2s ease;
+}
+
+.sidebar-menu .menu-item .icon {
+  margin-right: 14px;
+  font-size: 16px;
+  width: 20px;
+  text-align: center;
+}
+
+.sidebar-menu .menu-item:hover {
+  color: #ffffff;
+  background-color: rgba(255, 255, 255, 0.08);
+}
+
+/* MỤC MENU ACTIVE - ĐỔI SANG TEAL SÁNG (#12a6b8) TRÊN NỀN NAVY */
+.sidebar-menu .menu-item.active {
+  color: #ffffff !important;
+  background-color: #12a6b8 !important;
+  font-weight: 600;
+  box-shadow: 0 4px 12px rgba(18, 166, 184, 0.2);
+}
+
+.sidebar-divider {
+  border: 0;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  margin: 20px 8px;
+}
+
+.logout-item:hover {
+  background-color: rgba(239, 68, 68, 0.2) !important;
+  color: #ffffff !important;
+}
+
+/* KHỐI NỘI DUNG CHÍNH BÊN PHẢI */
+.admin-main-content {
+  margin-left: 260px !important;
+  padding: 0 !important;
+  display: flex !important;
+  flex-direction: column !important;
+  min-height: 100vh;
+  box-sizing: border-box;
+}
+
+/* THANH TOPBAR TRÊN CÙNG - MÀU NỀN TRẮNG TINH TẾ (#ffffff) */
+.admin-topbar {
+  background-color: #ffffff !important;
+  height: 75px !important;
+  padding: 0 40px !important;
+  display: flex !important;
+  justify-content: space-between !important;
+  align-items: center !important;
+  width: 100% !important;
+  box-sizing: border-box;
+  border-bottom: 1px solid #e2e8f0 !important;
+}
+
+.topbar-title {
+  font-size: 22px;
+  color: #0b3558;
+  font-weight: 700;
+  margin: 0;
+}
+
+.topbar-right {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+
+.topbar-search input {
+  padding: 10px 18px;
+  background-color: #f1f5f9;
+  border: 1px solid transparent;
+  border-radius: 10px;
+  width: 240px;
+  font-size: 13px;
+  color: #334155;
+  outline: none;
+  transition: all 0.2s;
+}
+
+.topbar-search input:focus {
+  border-color: #12a6b8;
+  background-color: #ffffff;
+  box-shadow: 0 0 0 3px rgba(18, 166, 184, 0.1);
+}
+
+.topbar-user {
+  font-size: 14px;
+  font-weight: 600;
+  color: #0b3558;
+}
+
+/* KHU VỰC THAO TÁC BẢNG DỮ LIỆU TRONG TRANG */
+.admin-page-container {
+  padding: 40px !important;
+  box-sizing: border-box;
+  flex-grow: 1;
+}
+
+.admin-card-section {
+  background-color: #ffffff !important;
+  border-radius: 16px !important;
+  padding: 30px !important;
+  border: 1px solid #e2e8f0 !important;
+  box-shadow: 0 4px 14px rgba(11, 53, 88, 0.02) !important;
+}
+
+.section-header-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 25px;
+}
+
+.section-header-row h2 {
+  font-size: 18px;
+  color: #0b3558;
+  margin: 0;
+  font-weight: 700;
+}
+
+.btn-primary-admin {
+  background-color: #12a6b8;
+  color: #ffffff;
+  border: none;
+  padding: 10px 20px;
+  font-size: 13px;
+  font-weight: 600;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.btn-primary-admin:hover {
+  background-color: #0f8e9e;
+}
+
+.admin-filter-bar {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 25px;
+  align-items: center;
+}
+
+.admin-search-input {
+  flex-grow: 1;
+  padding: 11px 16px;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  font-size: 13px;
+  outline: none;
+}
+
+.admin-select-filter {
+  padding: 11px 16px;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  background: #ffffff;
+  font-size: 13px;
+  color: #475569;
+}
+
+/* PHẦN ĐỊNH DẠNG BẢNG ADMIN KHANH */
+.admin-table-wrapper {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.admin-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+  font-size: 14px;
+}
+
+.admin-table th {
+  background-color: #f8fafc;
+  color: #64748b;
+  font-weight: 600;
+  text-transform: uppercase;
+  font-size: 11px;
+  letter-spacing: 0.05em;
+  padding: 16px 20px;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.admin-table td {
+  padding: 16px 20px;
+  border-bottom: 1px solid #f1f5f9;
+  color: #334155;
+}
+
+.admin-table tr:hover td {
+  background-color: #f8fafc;
+}
+
+.badge { display: inline-block; padding: 4px 8px; border-radius: 6px; font-size: 11px; font-weight: 700; }
+.badge-admin { background-color: #fef2f2; color: #ef4444; }
+.badge-user { background-color: #f0fdf4; color: #15803d; }
+
+.status-badge { display: inline-block; padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: 600; }
+.status-badge.status-success { background-color: #dcfce7; color: #16a34a; }
+.status-badge.status-danger { background-color: #fee2e2; color: #dc2626; }
+
+.action-buttons { display: flex; gap: 8px; }
+.btn-action { border: 1px solid #e2e8f0; padding: 6px 12px; border-radius: 6px; font-size: 12px; font-weight: 600; cursor: pointer; background-color: #ffffff; color: #475569; transition: all 0.2s; }
+
+.admin-two-columns-layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 30px;
+}
+
+.admin-footer {
+  background-color: #ffffff;
+  padding: 20px 40px;
+  border-top: 1px solid #f1f5f9;
+  font-size: 13px;
+  color: #94a3b8;
+}
+.admin-footer p { margin: 0; }

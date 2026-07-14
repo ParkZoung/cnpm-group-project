@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>GoStay - Đặt phòng thành công</title>
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/duy.css">
+</head>
+<body>
+  <header class="site-header">
+    <div class="container header-inner">
+      <a href="index.html" class="logo">
+        <img src="images/logo-gostay.png" alt="GoStay Logo">
+      </a>
+
+      <nav class="main-nav">
+        <a href="index.html">Trang chủ</a>
+        <a href="search.html">Tìm kiếm phòng</a>
+        <a href="cart.html">Đặt phòng</a>
+        <a href="booking-history.html">Lịch sử đặt phòng</a>
+      </nav>
+
+      <div class="auth">
+        <a class="btn btn-outline" href="login.html">Đăng nhập</a>
+        <a class="btn btn-primary" href="register.html">Đăng ký</a>
+      </div>
+    </div>
+  </header>
+
+  <main class="success-screen-container">
+    <div class="success-card-panel">
+      <div class="success-check-icon">✓</div>
+      <h2>Đặt phòng thành công!</h2>
+      <p class="success-subtitle">Hệ thống GoStay đã ghi nhận đơn đặt phòng của bạn thành công.</p>
+      
+      <div class="booking-id-highlight">
+        Mã số đặt phòng của bạn: <span id="success-booking-code">Đang tải...</span>
+      </div>
+
+      <div class="success-alert-info" id="success-booking-details">
+        Đang tải thông tin đặt phòng...
+      </div>
+
+      <div class="success-actions-row">
+        <a href="booking-history.html" class="btn btn-history-redirect">Xem lịch sử đặt phòng</a>
+        <a href="index.html" class="btn btn-home-redirect">Trở lại trang chủ</a>
+      </div>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-grid">
+      <div class="footer-col">
+        <a href="index.html" class="logo-footer-link">
+          <img src="images/sos.png" alt="GoStay Logo">
+        </a>
+        <p>GoStay hỗ trợ khách hàng tìm kiếm, xem thông tin và đặt phòng nhanh trong hệ thống chi nhánh khách sạn.</p>
+      </div>
+
+      <div class="footer-col">
+        <h4>Khách hàng</h4>
+        <ul>
+          <li><a href="index.html">Trang chủ</a></li>
+          <li><a href="search.html">Tìm kiếm phòng</a></li>
+          <li><a href="booking-history.html">Lịch sử đặt phòng</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h4>Tài khoản</h4>
+        <ul>
+          <li><a href="login.html">Đăng nhập</a></li>
+          <li><a href="register.html">Đăng ký</a></li>
+          <li><a href="cart.html">Giỏ đặt phòng</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h4>Liên hệ GoStay</h4>
+        <p>1900 1234<br>info@gostay.vn<br>Hệ thống chi nhánh GoStay Việt Nam</p>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <div class="container">© 2025 GoStay. All rights reserved.</div>
+    </div>
+  </footer>
+  <script src="js/booking.js"></script>
+  <script src="js/header-auth.js"></script>
+</body>
+</html>
