@@ -41,7 +41,6 @@
 }
 
 .hero h1 {
-  font-family: Georgia, 'Times New Roman', serif;
   font-size: 40px;
   line-height: 1.08;
   color: #0b3558;
@@ -86,7 +85,7 @@
 
 .search-wrap {
   position: relative;
-  margin-top: -38px;
+  margin-top: 24px;
   z-index: 30;
 }
 
@@ -157,7 +156,7 @@
 .hotel-card img{width:100%;height:120px;object-fit:cover;display:block}
 .hotel-image{height:120px;background-size:cover;background-position:center}
 .hotel-body{padding:12px}
-.hotel-body h3{font-family:Georgia, serif;color:var(--navy);font-size:16px;margin-bottom:6px}
+.hotel-body h3{color:var(--navy);font-size:16px;margin-bottom:6px}
 .hotel-body .sub{color:#64748b;font-size:13px;margin-bottom:8px}
 .stars{color:#ffb400;margin-bottom:6px}
 .hotel-body p{color:var(--muted);font-size:13px;margin-bottom:8px}
@@ -173,7 +172,7 @@
 
 .recommend-card {
   position: relative;
-  height: 145px;
+  height: 190px;
   border-radius: 10px;
   overflow: hidden;
   box-shadow: 0 6px 18px rgba(11, 53, 88, 0.08);
@@ -203,7 +202,7 @@
 }
 
 .recommend-content h3 {
-  font-size: 19px;
+  font-size: 18px;
   margin-bottom: 8px;
   color: #ffffff;
 }
@@ -260,19 +259,45 @@
 .why-item p{font-size:13px;color:#64748b;line-height:1.45}
 
 /* Footer tweaks */
-.logo-footer{font-family:Georgia,serif;font-size:20px;color:#fff;margin-bottom:8px}
+.logo-footer{font-size:20px;color:#fff;margin-bottom:8px}
 .footer-col p{color:rgba(255,255,255,0.8);font-size:14px}
 
 /* small screens */
 @media (max-width:900px){
-  .hero h1{font-size:24px}
+  .hero h1{font-size:32px}
   .hero-content{max-width:100%;margin-left:4%}
   .search-box{width:100%;flex-direction:column;gap:10px}
   .dest-grid,.hotel-grid{grid-template-columns:repeat(2,1fr)}
   .recommend-grid{grid-template-columns:1fr}
+  .recommend-card{height:180px}
   .why-grid{grid-template-columns:repeat(2,1fr)}
 }
 
 @media (max-width:600px){
+  .hero h1{font-size:28px}
+  .search-box{
+    width:100%;
+    max-width:100%;
+    grid-template-columns:1fr;
+    gap:0;
+    padding:10px 14px;
+  }
+  .search-item{
+    width:100%;
+    padding:10px 0;
+    border-right:0;
+    border-bottom:1px solid #e2e8f0;
+  }
+  .search-item:last-child{
+    border-bottom:0;
+  }
+  .search-action{
+    padding-right:0;
+  }
+  .btn-search{
+    width:100%;
+  }
+  .search-wrap{margin-top:20px}
+  .recommend-card{height:210px}
   .why-grid{grid-template-columns:1fr}
 }

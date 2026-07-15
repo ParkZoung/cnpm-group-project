@@ -422,46 +422,6 @@
 }
 
 
-/* ==========================================================================
-   ÉP ĐÈ KHỐI CHỮ SANG BỘ FONT BRAND MỚI CHẤT LƯỢNG (PLAYFAIR & POPPINS)
-   ========================================================================== */
-
-/* Ép font Playfair Display cho toàn bộ các khu vực Tiêu đề lớn nhỏ */
-.filter-sidebar h2,
-.room-search-body h3,
-.rooms-page-title,
-.detail-header-info h1,
-.detail-description h3, 
-.detail-amenities h3, 
-.detail-reviews h3,
-.widget-price,
-h1, h2, h3, h4, h5, h6 {
-  font-family: 'Playfair Display', Georgia, serif !important;
-}
-
-/* Ép font Poppins mềm mại hiện đại cho toàn bộ nội dung văn bản text */
-.filter-group,
-.filter-sidebar label,
-.filter-group input,
-.filter-group select,
-.btn-apply-filter,
-.room-meta,
-.room-price,
-.room-status,
-.btn-view-detail,
-.detail-meta-row,
-.detail-description p,
-.amenities-list li,
-.review-item,
-.booking-form label,
-.booking-form input,
-.booking-form select,
-.btn-book-now,
-body, p, span, label, input, select, button {
-  font-family: 'Poppins', Arial, Helvetica, sans-serif !important;
-}
-
-
 /* --- ĐÁP ỨNG MÀN HÌNH NHỎ (RESPONSIVE) --- */
 @media (max-width: 768px) {
   .search-page-container, .detail-layout {
