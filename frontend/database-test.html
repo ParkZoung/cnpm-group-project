@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Kiểm tra Database GoStay</title>
+</head>
+
+<body>
+    <h1>Kiểm tra kết nối Supabase</h1>
+
+    <p id="connection-status">
+        Chưa kiểm tra
+    </p>
+
+    <pre id="database-result"></pre>
+
+    <!-- Tải thư viện Supabase trước -->
+    <script
+        src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2">
+    </script>
+
+    <!-- Tạo kết nối Supabase -->
+    <script src="js/supabase-client.js"></script>
+
+    <!-- Truy vấn thử bảng rooms -->
+    <script src="js/database-test.js"></script>
+</body>
+</html>
