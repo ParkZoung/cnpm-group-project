@@ -3,22 +3,15 @@
    ========================================================================== */
 
 /* Trạng thái Menu đang được chọn */
-.active-nav {
-  color: #12a6b8 !important;
-  border-bottom: 2px solid #12a6b8;
-  padding-bottom: 4px;
-}
-
 /* Khối header tiêu đề trang con */
 .page-main-wrap {
   padding-top: 10px;
-  padding-bottom: 300px;
+  padding-bottom: 48px;
 }
 .page-header-block {
   margin: 34px 0 24px 0;
 }
 .page-main-title {
-  font-family: Georgia, serif;
   color: var(--navy);
   font-size: 28px;
   font-weight: 700;
@@ -78,7 +71,6 @@
   color: var(--navy);
   font-size: 19px;
   margin-bottom: 4px;
-  font-family: Arial, sans-serif;
 }
 .cart-item-sub {
   font-size: 13px;
@@ -155,7 +147,6 @@
   margin-bottom: 16px;
   padding-bottom: 12px;
   border-bottom: 1px solid #edf2f7;
-  font-family: Georgia, serif;
 }
 .mini-rooms-summary {
   font-size: 13px;
@@ -237,7 +228,6 @@
   font-size: 18px;
   color: var(--navy);
   margin-bottom: 22px;
-  font-family: Georgia, serif;
 }
 .checkout-grid-fields {
   display: grid;
@@ -260,7 +250,6 @@
   padding: 12px 14px;
   border: 1px solid #cbd5e0;
   border-radius: 8px;
-  font-family: inherit;
   font-size: 14px;
   color: #111111;
   background: #ffffff;
@@ -341,7 +330,6 @@
 .success-card-panel h2 {
   color: var(--navy);
   margin-bottom: 10px;
-  font-family: Georgia, serif;
 }
 .success-subtitle {
   font-size: 15px;
@@ -508,13 +496,10 @@
 
 /* Ép thẻ main của trang success quay về hiển thị khối chuẩn và tạo khoảng cách */
 main.success-screen-container {
-  display: block !important;
-  position: relative !important;
-  width: 100% !important;
-  min-height: auto !important;
-  /* Tạo khoảng đệm cực lớn phía dưới nội dung để đẩy footer xuống */
-  padding-top: 40px !important;
-  padding-bottom: 250px !important; 
+  width: 100%;
+  min-height: auto;
+  padding-top: 40px;
+  padding-bottom: 48px;
 }
 
 /* Định dạng lại khối bo góc màu trắng không cho phép nó thả trôi tự do */

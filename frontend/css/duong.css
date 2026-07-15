@@ -23,7 +23,6 @@
 }
 
 .auth-card h2 {
-  font-family: Georgia, serif;
   color: #0b3558;
   font-size: 26px;
   text-align: center;
@@ -198,31 +197,11 @@
   margin-top: 15px;
 }
 
-.site-header a.logo {
-  min-width: 160px !important;
-}
-
-.site-header a.logo img {
-  height: 70px !important;
-  width: auto !important;
-  max-width: none !important;
-}
-
-/* Ép thanh Header trang chủ luôn xếp ngay ngắn trên cùng một hàng ngang */
-.site-header .header-inner {
-  display: flex !important;
-  flex-direction: row !important;
-  flex-wrap: nowrap !important;   /* Tuyệt đối cấm rớt hàng xuống đáy */
-  justify-content: space-between !important;
-  align-items: center !important;
-}
-
-
 /* --- 5. HỆ THỐNG GIAO DIỆN QUẢN TRỊ ADMIN (MÀU CHUẨN THỰC TẾ) --- */
 .admin-dashboard-body {
   margin: 0 !important;
   padding: 0 !important;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif !important;
+  font-family: 'Be Vietnam Pro', 'Segoe UI', Arial, sans-serif;
   background-color: #f6fbff !important;
   display: block !important;
   min-height: 100vh;
