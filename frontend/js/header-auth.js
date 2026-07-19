@@ -1,6 +1,27 @@
 document.addEventListener('DOMContentLoaded', function () {
+  updateActiveHeaderNav();
   updateHeaderLoginState();
 });
+
+function updateActiveHeaderNav() {
+  const navLinks = document.querySelectorAll('.main-nav a');
+  const currentPage = window.location.pathname.split('/').pop() || 'index.html';
+  const bookingPages = ['booking.html', 'bookingsuccess.html'];
+  const activePage = bookingPages.includes(currentPage) ? 'cart.html' : currentPage;
+
+  navLinks.forEach(function (link) {
+    const linkPage = link.getAttribute('href');
+    const isActive = linkPage === activePage;
+
+    link.classList.toggle('active-nav', isActive);
+
+    if (isActive) {
+      link.setAttribute('aria-current', 'page');
+    } else {
+      link.removeAttribute('aria-current');
+    }
+  });
+}
 
 function updateHeaderLoginState() {
   const authArea = document.querySelector('.auth');

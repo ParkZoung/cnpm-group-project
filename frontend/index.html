@@ -3,6 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" type="image/png" href="images/logo-gostay.png">
   <title>GoStay - Trang chủ</title>
   <link rel="stylesheet" href="css/base.css">
   <link rel="stylesheet" href="css/home.css">
@@ -16,7 +17,6 @@
 
       <nav class="main-nav">
         <a href="index.html">Trang chủ</a>
-        <a href="search.html">Tìm kiếm phòng</a>
         <a href="cart.html">Đặt phòng</a>
         <a href="booking-history.html">Lịch sử đặt phòng</a>
       </nav>
@@ -35,38 +35,67 @@
           <div class="eyebrow">CHÀO MỪNG ĐẾN VỚI GOSTAY</div>
           <h1>GoStay – Kỳ nghỉ sang trọng, đặt phòng dễ dàng</h1>
           <p>Tìm kiếm phòng, xem thông tin rõ ràng và đặt phòng nhanh tại hệ thống chi nhánh GoStay.</p>
-          <a class="btn btn-cta" href="rooms.html">Tìm phòng ngay</a>
+
         </div>
 
-        <div class="hero-arrows">
-          <button class="arrow left" aria-label="previous">‹</button>
-          <button class="arrow right" aria-label="next">›</button>
-        </div>
+
       </div>
     </section>
 
     <div class="search-wrap">
       <div class="container">
-        <form class="search-box" action="search.html" method="get">
-          <div class="search-item">
-            <label class="small">Chi nhánh</label>
-            <div class="bold"><svg class="icon" viewBox="0 0 24 24" width="16" height="16"><circle cx="12" cy="10" r="3" fill="#2b4356"/></svg>Nha Trang</div>
+        <form class="search-box" action="search.html" method="get" autocomplete="off">
+          <div class="search-control search-destination">
+            <button class="search-trigger" type="button" data-panel="destination-panel" aria-expanded="false">
+              <svg class="search-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20v-9h16v9M2 20h20M6 11V7h12v4M8 7V4h8v3M4 16h16"/></svg>
+              <span><span class="search-label">Nhập điểm đến</span><strong id="destination-value">Bạn muốn đến đâu?</strong></span>
+            </button>
+            <input id="destination-input" type="hidden" name="location" value="">
+            <div class="search-panel destination-panel" id="destination-panel" hidden>
+              <h3>Tìm kiếm gần đây của bạn</h3>
+              <button class="place-option recent" type="button" data-place="GoStay Nha Trang">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 12a9 9 0 1 0 3-6.7M3 4v5h5M12 7v5l3 2"/></svg>
+                <span><strong>GoStay Nha Trang</strong><small>2 người lớn</small></span>
+              </button>
+              <h3 class="popular-title">Các điểm đến thịnh hành</h3>
+              <button class="place-option" type="button" data-place="Hà Nội"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 22s7-6.1 7-13a7 7 0 1 0-14 0c0 6.9 7 13 7 13Z"/><circle cx="12" cy="9" r="2.5"/></svg><span><strong>Hà Nội</strong><small>Việt Nam</small></span></button>
+              <button class="place-option" type="button" data-place="Đà Nẵng"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 22s7-6.1 7-13a7 7 0 1 0-14 0c0 6.9 7 13 7 13Z"/><circle cx="12" cy="9" r="2.5"/></svg><span><strong>Đà Nẵng</strong><small>Việt Nam</small></span></button>
+              <button class="place-option" type="button" data-place="Hạ Long"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 22s7-6.1 7-13a7 7 0 1 0-14 0c0 6.9 7 13 7 13Z"/><circle cx="12" cy="9" r="2.5"/></svg><span><strong>Hạ Long</strong><small>Việt Nam</small></span></button>
+              <button class="place-option" type="button" data-place="Phú Quốc"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 22s7-6.1 7-13a7 7 0 1 0-14 0c0 6.9 7 13 7 13Z"/><circle cx="12" cy="9" r="2.5"/></svg><span><strong>Phú Quốc</strong><small>Việt Nam</small></span></button>
+            </div>
           </div>
-          <div class="search-item">
-            <label class="small">Ngày nhận phòng</label>
-            <div class="bold">Chọn ngày</div>
+
+          <div class="search-control search-dates">
+            <button class="search-trigger" type="button" data-panel="calendar-panel" aria-expanded="false">
+              <svg class="search-icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="1"/><path d="M7 3v4M17 3v4M3 10h18M8 14h.01M12 14h.01M16 14h.01M8 18h.01M12 18h.01"/></svg>
+              <span><span class="search-label">Chọn ngày</span><strong><span id="checkin-value">Nhận phòng</span><i></i><span id="checkout-value">Trả phòng</span></strong></span>
+            </button>
+            <input id="checkin-input" type="hidden" name="checkin">
+            <input id="checkout-input" type="hidden" name="checkout">
+            <div class="search-panel calendar-panel" id="calendar-panel" hidden>
+              <div class="calendar-tabs"><button type="button" class="active">Lịch</button><button type="button">Ngày linh hoạt</button></div>
+              <div class="calendar-months" id="calendar-months"></div>
+              <p class="calendar-hint" id="calendar-hint">Chọn ngày nhận phòng</p>
+            </div>
           </div>
-          <div class="search-item">
-            <label class="small">Ngày trả phòng</label>
-            <div class="bold">Chọn ngày</div>
+
+          <div class="search-control search-guests">
+            <button class="search-trigger" type="button" data-panel="guests-panel" aria-expanded="false">
+              <svg class="search-icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="7" r="4"/><path d="M4 22v-2a8 8 0 0 1 16 0v2"/></svg>
+              <span><span class="search-label">Chọn số lượng</span><strong id="guests-value">1 người lớn · 0 trẻ em · 1 phòng</strong></span>
+              <svg class="chevron" viewBox="0 0 24 24" aria-hidden="true"><path d="m7 9 5 5 5-5"/></svg>
+            </button>
+            <input id="adults-input" type="hidden" name="adults" value="1">
+            <input id="children-input" type="hidden" name="children" value="0">
+            <input id="rooms-input" type="hidden" name="rooms" value="1">
+            <div class="search-panel guests-panel" id="guests-panel" hidden>
+              <div class="guest-row" data-counter="adults"><span><strong>Người lớn</strong><small>Từ 18 tuổi</small></span><div><button type="button" data-change="-1">−</button><b>1</b><button type="button" data-change="1">+</button></div></div>
+              <div class="guest-row" data-counter="children"><span><strong>Trẻ em</strong><small>Từ 0–17 tuổi</small></span><div><button type="button" data-change="-1">−</button><b>0</b><button type="button" data-change="1">+</button></div></div>
+              <div class="guest-row" data-counter="rooms"><span><strong>Phòng</strong></span><div><button type="button" data-change="-1">−</button><b>1</b><button type="button" data-change="1">+</button></div></div>
+            </div>
           </div>
-          <div class="search-item">
-            <label class="small">Số khách</label>
-            <div class="bold">2 khách, 1 phòng</div>
-          </div>
-          <div class="search-item search-action">
-            <button class="btn btn-search" type="submit">Tìm kiếm</button>
-          </div>
+
+          <button class="btn-search" type="submit">Tìm</button>
         </form>
       </div>
     </div>
@@ -74,7 +103,7 @@
     <section class="section container">
       <div class="section-header">
         <h2>Chi nhánh GoStay nổi bật</h2>
-        <a class="more" href="rooms.html">Xem tất cả &gt;</a>
+
       </div>
 
       <div class="dest-grid">
@@ -161,41 +190,7 @@
       </div>
     </section>
 
-    <section class="offers container">
-      <div class="section-header">
-        <h2>Gợi ý phòng phù hợp</h2>
-        <a class="more" href="search.html">Xem thêm &gt;</a>
-      </div>
-
-      <div class="recommend-grid">
-        <article class="recommend-card">
-          <img src="https://images.unsplash.com/photo-1493558103817-58b2924bce98?auto=format&fit=crop&w=1200&q=80" alt="gợi ý ngân sách">
-          <div class="recommend-content">
-            <h3>Gợi ý theo ngân sách</h3>
-            <p>Tìm phòng phù hợp với mức giá bạn mong muốn.</p>
-            <a class="btn btn-cta" href="search.html">Gợi ý phòng</a>
-          </div>
-        </article>
-
-        <article class="recommend-card">
-          <img src="https://images.unsplash.com/photo-1503264116251-35a269479413?auto=format&fit=crop&w=1200&q=80" alt="gợi ý công tác">
-          <div class="recommend-content">
-            <h3>Gợi ý cho chuyến công tác</h3>
-            <p>Ưu tiên phòng gần trung tâm, yên tĩnh và đặt nhanh.</p>
-            <a class="btn btn-cta" href="search.html">Xem gợi ý</a>
-          </div>
-        </article>
-
-        <article class="recommend-card">
-          <img src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1200&q=80" alt="gợi ý gia đình">
-          <div class="recommend-content">
-            <h3>Gợi ý cho gia đình</h3>
-            <p>Phòng rộng, tiện nghi đầy đủ, phù hợp nhiều khách.</p>
-            <a class="btn btn-cta" href="rooms.html">Xem phòng</a>
-          </div>
-        </article>
-      </div>
-    </section>
+   
 
     <section class="why container">
       <div class="why-grid">
@@ -263,5 +258,6 @@
   </footer>
   <script src="js/auth.js"></script>
   <script src="js/header-auth.js"></script>
+  <script src="js/home-search.js"></script>
 </body>
 </html>
