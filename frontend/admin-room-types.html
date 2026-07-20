@@ -4,9 +4,9 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="icon" type="image/png" href="images/logo-gostay.png">
-  <title>GoStay Admin - Quản lý chi nhánh</title>
+  <title>GoStay Admin - Quản lý loại phòng</title>
   <link rel="stylesheet" href="css/base.css">
-  <link rel="stylesheet" href="css/duong.css">
+  <link rel="stylesheet" href="css/bach.css">
 </head>
 <body class="admin-dashboard-body">
 
@@ -17,8 +17,8 @@
     <nav class="sidebar-menu">
       <a href="admin-dashboard.html" class="menu-item"><span class="icon">📊</span> Dashboard</a>
       <a href="admin-products.html" class="menu-item"><span class="icon">🛏️</span> Quản lý phòng</a>
-      <a href="admin-room-types.html" class="menu-item"><span class="icon">🏷️</span> Quản lý loại phòng</a>
-      <a href="admin-categories.html" class="menu-item active"><span class="icon">📁</span> Quản lý chi nhánh</a>
+      <a href="admin-room-types.html" class="menu-item active"><span class="icon">🏷️</span> Quản lý loại phòng</a>
+      <a href="admin-categories.html" class="menu-item"><span class="icon">📁</span> Quản lý chi nhánh</a>
       <a href="admin-bookings.html" class="menu-item"><span class="icon">📄</span> Quản lý booking</a>
       <a href="admin-users.html" class="menu-item"><span class="icon">👥</span> Khách hàng</a>
       <hr class="sidebar-divider">
@@ -28,34 +28,48 @@
 
   <div class="admin-main-content">
     <header class="admin-topbar">
-      <div class="topbar-left"><h1 class="topbar-title">Quản lý chi nhánh</h1></div>
+      <div class="topbar-left"><h1 class="topbar-title">Quản lý loại phòng</h1></div>
       <div class="topbar-right">
-        <div class="topbar-search"><input type="text" placeholder="Tìm kiếm chi nhánh..."></div>
+        <div class="topbar-search"><input type="text" placeholder="Tìm kiếm loại phòng..."></div>
         <div class="topbar-user"><span class="user-name">Admin Khánh ▾</span></div>
       </div>
     </header>
 
     <main class="admin-page-container">
+      <section class="admin-card-section" style="margin-bottom: 24px;">
+        <div class="section-header-row">
+          <h2>Thêm / sửa loại phòng</h2>
+        </div>
+
+        <form class="admin-filter-bar">
+          <input type="text" placeholder="Mã loại phòng" class="admin-search-input" aria-label="Mã loại phòng">
+          <input type="text" placeholder="Tên loại phòng" class="admin-search-input" aria-label="Tên loại phòng">
+          <input type="text" placeholder="Mô tả loại phòng" class="admin-search-input" aria-label="Mô tả loại phòng">
+          <button type="button" class="btn-primary-admin">Lưu</button>
+          <button type="reset" class="btn-action edit">Làm mới</button>
+        </form>
+      </section>
+
       <section class="admin-card-section">
         <div class="section-header-row">
-          <h2>Danh sách chi nhánh khách sạn</h2>
-          <button class="btn-primary-admin" style="padding: 6px 14px; font-size:12px;">+ Thêm chi nhánh</button>
+          <h2>Danh sách loại phòng</h2>
         </div>
+
         <div class="admin-table-wrapper">
           <table class="admin-table">
             <thead>
               <tr>
-                <th>Mã</th>
-                <th>Tên chi nhánh</th>
-                <th>Địa điểm</th>
+                <th>Mã loại</th>
+                <th>Tên loại phòng</th>
+                <th>Mô tả</th>
                 <th>Thao tác</th>
               </tr>
             </thead>
             <tbody>
               <tr>
-                <td>CN01</td>
-                <td><strong>GoStay Nha Trang</strong></td>
-                <td>Khánh Hòa</td>
+                <td>LP01</td>
+                <td><strong>Deluxe Premium</strong></td>
+                <td>Phòng cao cấp, không gian rộng và đầy đủ tiện nghi.</td>
                 <td>
                   <div class="action-buttons">
                     <button class="btn-action edit">Sửa</button>
@@ -64,9 +78,9 @@
                 </td>
               </tr>
               <tr>
-                <td>CN02</td>
-                <td><strong>GoStay Phú Quốc</strong></td>
-                <td>Kiên Giang</td>
+                <td>LP02</td>
+                <td><strong>Standard Room</strong></td>
+                <td>Phòng tiêu chuẩn, phù hợp cho nhu cầu lưu trú cơ bản.</td>
                 <td>
                   <div class="action-buttons">
                     <button class="btn-action edit">Sửa</button>
@@ -78,7 +92,6 @@
           </table>
         </div>
       </section>
-
     </main>
 
     <footer class="admin-footer">
