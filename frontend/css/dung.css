@@ -110,6 +110,12 @@
   color: #64748b;
 }
 
+.branch-results-title {
+  margin: 0 0 6px;
+  color: #0b3558;
+  font-size: 22px;
+}
+
 
 /* ==========================================================================
    MỚI CHỈNH SỬA: ĐƯA DANH SÁCH PHÒNG VỀ DẠNG LƯỚI KHUNG BỌC CÁCH NHAU THOÁNG MẮT
@@ -282,6 +288,42 @@
   margin-bottom: 30px;
 }
 
+.room-specs {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
+  margin: 20px 0 30px;
+}
+
+.room-spec {
+  padding: 14px;
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+  background: #f8fafc;
+}
+
+.room-spec span,
+.room-spec strong {
+  display: block;
+}
+
+.room-spec span {
+  margin-bottom: 5px;
+  color: #64748b;
+  font-size: 12px;
+}
+
+.room-spec strong {
+  color: #0b3558;
+  font-size: 14px;
+}
+
+@media (max-width: 700px) {
+  .room-specs {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
 .detail-description h3, .detail-amenities h3, .detail-reviews h3 {
   font-size: 16px;
   color: #0b3558;
@@ -370,7 +412,7 @@
 .widget-price {
   font-size: 22px;
   font-weight: 700;
-  color: #d32f2f;
+  color: #12a6b8;
   margin-bottom: 20px;
   border-bottom: 1px solid #f1f5f9;
   padding-bottom: 12px;

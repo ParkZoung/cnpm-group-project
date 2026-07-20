@@ -1,27 +1,37 @@
 document.addEventListener('DOMContentLoaded', function () {
   const filterForm = document.querySelector('.filter-sidebar form');
-  const keywordInput = document.querySelector('.filter-sidebar input[type="text"]');
-  const locationSelect = document.querySelectorAll('.filter-sidebar select')[0];
-  const priceSelect = document.querySelectorAll('.filter-sidebar select')[1];
+  const locationSelect = document.getElementById('branch-filter');
+  const hotelSelect = document.getElementById('hotel-filter');
+  const priceSelect = document.getElementById('price-filter');
   const roomTypeCheckboxes = document.querySelectorAll('.checkbox-group input[type="checkbox"]');
   const applyButton = document.querySelector('.btn-apply-filter');
   const roomCards = document.querySelectorAll('.room-search-card');
   const resultsHeader = document.querySelector('.results-header');
 
   const rooms = [
-    { name: 'Sunrise Premier Room Sunrise Hotel', location: 'Hà Nội', price: 850000, type: 'doi-vip' },
-    { name: 'Ocean Vista Studio Coastal Resort', location: 'Nha Trang', price: 1250000, type: 'don-vip' },
-    { name: 'Green Valley Suite Eco Lodge', location: 'Đà Nẵng', price: 620000, type: 'doi-basic' },
-    { name: 'Cozy Standard Room Urban Hotel', location: 'Hà Nội', price: 350000, type: 'don-basic' },
-    { name: 'Grand Luxury Suite Palace Hotel', location: 'Nha Trang', price: 2500000, type: 'doi-vip' },
-    { name: 'City View Twin Room Central Hotel', location: 'Đà Nẵng', price: 500000, type: 'doi-basic' },
-    { name: 'Sunset Beach Villa Phu Quoc Resort', location: 'Phú Quốc', price: 3200000, type: 'doi-vip' },
-    { name: 'Mountain View Bungalow Sapa Lodge', location: 'Sa Pa', price: 450000, type: 'don-basic' },
-    { name: 'Saigon City Studio Urban Oasis', location: 'Hồ Chí Minh', price: 1100000, type: 'don-vip' },
-    { name: 'Golden Bridge Suite Danang Riverside', location: 'Đà Nẵng', price: 1800000, type: 'doi-vip' }
+    { name: 'Deluxe Hướng Vườn Giường Đôi', hotel: 'GoStay Fiesta Phú Quốc', location: 'Phú Quốc', price: 850000, type: 'doi-vip' },
+    { name: 'Deluxe Hướng Biển 2 Giường Đơn', hotel: 'GoStay Wonderworld Phú Quốc', location: 'Phú Quốc', price: 1250000, type: 'don-vip' },
+    { name: 'Junior Suite Hướng Vườn Giường Đôi', hotel: 'GoStay Resort & Spa Phú Quốc', location: 'Phú Quốc', price: 620000, type: 'doi-basic' },
+    { name: 'Deluxe Hướng Vịnh Giường Đôi', hotel: 'GoStay Hòn Tằm Resort', location: 'Nha Trang', price: 350000, type: 'don-basic' },
+    { name: 'Executive Suite Hướng Biển', hotel: 'GoStay Resort & Spa Nha Trang Bay', location: 'Nha Trang', price: 2500000, type: 'doi-vip' },
+    { name: 'Deluxe Hướng Biển 2 Giường Đơn', hotel: 'GoStay Resort Nha Trang', location: 'Nha Trang', price: 500000, type: 'doi-basic' },
+    { name: 'Deluxe Hướng Biển Giường Đôi', hotel: 'GoStay Resort & Golf Nam Hội An', location: 'Hội An', price: 3200000, type: 'doi-vip' },
+    { name: 'Biệt Thự 2 Phòng Ngủ Hướng Vườn', hotel: 'GoStay Cửa Sót Resort', location: 'Hà Tĩnh', price: 450000, type: 'don-basic' },
+    { name: 'Deluxe Hướng Biển Giường Đôi', hotel: 'GoStay Cửa Hội Resort', location: 'Nghệ An', price: 1100000, type: 'don-vip' },
+    { name: 'Deluxe Hướng Vịnh Giường Đôi', hotel: 'GoStay Resort & Spa Hạ Long', location: 'Quảng Ninh', price: 1800000, type: 'doi-vip' }
   ];
 
-  if (!filterForm || !keywordInput || !locationSelect || !priceSelect || !applyButton) {
+  const branchHotels = {
+    'Phú Quốc': ['GoStay Fiesta Phú Quốc', 'GoStay Wonderworld Phú Quốc', 'GoStay Resort & Spa Phú Quốc'],
+    'Nha Trang': ['GoStay Hòn Tằm Resort', 'GoStay Resort & Spa Nha Trang Bay', 'GoStay Resort Nha Trang', 'GoStay Luxury Nha Trang', 'GoStay Beachfront Nha Trang', 'GoStay Empire Nha Trang'],
+    'Hội An': ['GoStay Resort & Golf Nam Hội An'],
+    'Hà Tĩnh': ['GoStay Cửa Sót Resort', 'GoStay Hà Tĩnh'],
+    'Nghệ An': ['GoStay Cửa Hội Resort'],
+    'Bắc Ninh': ['GoStay Hotel Bắc Ninh'],
+    'Quảng Ninh': ['GoStay Resort & Spa Hạ Long']
+  };
+
+  if (!filterForm || !locationSelect || !hotelSelect || !priceSelect || !applyButton) {
     return;
   }
 
@@ -33,13 +43,15 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     // Store simple searchable data on each card for beginner-friendly filtering.
-    card.dataset.name = normalizeText(room.name);
+    card.dataset.name = normalizeText(room.name + ' ' + room.hotel);
+    card.dataset.hotel = normalizeText(room.hotel);
     card.dataset.location = normalizeText(room.location);
     card.dataset.price = room.price;
     card.dataset.roomType = room.type;
   });
 
   showAllRooms();
+  locationSelect.addEventListener('change', updateHotelOptions);
 
   const resultCountMessage = document.createElement('p');
   resultCountMessage.textContent = 'Tìm thấy ' + roomCards.length + ' phòng phù hợp';
@@ -51,6 +63,8 @@ document.addEventListener('DOMContentLoaded', function () {
   noResultsMessage.style.display = 'none';
   resultsHeader.appendChild(noResultsMessage);
 
+  applyUrlFilters();
+
   applyButton.addEventListener('click', filterRooms);
 
   filterForm.addEventListener('submit', function (event) {
@@ -58,20 +72,50 @@ document.addEventListener('DOMContentLoaded', function () {
     filterRooms();
   });
 
+  function applyUrlFilters() {
+    const params = new URLSearchParams(window.location.search);
+    let requestedBranch = params.get('branch') || params.get('location') || '';
+    const requestedHotel = params.get('hotel') || '';
+    const branchAliases = { 'Hạ Long': 'Quảng Ninh' };
+
+    requestedBranch = branchAliases[requestedBranch] || requestedBranch;
+
+    const hasBranch = Array.from(locationSelect.options).some(function (option) {
+      return option.value === requestedBranch;
+    });
+
+    if (!hasBranch || requestedBranch === '') return;
+
+    locationSelect.value = requestedBranch;
+    updateHotelOptions();
+
+    const hasHotel = Array.from(hotelSelect.options).some(function (option) {
+      return option.value === requestedHotel;
+    });
+
+    if (hasHotel) hotelSelect.value = requestedHotel;
+
+    const resultsTitle = document.createElement('h2');
+    resultsTitle.className = 'branch-results-title';
+    resultsTitle.textContent = 'Khách sạn và phòng tại ' + (requestedBranch === 'Quảng Ninh' ? 'Hạ Long' : requestedBranch);
+    resultsHeader.insertBefore(resultsTitle, resultCountMessage);
+    filterRooms();
+  }
+
   function filterRooms() {
-    const keyword = normalizeText(keywordInput.value);
     const selectedLocation = locationSelect.value;
+    const selectedHotel = hotelSelect.value;
     const selectedPrice = priceSelect.value;
     const selectedRoomTypes = getSelectedRoomTypes();
     let visibleCount = 0;
 
     roomCards.forEach(function (card) {
-      const matchesKeyword = isKeywordMatch(card, keyword);
       const matchesLocation = isLocationMatch(card, selectedLocation);
+      const matchesHotel = isHotelMatch(card, selectedHotel);
       const matchesPrice = isPriceMatch(card, selectedPrice);
       const matchesRoomType = isRoomTypeMatch(card, selectedRoomTypes);
 
-      if (matchesKeyword && matchesLocation && matchesPrice && matchesRoomType) {
+      if (matchesLocation && matchesHotel && matchesPrice && matchesRoomType) {
         showRoomCard(card);
         card.dataset.filterVisible = 'true';
         visibleCount++;
@@ -98,21 +142,42 @@ document.addEventListener('DOMContentLoaded', function () {
     return selectedTypes;
   }
 
-  function isKeywordMatch(card, keyword) {
-    if (keyword === '') {
-      return true;
-    }
-
-    const cardText = card.dataset.name + ' ' + card.dataset.location + ' ' + card.dataset.roomType;
-    return cardText.includes(keyword);
-  }
-
   function isLocationMatch(card, selectedLocation) {
     if (selectedLocation === '') {
       return true;
     }
 
-    return card.dataset.location.includes(selectedLocation);
+    return card.dataset.location === normalizeText(selectedLocation);
+  }
+
+  function isHotelMatch(card, selectedHotel) {
+    return selectedHotel === '' || card.dataset.hotel === normalizeText(selectedHotel);
+  }
+
+  function updateHotelOptions() {
+    const selectedLocation = locationSelect.value;
+    const hotels = [];
+
+    if (selectedLocation !== '' && branchHotels[selectedLocation]) {
+      branchHotels[selectedLocation].forEach(function (hotel) {
+        hotels.push(hotel);
+      });
+    }
+
+    hotelSelect.innerHTML = '';
+    const defaultOption = document.createElement('option');
+    defaultOption.value = '';
+    defaultOption.textContent = selectedLocation === '' ? 'Chọn chi nhánh trước' : 'Tất cả khách sạn';
+    hotelSelect.appendChild(defaultOption);
+
+    hotels.forEach(function (hotel) {
+      const option = document.createElement('option');
+      option.value = hotel;
+      option.textContent = hotel;
+      hotelSelect.appendChild(option);
+    });
+
+    hotelSelect.disabled = selectedLocation === '';
   }
 
   function isPriceMatch(card, selectedPrice) {

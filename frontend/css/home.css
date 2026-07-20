@@ -178,7 +178,9 @@
 }
 
 .dest-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:18px}
-.dest-card{position:relative;height:140px;border-radius:10px;overflow:hidden;background:#dbeafe}
+.dest-card{position:relative;height:140px;border-radius:10px;overflow:hidden;background:#dbeafe;display:block;text-decoration:none;transition:transform .2s ease,box-shadow .2s ease}
+.dest-card:hover{transform:translateY(-3px);box-shadow:0 9px 22px rgba(11,53,88,.18)}
+.dest-card:focus-visible{outline:3px solid rgba(8,121,232,.45);outline-offset:3px}
 .dest-card img{width:100%;height:100%;object-fit:cover;display:block}
 .dest-overlay{position:absolute;left:0;right:0;bottom:0;height:65%;background:linear-gradient(180deg, rgba(0,0,0,0), rgba(0,30,50,0.75))}
 .dest-title{position:absolute;left:14px;bottom:14px;color:#ffffff;font-weight:700;font-size:17px}
@@ -194,7 +196,7 @@
 .hotel-body .sub{color:#64748b;font-size:13px;margin-bottom:8px}
 .stars{color:#ffb400;margin-bottom:6px}
 .hotel-body p{color:var(--muted);font-size:13px;margin-bottom:8px}
-.price{color:var(--navy);font-weight:800}
+.price{color:var(--teal);font-weight:800}
 .btn-detail{display:inline-block;margin-top:8px;background:var(--teal);color:#fff;padding:8px 12px;border-radius:8px;text-decoration:none;font-weight:700}
 
 .recommend-grid {
