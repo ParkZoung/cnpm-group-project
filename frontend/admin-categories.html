@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="icon" type="image/png" href="images/logo-gostay.png">
-  <title>GoStay Admin - Danh mục</title>
+  <title>GoStay Admin - Quản lý chi nhánh</title>
   <link rel="stylesheet" href="css/base.css">
   <link rel="stylesheet" href="css/duong.css">
 </head>
@@ -17,8 +17,8 @@
     <nav class="sidebar-menu">
       <a href="admin-dashboard.html" class="menu-item"><span class="icon">📊</span> Dashboard</a>
       <a href="admin-products.html" class="menu-item"><span class="icon">🛏️</span> Quản lý phòng</a>
-      <a href="admin-categories.html" class="menu-item active"><span class="icon">📁</span> Quản lý danh mục</a>
-      <a href="admin-invoices.html" class="menu-item"><span class="icon">📄</span> Quản lý hóa đơn</a>
+      <a href="admin-categories.html" class="menu-item active"><span class="icon">📁</span> Quản lý chi nhánh</a>
+      <a href="admin-bookings.html" class="menu-item"><span class="icon">📄</span> Quản lý booking</a>
       <a href="admin-users.html" class="menu-item"><span class="icon">👥</span> Khách hàng</a>
       <hr class="sidebar-divider">
       <a href="login.html" class="menu-item logout-item"><span class="icon">🚪</span> Đăng xuất</a>
@@ -27,58 +27,17 @@
 
   <div class="admin-main-content">
     <header class="admin-topbar">
-      <div class="topbar-left"><h1 class="topbar-title">Quản lý danh mục hệ thống</h1></div>
+      <div class="topbar-left"><h1 class="topbar-title">Quản lý chi nhánh</h1></div>
       <div class="topbar-right">
-        <div class="topbar-search"><input type="text" placeholder="Tìm kiếm danh mục..."></div>
+        <div class="topbar-search"><input type="text" placeholder="Tìm kiếm chi nhánh..."></div>
         <div class="topbar-user"><span class="user-name">Admin Khánh ▾</span></div>
       </div>
     </header>
 
-    <main class="admin-page-container admin-two-columns-layout">
-      
+    <main class="admin-page-container">
       <section class="admin-card-section">
         <div class="section-header-row">
-          <h2>Hạng Phòng Nghỉ</h2>
-          <button class="btn-primary-admin" style="padding: 6px 14px; font-size:12px;">+ Thêm hạng phòng</button>
-        </div>
-        <div class="admin-table-wrapper">
-          <table class="admin-table">
-            <thead>
-              <tr>
-                <th>Mã</th>
-                <th>Tên loại phòng</th>
-                <th>Thao tác</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>CAT01</td>
-                <td><strong>Phòng Deluxe Premium</strong></td>
-                <td>
-                  <div class="action-buttons">
-                    <button class="btn-action edit">Sửa</button>
-                    <button class="btn-action delete">Xóa</button>
-                  </div>
-                </td>
-              </tr>
-              <tr>
-                <td>CAT02</td>
-                <td><strong>Phòng Standard Room</strong></td>
-                <td>
-                  <div class="action-buttons">
-                    <button class="btn-action edit">Sửa</button>
-                    <button class="btn-action delete">Xóa</button>
-                  </div>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </section>
-
-      <section class="admin-card-section">
-        <div class="section-header-row">
-          <h2>Chi Nhánh Khách Sạn</h2>
+          <h2>Danh sách chi nhánh khách sạn</h2>
           <button class="btn-primary-admin" style="padding: 6px 14px; font-size:12px;">+ Thêm chi nhánh</button>
         </div>
         <div class="admin-table-wrapper">

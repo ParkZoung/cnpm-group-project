@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="icon" type="image/png" href="images/logo-gostay.png">
-  <title>GoStay Admin - Quản lý hóa đơn</title>
+  <title>GoStay Admin - Quản lý booking</title>
   <link rel="stylesheet" href="css/base.css">
   <link rel="stylesheet" href="css/bach.css">
 </head>
@@ -17,8 +17,8 @@
     <nav class="sidebar-menu">
       <a href="admin-dashboard.html" class="menu-item"><span class="icon">📊</span> Dashboard</a>
       <a href="admin-products.html" class="menu-item"><span class="icon">🛏️</span> Quản lý phòng</a>
-      <a href="admin-categories.html" class="menu-item"><span class="icon">📁</span> Quản lý danh mục</a>
-      <a href="admin-invoices.html" class="menu-item active"><span class="icon">📄</span> Quản lý hóa đơn</a>
+      <a href="admin-categories.html" class="menu-item"><span class="icon">📁</span> Quản lý chi nhánh</a>
+      <a href="admin-bookings.html" class="menu-item active"><span class="icon">📄</span> Quản lý booking</a>
       <a href="admin-users.html" class="menu-item"><span class="icon">👥</span> Khách hàng</a>
       <hr class="sidebar-divider">
       <a href="login.html" class="menu-item logout-item"><span class="icon">🚪</span> Đăng xuất</a>
@@ -27,9 +27,9 @@
 
   <div class="admin-main-content">
     <header class="admin-topbar">
-      <div class="topbar-left"><h1 class="topbar-title">Quản lý hóa đơn</h1></div>
+      <div class="topbar-left"><h1 class="topbar-title">Quản lý booking</h1></div>
       <div class="topbar-right">
-        <div class="topbar-search"><input type="text" placeholder="Tìm kiếm hóa đơn..."></div>
+        <div class="topbar-search"><input type="text" placeholder="Tìm kiếm booking..."></div>
         <div class="topbar-user"><span class="user-name">Admin Khánh ▾</span></div>
       </div>
     </header>
@@ -37,12 +37,12 @@
     <main class="admin-page-container">
       <div class="admin-card-section">
         <div class="section-header-row">
-          <h2>Danh sách hóa đơn</h2>
-          <button class="btn-primary-admin">+ Tạo hóa đơn</button>
+          <h2>Danh sách booking</h2>
+          <button class="btn-primary-admin">+ Tạo booking</button>
         </div>
 
         <div class="admin-filter-bar">
-          <input type="text" placeholder="Tìm theo mã hóa đơn, tên khách hàng..." class="admin-search-input">
+          <input type="text" placeholder="Tìm theo mã booking, tên khách hàng..." class="admin-search-input">
           <select class="admin-select-filter">
             <option>Tất cả trạng thái</option>
             <option>Đã thanh toán</option>
@@ -56,7 +56,7 @@
           <table class="admin-table">
             <thead>
               <tr>
-                <th>Mã HĐ</th>
+                <th>Mã booking</th>
                 <th>Khách hàng</th>
                 <th>Phòng</th>
                 <th>Ngày tạo</th>
