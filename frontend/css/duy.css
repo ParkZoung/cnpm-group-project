@@ -100,7 +100,7 @@
 .cart-item-price {
   font-size: 19px;
   font-weight: 700;
-  color: var(--navy);
+  color: var(--teal);
   margin-bottom: 8px;
 }
 .cart-item-price small {
@@ -175,9 +175,45 @@
   font-size: 16px;
 }
 .billing-final-price {
-  color: #e53e3e;
+  color: var(--teal);
   font-size: 22px;
   font-weight: 700;
+}
+
+.booking-benefits {
+  margin: 4px 0 18px;
+  padding: 12px 0;
+  border-top: 1px solid #edf2f7;
+  border-bottom: 1px solid #edf2f7;
+}
+
+.booking-benefits p {
+  display: flex;
+  align-items: baseline;
+  gap: 7px;
+  margin: 0 0 7px;
+  color: #008a45;
+  font-size: 13px;
+  line-height: 1.4;
+}
+
+.booking-benefits p:last-child {
+  margin-bottom: 0;
+}
+
+.booking-benefits p > span {
+  flex: 0 0 auto;
+  font-size: 16px;
+  font-weight: 800;
+}
+
+.booking-benefits strong {
+  font-weight: 700;
+}
+
+.booking-benefits small {
+  color: #27735a;
+  font-size: 12px;
 }
 .btn-checkout-action {
   display: block;
@@ -353,7 +389,34 @@
   font-size: 13px;
   color: var(--muted);
   line-height: 1.6;
-  margin-bottom: 34px;
+  margin-bottom: 18px;
+}
+
+.reception-payment-note {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  max-width: 540px;
+  margin: 0 auto 28px;
+  padding: 13px 16px;
+  border: 1px solid rgba(18, 166, 184, 0.38);
+  border-radius: 9px;
+  background: rgba(18, 166, 184, 0.08);
+  color: #0b6270;
+  text-align: left;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.reception-payment-note > span {
+  flex: 0 0 auto;
+  color: var(--teal);
+  font-size: 18px;
+  font-weight: 800;
+}
+
+.reception-payment-note p {
+  margin: 0;
 }
 .success-actions-row {
   display: flex;
@@ -420,7 +483,11 @@
 }
 .table-price {
   font-weight: 700;
-  color: #111111;
+  color: var(--teal);
+}
+
+.billing-row > span:last-child {
+  color: var(--teal);
 }
 
 /* Các nhãn Trạng thái Đơn hàng (Badges) */
