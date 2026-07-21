@@ -7,6 +7,29 @@
   <title>GoStay Admin - Quản lý booking</title>
   <link rel="stylesheet" href="css/base.css">
   <link rel="stylesheet" href="css/bach.css">
+  <style>
+    .booking-modal[hidden] { display: none; }
+    .booking-modal { position: fixed; inset: 0; z-index: 1000; display: grid; place-items: center; padding: 24px; background: rgba(15, 23, 42, .56); }
+    .booking-modal__dialog { width: min(820px, 100%); max-height: calc(100vh - 48px); overflow: auto; padding: 24px; border-radius: 14px; background: #fff; box-shadow: 0 24px 48px rgba(15, 23, 42, .25); }
+    .booking-modal__header { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin-bottom: 20px; }
+    .booking-modal__header h2 { margin: 0; }
+    .booking-modal__close { border: 0; background: transparent; color: #475569; font-size: 28px; line-height: 1; cursor: pointer; }
+    .booking-form-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+    .booking-field { display: flex; flex-direction: column; gap: 7px; color: #334155; font-weight: 600; }
+    .booking-field--full { grid-column: 1 / -1; }
+    .booking-field input, .booking-field select { width: 100%; box-sizing: border-box; padding: 11px 12px; border: 1px solid #cbd5e1; border-radius: 8px; background: #fff; color: #0f172a; font: inherit; }
+    .booking-form-actions { display: flex; justify-content: flex-end; gap: 10px; margin-top: 22px; }
+    .booking-feedback { display: none; margin: 0 0 16px; padding: 11px 13px; border-radius: 8px; }
+    .booking-feedback.is-visible { display: block; }
+    .booking-feedback.is-error { color: #991b1b; background: #fef2f2; }
+    .booking-feedback.is-success { color: #166534; background: #f0fdf4; }
+    .booking-detail-list { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px 20px; margin: 0; }
+    .booking-detail-list dt { margin-bottom: 3px; color: #64748b; font-size: .9rem; }
+    .booking-detail-list dd { margin: 0; color: #0f172a; font-weight: 600; }
+    .booking-status { white-space: nowrap; }
+    .admin-table th { white-space: nowrap; }
+    @media (max-width: 650px) { .booking-form-grid, .booking-detail-list { grid-template-columns: 1fr; } .booking-modal { padding: 12px; } .booking-modal__dialog { max-height: calc(100vh - 24px); padding: 18px; } }
+  </style>
 </head>
 <body class="admin-dashboard-body">
 
@@ -30,7 +53,7 @@
     <header class="admin-topbar">
       <div class="topbar-left"><h1 class="topbar-title">Quản lý booking</h1></div>
       <div class="topbar-right">
-        <div class="topbar-search"><input type="text" placeholder="Tìm kiếm booking..."></div>
+        <div class="topbar-search"><input id="topbarBookingSearch" type="search" placeholder="Tìm kiếm booking..." aria-label="Tìm kiếm booking nhanh"></div>
         <div class="topbar-user"><span class="user-name">Admin Khánh ▾</span></div>
       </div>
     </header>
@@ -39,18 +62,25 @@
       <div class="admin-card-section">
         <div class="section-header-row">
           <h2>Danh sách booking</h2>
-          <button class="btn-primary-admin">+ Tạo booking</button>
+          <button id="createBookingButton" type="button" class="btn-primary-admin">+ Tạo booking</button>
         </div>
 
+        <p id="bookingFeedback" class="booking-feedback" role="status" aria-live="polite"></p>
+
         <div class="admin-filter-bar">
-          <input type="text" placeholder="Tìm theo mã booking, tên khách hàng..." class="admin-search-input">
-          <select class="admin-select-filter">
-            <option>Tất cả trạng thái</option>
-            <option>Đã thanh toán</option>
-            <option>Chờ thanh toán</option>
-            <option>Đã hủy</option>
+          <input id="bookingSearch" type="search" placeholder="Tìm theo mã booking, tên khách hàng..." class="admin-search-input" aria-label="Tìm kiếm booking">
+          <select id="bookingStatusFilter" class="admin-select-filter" aria-label="Lọc trạng thái booking">
+            <option value="all">Tất cả trạng thái booking</option>
+            <option value="confirmed">Đã xác nhận</option>
+            <option value="cancelled">Đã hủy</option>
+            <option value="completed">Hoàn thành</option>
           </select>
-          <button class="btn-primary-admin">Lọc</button>
+          <select id="bookingSort" class="admin-select-filter" aria-label="Sắp xếp booking">
+            <option value="newest">Mới nhất trước</option>
+            <option value="oldest">Cũ nhất trước</option>
+            <option value="checkin-asc">Ngày nhận gần nhất</option>
+          </select>
+          <button id="reloadBookingsButton" type="button" class="btn-primary-admin">Tải lại</button>
         </div>
 
         <div class="admin-table-wrapper">
@@ -60,69 +90,18 @@
                 <th>Mã booking</th>
                 <th>Khách hàng</th>
                 <th>Phòng</th>
-                <th>Ngày tạo</th>
+                <th>Ngày nhận</th>
+                <th>Ngày trả</th>
+                <th>Số khách</th>
                 <th>Tổng tiền</th>
-                <th>Thanh toán</th>
+                <th>Phương thức thanh toán</th>
+                <th>Trạng thái thanh toán</th>
+                <th>Trạng thái booking</th>
                 <th>Thao tác</th>
               </tr>
             </thead>
-            <tbody>
-              <tr>
-                <td>#HD2001</td>
-                <td><strong>Trần Minh Hoàng</strong></td>
-                <td>Deluxe Premium - Nha Trang</td>
-                <td>16/06/2026</td>
-                <td>2.400.000đ</td>
-                <td><span class="status-badge status-success">Đã thanh toán</span></td>
-                <td>
-                  <div class="action-buttons">
-                    <button class="btn-action edit">Xem</button>
-                    <button class="btn-action delete">Xóa</button>
-                  </div>
-                </td>
-              </tr>
-              <tr>
-                <td>#HD2002</td>
-                <td><strong>Lê Thị Mai Anh</strong></td>
-                <td>Standard Room - Phú Quốc</td>
-                <td>16/06/2026</td>
-                <td>1.200.000đ</td>
-                <td><span class="status-badge status-warning">Chờ thanh toán</span></td>
-                <td>
-                  <div class="action-buttons">
-                    <button class="btn-action edit">Xem</button>
-                    <button class="btn-action delete">Xóa</button>
-                  </div>
-                </td>
-              </tr>
-              <tr>
-                <td>#HD2003</td>
-                <td><strong>Nguyễn Văn An</strong></td>
-                <td>Deluxe Premium - Phú Quốc</td>
-                <td>15/06/2026</td>
-                <td>3.600.000đ</td>
-                <td><span class="status-badge status-success">Đã thanh toán</span></td>
-                <td>
-                  <div class="action-buttons">
-                    <button class="btn-action edit">Xem</button>
-                    <button class="btn-action delete">Xóa</button>
-                  </div>
-                </td>
-              </tr>
-              <tr>
-                <td>#HD2004</td>
-                <td><strong>Phạm Thu Hà</strong></td>
-                <td>Standard Room - Nha Trang</td>
-                <td>15/06/2026</td>
-                <td>900.000đ</td>
-                <td><span class="status-badge status-danger">Đã hủy</span></td>
-                <td>
-                  <div class="action-buttons">
-                    <button class="btn-action edit">Xem</button>
-                    <button class="btn-action delete">Xóa</button>
-                  </div>
-                </td>
-              </tr>
+            <tbody id="bookingsTableBody">
+              <tr><td colspan="11">Đang tải dữ liệu booking...</td></tr>
             </tbody>
           </table>
         </div>
@@ -133,6 +112,97 @@
       <p>© 2026 GoStay Admin Control Panel. <span style="float: right;">Version 1.2.0</span></p>
     </footer>
   </div>
+
+  <div id="bookingFormModal" class="booking-modal" hidden role="dialog" aria-modal="true" aria-labelledby="bookingFormTitle">
+    <div class="booking-modal__dialog">
+      <div class="booking-modal__header">
+        <h2 id="bookingFormTitle">Tạo booking</h2>
+        <button type="button" class="booking-modal__close" data-close-modal="bookingFormModal" aria-label="Đóng">×</button>
+      </div>
+      <form id="bookingForm" novalidate>
+        <input id="bookingId" type="hidden">
+        <div class="booking-form-grid">
+          <label class="booking-field">
+            Tên khách hàng
+            <input id="bookingGuestName" type="text" required>
+          </label>
+          <label class="booking-field">
+            Email khách hàng
+            <input id="bookingGuestEmail" type="email" required>
+          </label>
+          <label class="booking-field">
+            Số điện thoại
+            <input id="bookingGuestPhone" type="tel" required>
+          </label>
+          <label class="booking-field">
+            Phòng
+            <select id="bookingRoomId" required><option value="">Đang tải phòng...</option></select>
+          </label>
+          <label class="booking-field">
+            Ngày nhận
+            <input id="bookingCheckIn" type="date" required>
+          </label>
+          <label class="booking-field">
+            Ngày trả
+            <input id="bookingCheckOut" type="date" required>
+          </label>
+          <label class="booking-field">
+            Số khách
+            <input id="bookingGuests" type="number" min="1" step="1" value="1" required>
+          </label>
+          <label class="booking-field">
+            Tổng tiền (VNĐ)
+            <input id="bookingTotal" type="number" min="0" step="1" value="0" required>
+          </label>
+          <label class="booking-field">
+            Phương thức thanh toán
+            <select id="bookingPaymentMethod" required>
+              <option value="pay_at_hotel">Thanh toán tại khách sạn</option>
+              <option value="bank_transfer">Chuyển khoản</option>
+              <option value="card">Thẻ</option>
+            </select>
+          </label>
+          <label class="booking-field">
+            Trạng thái thanh toán
+            <select id="bookingPaymentStatus" required>
+              <option value="unpaid">Chưa thanh toán</option>
+              <option value="paid">Đã thanh toán</option>
+            </select>
+          </label>
+          <label class="booking-field booking-field--full">
+            Trạng thái booking
+            <select id="bookingStatus" required>
+              <option value="confirmed">Đã xác nhận</option>
+              <option value="completed">Hoàn thành</option>
+              <option value="cancelled">Đã hủy</option>
+            </select>
+          </label>
+        </div>
+        <div class="booking-form-actions">
+          <button type="button" class="btn-outline" data-close-modal="bookingFormModal">Hủy</button>
+          <button id="bookingSubmitButton" type="submit" class="btn-primary-admin">Tạo booking</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div id="bookingDetailModal" class="booking-modal" hidden role="dialog" aria-modal="true" aria-labelledby="bookingDetailTitle">
+    <div class="booking-modal__dialog">
+      <div class="booking-modal__header">
+        <h2 id="bookingDetailTitle">Chi tiết booking</h2>
+        <button type="button" class="booking-modal__close" data-close-modal="bookingDetailModal" aria-label="Đóng">×</button>
+      </div>
+      <div id="bookingDetailContent"></div>
+      <div class="booking-form-actions"><button type="button" class="btn-primary-admin" data-close-modal="bookingDetailModal">Đóng</button></div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="js/supabase-client.js"></script>
+
   <script src="js/admin-auth.js"></script>
+
+  <script src="js/admin-bookings.js"></script>
+
 </body>
 </html>
