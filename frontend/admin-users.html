@@ -4,125 +4,118 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="icon" type="image/png" href="images/logo-gostay.png">
-  <title>GoStay Admin - Thành viên</title>
+  <title>GoStay Admin - Quản lý khách hàng</title>
   <link rel="stylesheet" href="css/base.css">
-  <link rel="stylesheet" href="css/duong.css">
+  <link rel="stylesheet" href="css/bach.css">
 </head>
 <body class="admin-dashboard-body">
-
   <aside class="admin-sidebar">
-    <div class="sidebar-brand">
-      <img src="images/sos.png" alt="GoStay Logo" class="sidebar-logo">
-    </div>
+    <div class="sidebar-brand"><img src="images/sos.png" alt="GoStay Logo" class="sidebar-logo"></div>
     <nav class="sidebar-menu">
       <a href="admin-dashboard.html" class="menu-item"><span class="icon">📊</span> Dashboard</a>
       <a href="admin-products.html" class="menu-item"><span class="icon">🛏️</span> Quản lý phòng</a>
-      <a href="admin-room-types.html" class="menu-item "><span class="icon">🏷️</span> Quản lý loại phòng</a>
+      <a href="admin-room-types.html" class="menu-item"><span class="icon">🏷️</span> Quản lý loại phòng</a>
       <a href="admin-categories.html" class="menu-item"><span class="icon">📁</span> Quản lý chi nhánh</a>
       <a href="admin-bookings.html" class="menu-item"><span class="icon">📄</span> Quản lý booking</a>
       <a href="admin-users.html" class="menu-item active"><span class="icon">👥</span> Khách hàng</a>
-      
       <hr class="sidebar-divider">
       <a href="login.html" class="menu-item logout-item"><span class="icon">🚪</span> Đăng xuất</a>
     </nav>
   </aside>
 
-  <div class="admin-main-content">
+  <div class="admin-main-content users-page">
     <header class="admin-topbar">
       <div class="topbar-left"><h1 class="topbar-title">Quản lý khách hàng</h1></div>
       <div class="topbar-right">
-        <div class="topbar-search"><input type="text" placeholder="Tìm kiếm nhanh..."></div>
+        <div class="topbar-search"><input id="topbarCustomerSearch" type="search" placeholder="Tìm kiếm khách hàng..."></div>
         <div class="topbar-user"><span class="user-name">Admin Khánh ▾</span></div>
       </div>
     </header>
 
     <main class="admin-page-container">
-      <div class="admin-card-section">
-        <div class="section-header-row">
-          <h2>Danh sách thành viên hệ thống</h2>
-          <button class="btn-primary-admin">+ Thêm khách hàng</button>
+      <section class="users-hero">
+        <div>
+          <span class="eyebrow">GOSTAY CRM</span>
+          <h2>Khách hàng</h2>
+          <p>Quản lý hồ sơ, vai trò và trạng thái tài khoản trong một nơi.</p>
         </div>
+        <button id="btnOpenAddModal" class="users-primary-btn" type="button"><span>＋</span> Thêm khách hàng</button>
+      </section>
 
-        <div class="admin-filter-bar">
-          <input type="text" placeholder="Tìm kiếm tên, email, số điện thoại..." class="admin-search-input">
-          <select class="admin-select-filter">
-            <option>Tất cả vai trò</option>
-            <option>Admin</option>
-            <option>User</option>
+      <section class="users-stats" aria-label="Thống kê khách hàng">
+        <article><span>Tổng hồ sơ</span><strong id="totalProfiles">—</strong></article>
+        <article><span>Đang hoạt động</span><strong id="activeProfiles">—</strong></article>
+        <article><span>Đã khóa</span><strong id="blockedProfiles">—</strong></article>
+      </section>
+
+      <section class="users-panel">
+        <div class="users-toolbar">
+          <label class="users-search">
+            <span>⌕</span>
+            <input id="inputSearch" type="search" placeholder="Tìm theo họ tên hoặc số điện thoại..." autocomplete="off">
+          </label>
+          <select id="selectRoleFilter" aria-label="Lọc theo vai trò">
+            <option value="">Tất cả vai trò</option>
+            <option value="customer">Khách hàng</option>
+            <option value="admin">Quản trị viên</option>
           </select>
-          <button class="btn-outline" style="padding:11px 20px; font-weight:600; border:1px solid #cbd5e1; background:#fff; border-radius:8px; cursor:pointer;">Lọc</button>
+          <select id="selectStatusFilter" aria-label="Lọc theo trạng thái">
+            <option value="">Tất cả trạng thái</option>
+            <option value="active">Hoạt động</option>
+            <option value="inactive">Ngưng hoạt động</option>
+            <option value="blocked">Đã khóa</option>
+          </select>
+          <button id="btnFilter" class="users-secondary-btn" type="button">Lọc</button>
         </div>
 
-        <div class="admin-table-wrapper">
-          <table class="admin-table">
-            <thead>
-              <tr>
-                <th>ID</th>
-                <th>Họ và tên</th>
-                <th>Tên tài khoản</th>
-                <th>Email</th>
-                <th>Số điện thoại</th>
-                <th>Vai trò</th>
-                <th>Trạng thái</th>
-                <th>Thao tác</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>#USR01</td>
-                <td><strong>Nguyễn Văn Quản Trị</strong></td>
-                <td>admin_gostay</td>
-                <td>admin@gostay.com</td>
-                <td>0901 234 567</td>
-                <td><span class="badge badge-admin">Admin</span></td>
-                <td><span class="status-badge status-success">Hoạt động</span></td>
-                <td>
-                  <div class="action-buttons">
-                    <button class="btn-action edit">Sửa</button>
-                    <button class="btn-action delete">Xóa</button>
-                  </div>
-                </td>
-              </tr>
-              <tr>
-                <td>#USR02</td>
-                <td>Trần Minh Hoàng</td>
-                <td>hoangtm99</td>
-                <td>hoangtm@gmail.com</td>
-                <td>0988 777 666</td>
-                <td><span class="badge badge-user">User</span></td>
-                <td><span class="status-badge status-success">Hoạt động</span></td>
-                <td>
-                  <div class="action-buttons">
-                    <button class="btn-action edit">Sửa</button>
-                    <button class="btn-action delete">Xóa</button>
-                  </div>
-                </td>
-              </tr>
-              <tr>
-                <td>#USR03</td>
-                <td>Lê Thị Mai Anh</td>
-                <td>maianh_le</td>
-                <td>maianh@yahoo.com</td>
-                <td>0912 345 678</td>
-                <td><span class="badge badge-user">User</span></td>
-                <td><span class="status-badge status-danger">Bị khóa</span></td>
-                <td>
-                  <div class="action-buttons">
-                    <button class="btn-action edit">Sửa</button>
-                    <button class="btn-action delete">Xóa</button>
-                  </div>
-                </td>
-              </tr>
-            </tbody>
+        <div id="pageMessage" class="users-message" role="status" hidden></div>
+        <div class="admin-table-wrapper users-table-wrap">
+          <table class="admin-table users-table">
+            <thead><tr><th>Khách hàng</th><th>Số điện thoại</th><th>Vai trò</th><th>Trạng thái</th><th>Ngày tạo</th><th class="actions-col">Thao tác</th></tr></thead>
+            <tbody id="profilesTableBody"><tr><td colspan="6" class="users-empty">Đang tải dữ liệu...</td></tr></tbody>
           </table>
         </div>
-      </div>
+      </section>
     </main>
 
-    <footer class="admin-footer">
-      <p>© 2026 GoStay Admin Control Panel. <span style="float: right;">Version 1.2.0</span></p>
-    </footer>
+    <footer class="admin-footer"><p>© 2026 GoStay Admin Control Panel. <span style="float:right">Version 1.2.0</span></p></footer>
   </div>
+
+  <div id="profileModal" class="users-modal" hidden>
+    <div class="users-modal-backdrop" data-close-modal></div>
+    <section class="users-modal-card" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+      <div class="users-modal-header">
+        <div><span class="eyebrow">HỒ SƠ KHÁCH HÀNG</span><h2 id="modalTitle">Thêm khách hàng</h2></div>
+        <button id="btnCloseModal" class="users-icon-btn" type="button" aria-label="Đóng">×</button>
+      </div>
+      <form id="profileForm">
+        <input id="profileId" type="hidden">
+        <div id="accountFields" class="users-form-grid">
+          <label>Email <input id="profileEmail" type="email" placeholder="customer@example.com"></label>
+          <label>Mật khẩu <input id="profilePassword" type="password" minlength="6" placeholder="Tối thiểu 6 ký tự"></label>
+        </div>
+        <p id="accountHint" class="users-form-hint">Tài khoản Supabase Auth sẽ được tạo trước; UUID trả về sẽ dùng làm <code>profiles.id</code>.</p>
+        <div class="users-form-grid">
+          <label>Họ và tên <input id="profileFullName" type="text" maxlength="120" required></label>
+          <label>Số điện thoại <input id="profilePhone" type="tel" maxlength="20"></label>
+          <label>Vai trò
+            <select id="profileRole" required><option value="customer">Khách hàng</option><option value="admin">Quản trị viên</option></select>
+          </label>
+          <label>Trạng thái
+            <select id="profileStatus" required><option value="active">Hoạt động</option><option value="inactive">Ngưng hoạt động</option><option value="blocked">Đã khóa</option></select>
+          </label>
+        </div>
+        <div class="users-modal-actions">
+          <button class="users-secondary-btn" type="button" data-close-modal>Hủy</button>
+          <button id="btnSaveProfile" class="users-primary-btn" type="submit">Lưu hồ sơ</button>
+        </div>
+      </form>
+    </section>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="js/supabase-client.js"></script>
   <script src="js/admin-auth.js"></script>
+  <script src="js/admin-profiles.js"></script>
 </body>
 </html>
