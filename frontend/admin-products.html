@@ -36,25 +36,83 @@
     </header>
 
     <main class="admin-page-container">
+      <div class="admin-card-section" style="margin-bottom: 24px;">
+        <div class="section-header-row">
+          <h2 id="room-form-title">Thêm phòng mới</h2>
+        </div>
+
+        <form id="room-form">
+          <input type="hidden" id="room-id">
+
+          <div class="admin-filter-bar" style="flex-wrap: wrap;">
+            <div style="flex: 1 1 160px;">
+              <label style="display:block; font-size:12px; font-weight:600; color:#475569; margin-bottom:4px;">Số phòng *</label>
+              <input type="text" id="room-number" placeholder="VD: 101" class="admin-search-input" required>
+            </div>
+            <div style="flex: 1 1 220px;">
+              <label style="display:block; font-size:12px; font-weight:600; color:#475569; margin-bottom:4px;">Tên phòng *</label>
+              <input type="text" id="room-name" placeholder="VD: Deluxe Sea View 101" class="admin-search-input" required>
+            </div>
+            <div style="flex: 1 1 200px;">
+              <label style="display:block; font-size:12px; font-weight:600; color:#475569; margin-bottom:4px;">Chi nhánh *</label>
+              <select id="room-branch" class="admin-select-filter" style="width:100%;" required>
+                <option value="">-- Chọn chi nhánh --</option>
+              </select>
+            </div>
+            <div style="flex: 1 1 200px;">
+              <label style="display:block; font-size:12px; font-weight:600; color:#475569; margin-bottom:4px;">Loại phòng *</label>
+              <select id="room-type" class="admin-select-filter" style="width:100%;" required>
+                <option value="">-- Chọn loại phòng --</option>
+              </select>
+            </div>
+            <div style="flex: 1 1 160px;">
+              <label style="display:block; font-size:12px; font-weight:600; color:#475569; margin-bottom:4px;">Giá / đêm (VNĐ) *</label>
+              <input type="number" id="room-price" min="1" placeholder="VD: 700000" class="admin-search-input" required>
+            </div>
+            <div style="flex: 1 1 160px;">
+              <label style="display:block; font-size:12px; font-weight:600; color:#475569; margin-bottom:4px;">Trạng thái *</label>
+              <select id="room-status" class="admin-select-filter" style="width:100%;" required>
+                <option value="available">Còn trống</option>
+                <option value="maintenance">Đang dọn</option>
+                <option value="inactive">Hết phòng</option>
+              </select>
+            </div>
+            <div style="flex: 1 1 100%;">
+              <label style="display:block; font-size:12px; font-weight:600; color:#475569; margin-bottom:4px;">Mô tả</label>
+              <input type="text" id="room-description" placeholder="Mô tả thêm (không bắt buộc)" class="admin-search-input">
+            </div>
+          </div>
+
+          <div style="margin-top: 14px; display:flex; gap:10px; align-items:center;">
+            <button type="submit" id="room-submit-btn" class="btn-primary-admin">Lưu phòng</button>
+            <button type="button" id="room-reset-btn" class="btn-action edit">Làm mới form</button>
+            <span id="room-message" style="font-size:13px;"></span>
+          </div>
+        </form>
+      </div>
+
       <div class="admin-card-section">
         <div class="section-header-row">
           <h2>Danh sách phòng</h2>
-          <button class="btn-primary-admin">+ Thêm phòng</button>
         </div>
 
         <div class="admin-filter-bar">
-          <input type="text" placeholder="Tìm theo mã, tên phòng..." class="admin-search-input">
-          <select class="admin-select-filter">
-            <option>Tất cả chi nhánh</option>
-            <option>GoStay Nha Trang</option>
-            <option>GoStay Phú Quốc</option>
+          <input type="text" id="room-search" placeholder="Tìm theo mã, tên phòng..." class="admin-search-input">
+          <select id="room-filter-branch" class="admin-select-filter">
+            <option value="">Tất cả chi nhánh</option>
           </select>
-          <select class="admin-select-filter">
-            <option>Tất cả trạng thái</option>
-            <option>Còn trống</option>
-            <option>Hết phòng</option>
+          <select id="room-filter-status" class="admin-select-filter">
+            <option value="">Tất cả trạng thái</option>
+            <option value="available">Còn trống</option>
+            <option value="maintenance">Đang dọn</option>
+            <option value="inactive">Hết phòng</option>
           </select>
-          <button class="btn-primary-admin">Lọc</button>
+          <select id="room-sort" class="admin-select-filter">
+            <option value="">Sắp xếp mặc định</option>
+            <option value="price-asc">Giá thấp → cao</option>
+            <option value="price-desc">Giá cao → thấp</option>
+          </select>
+          <button id="room-filter-btn" class="btn-primary-admin">Lọc</button>
         </div>
 
         <div class="admin-table-wrapper">
@@ -70,63 +128,7 @@
                 <th>Thao tác</th>
               </tr>
             </thead>
-            <tbody>
-              <tr>
-                <td>P101</td>
-                <td><strong>Deluxe Sea View 101</strong></td>
-                <td>Deluxe Premium</td>
-                <td>GoStay Nha Trang</td>
-                <td>1.800.000đ</td>
-                <td><span class="status-badge status-success">Còn trống</span></td>
-                <td>
-                  <div class="action-buttons">
-                    <button class="btn-action edit">Sửa</button>
-                    <button class="btn-action delete">Xóa</button>
-                  </div>
-                </td>
-              </tr>
-              <tr>
-                <td>P102</td>
-                <td><strong>Standard Garden 102</strong></td>
-                <td>Standard Room</td>
-                <td>GoStay Nha Trang</td>
-                <td>900.000đ</td>
-                <td><span class="status-badge status-danger">Hết phòng</span></td>
-                <td>
-                  <div class="action-buttons">
-                    <button class="btn-action edit">Sửa</button>
-                    <button class="btn-action delete">Xóa</button>
-                  </div>
-                </td>
-              </tr>
-              <tr>
-                <td>P201</td>
-                <td><strong>Deluxe Ocean 201</strong></td>
-                <td>Deluxe Premium</td>
-                <td>GoStay Phú Quốc</td>
-                <td>2.200.000đ</td>
-                <td><span class="status-badge status-success">Còn trống</span></td>
-                <td>
-                  <div class="action-buttons">
-                    <button class="btn-action edit">Sửa</button>
-                    <button class="btn-action delete">Xóa</button>
-                  </div>
-                </td>
-              </tr>
-              <tr>
-                <td>P202</td>
-                <td><strong>Standard Twin 202</strong></td>
-                <td>Standard Room</td>
-                <td>GoStay Phú Quốc</td>
-                <td>1.100.000đ</td>
-                <td><span class="status-badge status-warning">Đang dọn</span></td>
-                <td>
-                  <div class="action-buttons">
-                    <button class="btn-action edit">Sửa</button>
-                    <button class="btn-action delete">Xóa</button>
-                  </div>
-                </td>
-              </tr>
+            <tbody id="room-table-body">
             </tbody>
           </table>
         </div>
@@ -137,6 +139,9 @@
       <p>© 2026 GoStay Admin Control Panel. <span style="float: right;">Version 1.2.0</span></p>
     </footer>
   </div>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="js/supabase-client.js"></script>
+  <script src="js/admin-rooms.js"></script>
   <script src="js/admin-auth.js"></script>
 </body>
 </html>
