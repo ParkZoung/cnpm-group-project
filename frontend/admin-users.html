@@ -4,125 +4,139 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="icon" type="image/png" href="images/logo-gostay.png">
-  <title>GoStay Admin - Thành viên</title>
+  <title>GoStay Admin - Quản lý khách hàng</title>
   <link rel="stylesheet" href="css/base.css">
-  <link rel="stylesheet" href="css/duong.css">
+  <link rel="stylesheet" href="css/bach.css">
+  <style>
+    /* ===== TRANG QUAN LY KHACH HANG ===== */
+.users-page { --users-accent:#0f766e; --users-dark:#0b3558; --users-muted:#64748b; --users-line:#e2e8f0; background:#f8fafc; }
+.users-page .admin-page-container { padding:32px 40px; }
+.users-hero { display:flex; align-items:center; justify-content:space-between; gap:24px; padding:28px 30px; color:#fff; border-radius:16px; background:linear-gradient(120deg,#0b3558,#0f766e); box-shadow:0 12px 30px rgba(11,53,88,.14); }
+.users-hero h2 { margin:4px 0 6px; font-size:30px; }.users-hero p { margin:0; color:#ccfbf1; }
+.eyebrow { color:#99f6e4; font-size:11px; font-weight:800; letter-spacing:.14em; }
+.users-primary-btn,.users-secondary-btn,.users-icon-btn { border:0; cursor:pointer; font:inherit; }
+.users-primary-btn { display:inline-flex; min-height:42px; padding:0 18px; align-items:center; justify-content:center; gap:7px; color:#fff; font-weight:700; border-radius:9px; background:var(--users-accent); }.users-hero .users-primary-btn { color:var(--users-dark); background:#fff; }.users-primary-btn:disabled { opacity:.65; cursor:not-allowed; }
+.users-secondary-btn { min-height:42px; padding:0 17px; color:#475569; font-weight:700; border:1px solid #cbd5e1; border-radius:9px; background:#fff; }
+.users-stats { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:18px; margin:22px 0; }.users-stats article { display:flex; align-items:center; justify-content:space-between; padding:20px 22px; border:1px solid var(--users-line); border-radius:14px; background:#fff; }.users-stats span { color:var(--users-muted); font-weight:600; }.users-stats strong { color:var(--users-dark); font-size:26px; }
+.users-panel { overflow:hidden; border:1px solid var(--users-line); border-radius:14px; background:#fff; box-shadow:0 5px 18px rgba(11,53,88,.05); }
+.users-toolbar { display:flex; gap:12px; padding:18px; border-bottom:1px solid var(--users-line); }.users-toolbar select,.users-search { min-height:44px; border:1px solid #cbd5e1; border-radius:9px; background:#fff; }.users-toolbar select { padding:0 32px 0 12px; color:#334155; }.users-search { display:flex; flex:1; align-items:center; gap:8px; padding:0 14px; }.users-search span { color:#94a3b8; font-size:22px; }.users-search input { width:100%; border:0; outline:0; font:inherit; }
+.users-table { min-width:790px; }.users-table th { font-size:12px; letter-spacing:.04em; text-transform:uppercase; }.users-table td { vertical-align:middle; }.users-person { display:flex; align-items:center; gap:11px; }.users-avatar { display:grid; width:38px; height:38px; place-items:center; flex:none; color:#fff; font-weight:800; border-radius:10px; background:linear-gradient(135deg,#14b8a6,#0b3558); }.users-person strong,.users-person small { display:block; }.users-person small { color:#94a3b8; }
+.users-pill { display:inline-flex; padding:5px 9px; font-size:12px; font-weight:700; border-radius:999px; }.role-admin { color:#6d28d9; background:#ede9fe; }.role-customer { color:#0369a1; background:#e0f2fe; }.status-active { color:#047857; background:#d1fae5; }.status-inactive { color:#a16207; background:#fef3c7; }.status-blocked { color:#b91c1c; background:#fee2e2; }
+.actions-col { text-align:right!important; }.users-actions { display:flex; justify-content:flex-end; gap:7px; }.users-action { padding:7px 10px; color:#0f766e; font-weight:700; border:1px solid #99f6e4; border-radius:7px; background:#f0fdfa; cursor:pointer; }.users-action.delete { color:#dc2626; border-color:#fecaca; background:#fff7f7; }.users-empty { padding:42px!important; text-align:center; color:#64748b; }
+.users-message { margin:14px 18px 0; padding:11px 14px; color:#9f1239; border-radius:9px; background:#fff1f2; }.users-message.success { color:#047857; background:#ecfdf5; }
+.users-modal[hidden] { display:none; }.users-modal { --users-accent:#0f766e; --users-dark:#0b3558; position:fixed; z-index:1000; inset:0; display:grid; place-items:center; padding:20px; }.users-modal-backdrop { position:absolute; inset:0; background:rgba(15,23,42,.62); backdrop-filter:blur(3px); }.users-modal-card { position:relative; width:min(620px,100%); padding:26px; border-radius:16px; background:#fff; box-shadow:0 24px 70px rgba(15,23,42,.3); }.users-modal-header { display:flex; align-items:flex-start; justify-content:space-between; margin-bottom:22px; }.users-modal-header h2 { margin:4px 0 0; color:var(--users-dark); }.users-modal-header .eyebrow { color:var(--users-accent); }.users-icon-btn { width:36px; height:36px; color:#64748b; font-size:27px; border-radius:9px; background:#f1f5f9; }
+.users-form-grid { display:grid; grid-template-columns:1fr 1fr; gap:16px; }.users-form-grid label { color:#334155; font-size:13px; font-weight:700; }.users-form-grid input,.users-form-grid select { box-sizing:border-box; width:100%; height:44px; margin-top:7px; padding:0 12px; border:1px solid #cbd5e1; border-radius:8px; outline:none; font:inherit; }.users-form-grid input:focus,.users-form-grid select:focus { border-color:#14b8a6; box-shadow:0 0 0 3px #ccfbf1; }.users-form-hint { margin:10px 0 18px; color:#64748b; font-size:12px; }.users-modal-actions { display:flex; justify-content:flex-end; gap:10px; margin-top:24px; }
+@media(max-width:850px) { .users-page .admin-page-container{padding:18px}.users-hero{align-items:flex-start;flex-direction:column}.users-stats{grid-template-columns:1fr}.users-toolbar{align-items:stretch;flex-direction:column}.users-form-grid{grid-template-columns:1fr} }
+
+  </style>
 </head>
 <body class="admin-dashboard-body">
-
   <aside class="admin-sidebar">
-    <div class="sidebar-brand">
-      <img src="images/sos.png" alt="GoStay Logo" class="sidebar-logo">
-    </div>
+    <div class="sidebar-brand"><img src="images/sos.png" alt="GoStay Logo" class="sidebar-logo"></div>
     <nav class="sidebar-menu">
       <a href="admin-dashboard.html" class="menu-item"><span class="icon">📊</span> Dashboard</a>
       <a href="admin-products.html" class="menu-item"><span class="icon">🛏️</span> Quản lý phòng</a>
-      <a href="admin-room-types.html" class="menu-item "><span class="icon">🏷️</span> Quản lý loại phòng</a>
+      <a href="admin-room-types.html" class="menu-item"><span class="icon">🏷️</span> Quản lý loại phòng</a>
       <a href="admin-categories.html" class="menu-item"><span class="icon">📁</span> Quản lý chi nhánh</a>
       <a href="admin-bookings.html" class="menu-item"><span class="icon">📄</span> Quản lý booking</a>
       <a href="admin-users.html" class="menu-item active"><span class="icon">👥</span> Khách hàng</a>
-      
       <hr class="sidebar-divider">
       <a href="login.html" class="menu-item logout-item"><span class="icon">🚪</span> Đăng xuất</a>
     </nav>
   </aside>
 
-  <div class="admin-main-content">
+  <div class="admin-main-content users-page">
     <header class="admin-topbar">
       <div class="topbar-left"><h1 class="topbar-title">Quản lý khách hàng</h1></div>
       <div class="topbar-right">
-        <div class="topbar-search"><input type="text" placeholder="Tìm kiếm nhanh..."></div>
+        <div class="topbar-search"><input id="topbarCustomerSearch" type="search" placeholder="Tìm kiếm khách hàng..."></div>
         <div class="topbar-user"><span class="user-name">Admin Khánh ▾</span></div>
       </div>
     </header>
 
     <main class="admin-page-container">
-      <div class="admin-card-section">
-        <div class="section-header-row">
-          <h2>Danh sách thành viên hệ thống</h2>
-          <button class="btn-primary-admin">+ Thêm khách hàng</button>
+      <section class="users-hero">
+        <div>
+          <span class="eyebrow">GOSTAY CRM</span>
+          <h2>Khách hàng</h2>
+          <p>Quản lý hồ sơ, vai trò và trạng thái tài khoản trong một nơi.</p>
         </div>
+        <button id="btnOpenAddModal" class="users-primary-btn" type="button"><span>＋</span> Thêm khách hàng</button>
+      </section>
 
-        <div class="admin-filter-bar">
-          <input type="text" placeholder="Tìm kiếm tên, email, số điện thoại..." class="admin-search-input">
-          <select class="admin-select-filter">
-            <option>Tất cả vai trò</option>
-            <option>Admin</option>
-            <option>User</option>
+      <section class="users-stats" aria-label="Thống kê khách hàng">
+        <article><span>Tổng hồ sơ</span><strong id="totalProfiles">—</strong></article>
+        <article><span>Đang hoạt động</span><strong id="activeProfiles">—</strong></article>
+        <article><span>Đã khóa</span><strong id="blockedProfiles">—</strong></article>
+      </section>
+
+      <section class="users-panel">
+        <div class="users-toolbar">
+          <label class="users-search">
+            <span>⌕</span>
+            <input id="inputSearch" type="search" placeholder="Tìm theo họ tên hoặc số điện thoại..." autocomplete="off">
+          </label>
+          <select id="selectRoleFilter" aria-label="Lọc theo vai trò">
+            <option value="">Tất cả vai trò</option>
+            <option value="customer">Khách hàng</option>
+            <option value="admin">Quản trị viên</option>
           </select>
-          <button class="btn-outline" style="padding:11px 20px; font-weight:600; border:1px solid #cbd5e1; background:#fff; border-radius:8px; cursor:pointer;">Lọc</button>
+          <select id="selectStatusFilter" aria-label="Lọc theo trạng thái">
+            <option value="">Tất cả trạng thái</option>
+            <option value="active">Hoạt động</option>
+            <option value="inactive">Ngưng hoạt động</option>
+            <option value="blocked">Đã khóa</option>
+          </select>
+          <button id="btnFilter" class="users-secondary-btn" type="button">Lọc</button>
         </div>
 
-        <div class="admin-table-wrapper">
-          <table class="admin-table">
-            <thead>
-              <tr>
-                <th>ID</th>
-                <th>Họ và tên</th>
-                <th>Tên tài khoản</th>
-                <th>Email</th>
-                <th>Số điện thoại</th>
-                <th>Vai trò</th>
-                <th>Trạng thái</th>
-                <th>Thao tác</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>#USR01</td>
-                <td><strong>Nguyễn Văn Quản Trị</strong></td>
-                <td>admin_gostay</td>
-                <td>admin@gostay.com</td>
-                <td>0901 234 567</td>
-                <td><span class="badge badge-admin">Admin</span></td>
-                <td><span class="status-badge status-success">Hoạt động</span></td>
-                <td>
-                  <div class="action-buttons">
-                    <button class="btn-action edit">Sửa</button>
-                    <button class="btn-action delete">Xóa</button>
-                  </div>
-                </td>
-              </tr>
-              <tr>
-                <td>#USR02</td>
-                <td>Trần Minh Hoàng</td>
-                <td>hoangtm99</td>
-                <td>hoangtm@gmail.com</td>
-                <td>0988 777 666</td>
-                <td><span class="badge badge-user">User</span></td>
-                <td><span class="status-badge status-success">Hoạt động</span></td>
-                <td>
-                  <div class="action-buttons">
-                    <button class="btn-action edit">Sửa</button>
-                    <button class="btn-action delete">Xóa</button>
-                  </div>
-                </td>
-              </tr>
-              <tr>
-                <td>#USR03</td>
-                <td>Lê Thị Mai Anh</td>
-                <td>maianh_le</td>
-                <td>maianh@yahoo.com</td>
-                <td>0912 345 678</td>
-                <td><span class="badge badge-user">User</span></td>
-                <td><span class="status-badge status-danger">Bị khóa</span></td>
-                <td>
-                  <div class="action-buttons">
-                    <button class="btn-action edit">Sửa</button>
-                    <button class="btn-action delete">Xóa</button>
-                  </div>
-                </td>
-              </tr>
-            </tbody>
+        <div id="pageMessage" class="users-message" role="status" hidden></div>
+        <div class="admin-table-wrapper users-table-wrap">
+          <table class="admin-table users-table">
+            <thead><tr><th>Khách hàng</th><th>Số điện thoại</th><th>Vai trò</th><th>Trạng thái</th><th>Ngày tạo</th><th class="actions-col">Thao tác</th></tr></thead>
+            <tbody id="profilesTableBody"><tr><td colspan="6" class="users-empty">Đang tải dữ liệu...</td></tr></tbody>
           </table>
         </div>
-      </div>
+      </section>
     </main>
 
-    <footer class="admin-footer">
-      <p>© 2026 GoStay Admin Control Panel. <span style="float: right;">Version 1.2.0</span></p>
-    </footer>
+    <footer class="admin-footer"><p>© 2026 GoStay Admin Control Panel. <span style="float:right">Version 1.2.0</span></p></footer>
   </div>
-  <script src="js/admin-auth.js"></script>
+
+  <div id="profileModal" class="users-modal" hidden>
+    <div class="users-modal-backdrop" data-close-modal></div>
+    <section class="users-modal-card" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+      <div class="users-modal-header">
+        <div><span class="eyebrow">HỒ SƠ KHÁCH HÀNG</span><h2 id="modalTitle">Thêm khách hàng</h2></div>
+        <button id="btnCloseModal" class="users-icon-btn" type="button" aria-label="Đóng">×</button>
+      </div>
+      <form id="profileForm">
+        <input id="profileId" type="hidden">
+        <div id="accountFields" class="users-form-grid">
+          <label>Email <input id="profileEmail" type="email" placeholder="customer@example.com"></label>
+          <label>Mật khẩu <input id="profilePassword" type="password" minlength="6" placeholder="Tối thiểu 6 ký tự"></label>
+        </div>
+        <p id="accountHint" class="users-form-hint">Tài khoản Supabase Auth sẽ được tạo trước; UUID trả về sẽ dùng làm <code>profiles.id</code>.</p>
+        <div class="users-form-grid">
+          <label>Họ và tên <input id="profileFullName" type="text" maxlength="120" required></label>
+          <label>Số điện thoại <input id="profilePhone" type="tel" maxlength="20"></label>
+          <label>Vai trò
+            <select id="profileRole" required><option value="customer">Khách hàng</option><option value="admin">Quản trị viên</option></select>
+          </label>
+          <label>Trạng thái
+            <select id="profileStatus" required><option value="active">Hoạt động</option><option value="inactive">Ngưng hoạt động</option><option value="blocked">Đã khóa</option></select>
+          </label>
+        </div>
+        <div class="users-modal-actions">
+          <button class="users-secondary-btn" type="button" data-close-modal>Hủy</button>
+          <button id="btnSaveProfile" class="users-primary-btn" type="submit">Lưu hồ sơ</button>
+        </div>
+      </form>
+    </section>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="js/supabase-client.js"></script>
+  <script src="js/admin-profiles.js"></script>
 </body>
 </html>
