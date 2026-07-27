@@ -1,114 +1,124 @@
 document.addEventListener('DOMContentLoaded', function () {
-  showCurrentUser();
-  setupLogout();
   setupRegisterForm();
-  setupLoginForm();
-});
+  setupSupabaseLogin();
+}, { once: true });
 
-function getCurrentUser() {
-  const savedUser = localStorage.getItem('gostayCurrentUser');
+async function setupSupabaseLogin() {
+  const loginForm = document.getElementById('login-form');
+  const emailInput = document.getElementById('login-email');
+  const passwordInput = document.getElementById('login-password');
+  const submitButton = document.getElementById('login-submit');
+  const statusElement = document.getElementById('login-status');
 
-  if (!savedUser) {
-    return null;
-  }
-
-  return JSON.parse(savedUser);
-}
-
-function showCurrentUser() {
-  const authArea = document.querySelector('.auth');
-  const currentUser = getCurrentUser();
-
-  if (!authArea || !currentUser) {
+  if (!loginForm || !emailInput || !passwordInput || !submitButton || !statusElement) {
     return;
   }
 
-  const displayName = currentUser.name || currentUser.email;
-
-  authArea.innerHTML = '';
-
-  const userArea = document.createElement('div');
-  userArea.className = 'user-area';
-
-  const userPill = document.createElement('span');
-  userPill.className = 'user-pill';
-  userPill.textContent = 'Xin chao, ' + displayName;
-
-  const logoutLink = document.createElement('a');
-  logoutLink.className = 'logout-link';
-  logoutLink.href = '#';
-  logoutLink.id = 'logout-link';
-  logoutLink.textContent = 'Dang xuat';
-
-  userArea.appendChild(userPill);
-  userArea.appendChild(logoutLink);
-  authArea.appendChild(userArea);
-}
-
-function setupLogout() {
-  const logoutLink = document.getElementById('logout-link');
-
-  if (!logoutLink) {
+  if (loginForm.dataset.authBound === 'true') {
     return;
   }
 
-  logoutLink.addEventListener('click', function (event) {
-    event.preventDefault();
-    localStorage.removeItem('gostayCurrentUser');
-    alert('Logged out successfully');
-    window.location.href = 'index.html';
-  });
-}
+  loginForm.dataset.authBound = 'true';
 
-function setupLoginForm() {
-  const loginForm = document.querySelector('.auth-form');
-
-  if (!loginForm || document.getElementById('fullname')) {
+  if (!window.gostaySupabase) {
+    setLoginStatus(statusElement, 'Không thể khởi tạo dịch vụ đăng nhập. Vui lòng tải lại trang.', 'error');
+    submitButton.disabled = true;
     return;
   }
 
-  loginForm.addEventListener('submit', function (event) {
+  setLoginLoading(submitButton, statusElement, true, 'Đang kiểm tra phiên đăng nhập...');
+
+  try {
+    const { data, error } = await window.gostaySupabase.auth.getSession();
+
+    if (error) {
+      throw error;
+    }
+
+    if (data.session) {
+      window.location.replace('search.html');
+      return;
+    }
+  } catch (error) {
+    setLoginStatus(statusElement, getFriendlyAuthError(error, 'Không thể kiểm tra phiên đăng nhập.'), 'error');
+  } finally {
+    setLoginLoading(submitButton, statusElement, false);
+  }
+
+  loginForm.addEventListener('submit', async function (event) {
     event.preventDefault();
 
-    const emailInput = loginForm.querySelector('input[type="text"]');
-    const passwordInput = loginForm.querySelector('input[type="password"]');
     const email = emailInput.value.trim();
-    const password = passwordInput.value.trim();
+    const password = passwordInput.value;
 
-    // Check that the user entered both fields before demo login.
-    if (email === '' || password === '') {
-      alert('Please enter both email and password.');
+    if (!email || !emailInput.validity.valid) {
+      setLoginStatus(statusElement, 'Vui lòng nhập địa chỉ email hợp lệ.', 'error');
+      emailInput.focus();
       return;
     }
 
-    // Demo only: real admin login must be checked by a backend later.
-    if (email.toLowerCase() === 'admin@gostay.vn' && password === 'admin123') {
-      const adminUser = {
-        name: 'Admin GoStay',
-        email: 'admin@gostay.vn',
-        role: 'admin',
-        loginTime: new Date().toISOString()
-      };
-
-      localStorage.setItem('gostayCurrentUser', JSON.stringify(adminUser));
-
-      alert('Đăng nhập admin thành công');
-      window.location.href = 'admin-dashboard.html';
+    if (!password) {
+      setLoginStatus(statusElement, 'Vui lòng nhập mật khẩu.', 'error');
+      passwordInput.focus();
       return;
     }
 
-    const currentUser = {
-      email: email,
-      name: email,
-      role: 'customer',
-      loginTime: new Date().toISOString()
-    };
+    setLoginLoading(submitButton, statusElement, true, 'Đang đăng nhập...');
 
-    localStorage.setItem('gostayCurrentUser', JSON.stringify(currentUser));
+    try {
+      const { data, error } = await window.gostaySupabase.auth.signInWithPassword({
+        email: email,
+        password: password
+      });
 
-    alert('Đăng nhập thành công');
-    window.location.href = 'index.html';
+      if (error) {
+        throw error;
+      }
+
+      if (!data.session || !data.user) {
+        throw new Error('Supabase không trả về phiên đăng nhập hợp lệ.');
+      }
+
+      setLoginStatus(statusElement, 'Đăng nhập thành công. Đang chuyển trang...', 'success');
+      window.location.assign('search.html');
+    } catch (error) {
+      setLoginStatus(statusElement, getFriendlyAuthError(error, 'Không thể đăng nhập. Vui lòng thử lại.'), 'error');
+      setLoginLoading(submitButton, statusElement, false);
+    }
   });
+}
+
+function setLoginLoading(button, statusElement, isLoading, message) {
+  button.disabled = isLoading;
+  button.textContent = isLoading ? 'Đang xử lý...' : 'Đăng Nhập';
+
+  if (message) {
+    setLoginStatus(statusElement, message, 'loading');
+  }
+}
+
+function setLoginStatus(statusElement, message, type) {
+  statusElement.hidden = !message;
+  statusElement.textContent = message || '';
+  statusElement.dataset.status = type || '';
+}
+
+function getFriendlyAuthError(error, fallbackMessage) {
+  const message = String(error && error.message ? error.message : '').toLowerCase();
+
+  if (message.includes('invalid login credentials')) {
+    return 'Email hoặc mật khẩu không đúng.';
+  }
+
+  if (message.includes('email not confirmed')) {
+    return 'Email chưa được xác nhận. Vui lòng kiểm tra hộp thư của bạn.';
+  }
+
+  if (message.includes('failed to fetch') || message.includes('network')) {
+    return 'Không thể kết nối dịch vụ đăng nhập. Vui lòng kiểm tra mạng và thử lại.';
+  }
+
+  return fallbackMessage;
 }
 
 function setupRegisterForm() {
@@ -133,7 +143,6 @@ function setupRegisterForm() {
     const username = usernameInput.value.trim();
     const password = passwordInput.value.trim();
 
-    // This is a simple demo validation for students learning JavaScript.
     if (fullname === '' || email === '' || phone === '' || username === '' || password === '') {
       alert('Please fill in all fields.');
       return;

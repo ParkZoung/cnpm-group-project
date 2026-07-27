@@ -38,13 +38,6 @@
           <label for="branch-filter">Lựa chọn chi nhánh</label>
           <select id="branch-filter" name="branch">
             <option value="">Tất cả chi nhánh</option>
-            <option value="Phú Quốc">Phú Quốc</option>
-            <option value="Nha Trang">Nha Trang</option>
-            <option value="Hội An">Hội An</option>
-            <option value="Hà Tĩnh">Hà Tĩnh</option>
-            <option value="Nghệ An">Nghệ An</option>
-            <option value="Bắc Ninh">Bắc Ninh</option>
-            <option value="Quảng Ninh">Quảng Ninh</option>
           </select>
         </div>
 
@@ -67,12 +60,7 @@
 
         <div class="filter-group">
           <label>Loại phòng nghỉ</label>
-          <div class="checkbox-group">
-            <label><input type="checkbox" value="don-basic"> Phòng đơn - Basic</label>
-            <label><input type="checkbox" value="don-vip"> Phòng đơn - VIP</label>
-            <label><input type="checkbox" value="doi-basic"> Phòng đôi - Basic</label>
-            <label><input type="checkbox" value="doi-vip"> Phòng đôi - VIP</label>
-          </div>
+          <div class="checkbox-group" id="room-type-filters"></div>
         </div>
         <button type="button" class="btn-apply-filter">Áp dụng bộ lọc</button>
       </form>
@@ -80,161 +68,13 @@
 
     <section class="search-results-section">
       <div class="results-header">
+        <p id="catalog-loading" role="status">Đang tải danh sách phòng...</p>
+        <p id="catalog-error" role="alert" hidden></p>
+        <p id="catalog-empty" role="status" hidden>Không tìm thấy phòng phù hợp.</p>
+        <p id="catalog-result-count" role="status" hidden></p>
       </div>
 
-      <div class="rooms-search-grid">
-        
-        <article class="room-search-card">
-          <div class="room-img-wrap">
-            <img src="https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=400&q=80" alt="Sunrise Premier Room">
-          </div>
-          <div class="room-search-body">
-            <h3>Deluxe Hướng Vườn Giường Đôi - GoStay Fiesta Phú Quốc</h3>
-            <div class="room-meta">
-              <span class="icon-pin">📍</span> Phú Quốc &bull; 🛏️ Phòng đôi - VIP
-            </div>
-            <div class="room-price">850.000đ / đêm</div>
-            <div class="room-status status-available">✓ Còn 5 phòng</div>
-            <a href="room1.html" class="btn-view-detail">Xem chi tiết</a>
-          </div>
-        </article>
-
-        <article class="room-search-card">
-          <div class="room-img-wrap">
-            <img src="https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?auto=format&fit=crop&w=400&q=80" alt="Ocean Vista Studio">
-          </div>
-          <div class="room-search-body">
-            <h3>Deluxe Hướng Biển 2 Giường Đơn - GoStay Wonderworld Phú Quốc</h3>
-            <div class="room-meta">
-              <span class="icon-pin">📍</span> Phú Quốc &bull; 🛏️ Phòng đơn - VIP
-            </div>
-            <div class="room-price">1.250.000đ / đêm</div>
-            <div class="room-status status-available">✓ Còn 3 phòng</div>
-            <a href="room2.html" class="btn-view-detail">Xem chi tiết</a>
-          </div>
-        </article>
-
-        <article class="room-search-card">
-          <div class="room-img-wrap">
-            <img src="https://images.unsplash.com/photo-1590490360182-c33d57733427?auto=format&fit=crop&w=400&q=80" alt="Green Valley Suite">
-          </div>
-          <div class="room-search-body">
-            <h3>Junior Suite Hướng Vườn Giường Đôi - GoStay Resort &amp; Spa Phú Quốc</h3>
-            <div class="room-meta">
-              <span class="icon-pin">📍</span> Phú Quốc &bull; 🛏️ Phòng đôi - Basic
-            </div>
-            <div class="room-price">620.000đ / đêm</div>
-            <div class="room-status status-unavailable">✕ Hết phòng</div>
-            <a href="room3.html" class="btn-view-detail">Xem chi tiết</a>
-          </div>
-        </article>
-
-        <article class="room-search-card">
-          <div class="room-img-wrap">
-            <img src="https://images.unsplash.com/photo-1505691938895-1758d7feb511?auto=format&fit=crop&w=400&q=80" alt="Cozy Standard Room">
-          </div>
-          <div class="room-search-body">
-            <h3>Deluxe Hướng Vịnh Giường Đôi - GoStay Hòn Tằm Resort</h3>
-            <div class="room-meta">
-              <span class="icon-pin">📍</span> Nha Trang &bull; 🛏️ Phòng đơn - Basic
-            </div>
-            <div class="room-price">350.000đ / đêm</div>
-            <div class="room-status status-available">✓ Còn 1 phòng</div>
-            <a href="room4.html" class="btn-view-detail">Xem chi tiết</a>
-          </div>
-        </article>
-
-        <article class="room-search-card">
-          <div class="room-img-wrap">
-            <img src="https://images.unsplash.com/photo-1540555700478-4be289fbecef?auto=format&fit=crop&w=400&q=80" alt="Grand Luxury Suite">
-          </div>
-          <div class="room-search-body">
-            <h3>Executive Suite Hướng Biển - GoStay Resort &amp; Spa Nha Trang Bay</h3>
-            <div class="room-meta">
-              <span class="icon-pin">📍</span> Nha Trang &bull; 🛏️ Phòng đôi - VIP
-            </div>
-            <div class="room-price">2.500.000đ / đêm</div>
-            <div class="room-status status-available">✓ Còn 3 phòng</div>
-            <a href="room5.html" class="btn-view-detail">Xem chi tiết</a>
-          </div>
-        </article>
-
-        <article class="room-search-card">
-          <div class="room-img-wrap">
-            <img src="https://images.unsplash.com/photo-1568495248636-6432b97bd949?auto=format&fit=crop&w=400&q=80" alt="City View Twin Room">
-          </div>
-          <div class="room-search-body">
-            <h3>Deluxe Hướng Biển 2 Giường Đơn - GoStay Resort Nha Trang</h3>
-            <div class="room-meta">
-              <span class="icon-pin">📍</span> Nha Trang &bull; 🛏️ Phòng đôi - Basic
-            </div>
-            <div class="room-price">500.000đ / đêm</div>
-            <div class="room-status status-available">✓ Còn 2 phòng</div>
-            <a href="room6.html" class="btn-view-detail">Xem chi tiết</a>
-          </div>
-        </article>
-
-        <article class="room-search-card">
-          <div class="room-img-wrap">
-             <img src="https://images.unsplash.com/photo-1571896349842-33c89424de2d?auto=format&fit=crop&w=400&q=80" alt="Sunset Beach Villa">
-          </div>
-          <div class="room-search-body">
-            <h3>Deluxe Hướng Biển Giường Đôi - GoStay Resort &amp; Golf Nam Hội An</h3>
-            <div class="room-meta">
-              <span class="icon-pin">📍</span> Hội An &bull; 🛏️ Phòng đôi - VIP
-            </div>
-            <div class="room-price">3.200.000đ / đêm</div>
-            <div class="room-status status-available">✓ Còn 4 phòng</div>
-            <a href="room7.html" class="btn-view-detail">Xem chi tiết</a>
-          </div>
-        </article>
-
-        <article class="room-search-card">
-          <div class="room-img-wrap">
-            <img src="https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?auto=format&fit=crop&w=400&q=80" alt="Mountain View Bungalow">
-          </div>
-          <div class="room-search-body">
-            <h3>Biệt Thự 2 Phòng Ngủ Hướng Vườn - GoStay Cửa Sót Resort</h3>
-            <div class="room-meta">
-              <span class="icon-pin">📍</span> Hà Tĩnh &bull; 🛏️ Phòng đơn - Basic
-            </div>
-            <div class="room-price">450.000đ / đêm</div>
-            <div class="room-status status-available">✓ Còn 2 phòng</div>
-            <a href="room8.html" class="btn-view-detail">Xem chi tiết</a>
-          </div>
-        </article>
-
-        <article class="room-search-card">
-          <div class="room-img-wrap">
-            <img src="https://images.unsplash.com/photo-1596394516093-501ba68a0ba6?auto=format&fit=crop&w=400&q=80" alt="Saigon City Studio">
-          </div>
-          <div class="room-search-body">
-            <h3>Deluxe Hướng Biển Giường Đôi - GoStay Cửa Hội Resort</h3>
-            <div class="room-meta">
-              <span class="icon-pin">📍</span> Nghệ An &bull; 🛏️ Phòng đơn - VIP
-            </div>
-            <div class="room-price">1.100.000đ / đêm</div>
-            <div class="room-status status-available">✓ Còn 1 phòng</div>
-            <a href="room9.html" class="btn-view-detail">Xem chi tiết</a>
-          </div>
-        </article>
-
-        <article class="room-search-card">
-          <div class="room-img-wrap">
-            <img src="https://images.unsplash.com/photo-1578683010236-d716f9a3f461?auto=format&fit=crop&w=400&q=80" alt="Golden Bridge Suite">
-          </div>
-          <div class="room-search-body">
-            <h3>Deluxe Hướng Vịnh Giường Đôi - GoStay Resort &amp; Spa Hạ Long</h3>
-            <div class="room-meta">
-              <span class="icon-pin">📍</span> Quảng Ninh &bull; 🛏️ Phòng đôi - VIP
-            </div>
-            <div class="room-price">1.800.000đ / đêm</div>
-            <div class="room-status status-unavailable">✕ Hết phòng</div>
-            <a href="room10.html" class="btn-view-detail">Xem chi tiết</a>
-          </div>
-        </article>
-
-      </div>
+      <div class="rooms-search-grid" id="catalog-room-list" aria-busy="true"></div>
     </section>
   </main>
 
@@ -269,7 +109,9 @@
       </div>
     </div>
   </footer>
-  <script src="js/search.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="js/supabase-client.js"></script>
   <script src="js/header-auth.js"></script>
+  <script src="js/search.js"></script>
 </body>
 </html>

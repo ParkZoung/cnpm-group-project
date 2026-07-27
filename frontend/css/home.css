@@ -157,7 +157,7 @@
 .guest-row b { width: 18px; text-align: center; font-size: 14px; }
 .search-panel[hidden] { display: none; }
 .search-trigger:focus-visible, .btn-search:focus-visible, .place-option:focus-visible, .guest-row button:focus-visible, .calendar-day:focus-visible { outline: 3px solid rgba(8,121,232,.35); outline-offset: 1px; }
-}
+
 
 .search-action {
   padding-right: 0;

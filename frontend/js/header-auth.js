@@ -1,7 +1,17 @@
-document.addEventListener('DOMContentLoaded', function () {
-  updateActiveHeaderNav();
-  updateHeaderLoginState();
-});
+(function () {
+  'use strict';
+
+  if (window.gostayHeaderAuthInitialized) {
+    return;
+  }
+
+  window.gostayHeaderAuthInitialized = true;
+
+  document.addEventListener('DOMContentLoaded', function () {
+    updateActiveHeaderNav();
+    initializeHeaderAuth();
+  }, { once: true });
+}());
 
 function updateActiveHeaderNav() {
   const navLinks = document.querySelectorAll('.main-nav a');
@@ -23,15 +33,47 @@ function updateActiveHeaderNav() {
   });
 }
 
-function updateHeaderLoginState() {
+async function initializeHeaderAuth() {
   const authArea = document.querySelector('.auth');
-  const currentUser = getHeaderCurrentUser();
 
-  if (!authArea || !currentUser) {
+  if (!authArea) {
     return;
   }
 
-  const displayName = currentUser.name || currentUser.email;
+  if (!window.gostaySupabase) {
+    renderSignedOutHeader(authArea);
+    return;
+  }
+
+  try {
+    const { data, error } = await window.gostaySupabase.auth.getSession();
+
+    if (error) {
+      throw error;
+    }
+
+    renderHeaderSession(authArea, data.session);
+  } catch (error) {
+    renderSignedOutHeader(authArea);
+    showHeaderAuthError(authArea, 'Không thể kiểm tra phiên đăng nhập.');
+  }
+
+  window.gostaySupabase.auth.onAuthStateChange(function (_event, session) {
+    renderHeaderSession(authArea, session);
+  });
+}
+
+function renderHeaderSession(authArea, session) {
+  if (session && session.user) {
+    renderSignedInHeader(authArea, session.user);
+  } else {
+    renderSignedOutHeader(authArea);
+  }
+}
+
+function renderSignedInHeader(authArea, user) {
+  const metadata = user.user_metadata || {};
+  const displayName = metadata.full_name || metadata.name || user.email || 'Người dùng';
 
   authArea.innerHTML = '';
 
@@ -47,11 +89,28 @@ function updateHeaderLoginState() {
   logoutLink.href = '#';
   logoutLink.textContent = 'Đăng xuất';
 
-  logoutLink.addEventListener('click', function (event) {
+  logoutLink.addEventListener('click', async function (event) {
     event.preventDefault();
-    localStorage.removeItem('gostayCurrentUser');
-    alert('Đã đăng xuất');
-    window.location.href = 'index.html';
+
+    if (logoutLink.dataset.submitting === 'true') {
+      return;
+    }
+
+    logoutLink.dataset.submitting = 'true';
+    logoutLink.setAttribute('aria-disabled', 'true');
+    logoutLink.textContent = 'Đang đăng xuất...';
+
+    const { error } = await window.gostaySupabase.auth.signOut();
+
+    if (error) {
+      logoutLink.dataset.submitting = 'false';
+      logoutLink.removeAttribute('aria-disabled');
+      logoutLink.textContent = 'Đăng xuất';
+      showHeaderAuthError(authArea, 'Không thể đăng xuất. Vui lòng thử lại.');
+      return;
+    }
+
+    window.location.assign('login.html');
   });
 
   userArea.appendChild(userPill);
@@ -59,17 +118,19 @@ function updateHeaderLoginState() {
   authArea.appendChild(userArea);
 }
 
-function getHeaderCurrentUser() {
-  const savedUser = localStorage.getItem('gostayCurrentUser');
+function renderSignedOutHeader(authArea) {
+  authArea.innerHTML = '';
 
-  if (!savedUser) {
-    return null;
-  }
+  const loginLink = document.createElement('a');
+  loginLink.href = 'login.html';
+  loginLink.textContent = 'Đăng nhập';
+  authArea.appendChild(loginLink);
+}
 
-  try {
-    return JSON.parse(savedUser);
-  } catch (error) {
-    localStorage.removeItem('gostayCurrentUser');
-    return null;
-  }
+function showHeaderAuthError(authArea, message) {
+  const errorElement = document.createElement('span');
+  errorElement.className = 'auth-error';
+  errorElement.setAttribute('role', 'alert');
+  errorElement.textContent = message;
+  authArea.appendChild(errorElement);
 }
