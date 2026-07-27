@@ -25,20 +25,21 @@
       <h2>Đăng Nhập</h2>
       <p class="auth-subtitle">Chào mừng bạn quay trở lại với GoStay</p>
       
-      <form action="index.html" method="GET" class="auth-form">
+      <form class="auth-form" id="login-form" novalidate>
         <div class="form-group">
-          <label>Tên đăng nhập hoặc Email</label>
-          <input type="text" placeholder="Nhập tài khoản hoặc email" >
+          <label for="login-email">Email</label>
+          <input id="login-email" name="email" type="email" placeholder="Nhập email" autocomplete="email" required>
         </div>
         <div class="form-group">
-          <label>Mật khẩu</label>
-          <input type="password" placeholder="Nhập mật khẩu" >
+          <label for="login-password">Mật khẩu</label>
+          <input id="login-password" name="password" type="password" placeholder="Nhập mật khẩu" autocomplete="current-password" required>
         </div>
         <div class="form-actions-row">
           <label class="remember-me"><input type="checkbox"> Ghi nhớ đăng nhập</label>
           <a href="forgot-password.html" class="forgot-pass">Quên mật khẩu?</a>
         </div>
-        <button type="submit" class="btn-auth-submit">Đăng Nhập</button>
+        <div id="login-status" role="status" aria-live="polite" hidden></div>
+        <button type="submit" class="btn-auth-submit" id="login-submit">Đăng Nhập</button>
       </form>
       <div class="auth-footer-text">Chưa có tài khoản? <a href="register.html">Đăng ký ngay</a></div>
     </div>
@@ -81,6 +82,8 @@
       <div class="container">© 2025 GoStay. All rights reserved.</div>
     </div>
   </footer>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="js/supabase-client.js"></script>
   <script src="js/auth.js"></script>
   <script src="js/header-auth.js"></script>
 </body>
