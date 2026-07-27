@@ -31,26 +31,29 @@
 
   <main class="success-screen-container container">
     <div class="success-card-panel">
-      <div class="success-check-icon">✓</div>
-      <h2>Đặt phòng thành công!</h2>
-      <p class="success-subtitle">Hệ thống GoStay đã ghi nhận đơn đặt phòng của bạn thành công.</p>
-      
-      <div class="booking-id-highlight">
-        Mã số đặt phòng của bạn: <span id="success-booking-code">Đang tải...</span>
-      </div>
+      <p id="success-booking-loading" role="status">Đang xác nhận thông tin booking...</p>
+      <div id="success-booking-error" role="alert" hidden></div>
 
-      <div class="success-alert-info" id="success-booking-details">
-        Đang tải thông tin đặt phòng...
-      </div>
+      <div id="success-booking-content" hidden>
+        <div class="success-check-icon">✓</div>
+        <h2>Đặt phòng thành công!</h2>
+        <p class="success-subtitle">Booking đã được database xác nhận và thuộc tài khoản hiện tại.</p>
 
-      <div class="reception-payment-note" role="note">
-        <span aria-hidden="true">ⓘ</span>
-        <p><strong>Lưu ý thanh toán:</strong> Vui lòng thanh toán tại quầy lễ tân khi nhận phòng.</p>
+        <div class="booking-id-highlight">
+          Mã đặt phòng: <span id="success-booking-code"></span>
+        </div>
+
+        <div class="success-alert-info" id="success-booking-details"></div>
+
+        <div class="reception-payment-note" role="note">
+          <span aria-hidden="true">ⓘ</span>
+          <p><strong>Lưu ý thanh toán:</strong> Vui lòng thanh toán tại quầy lễ tân khi nhận phòng.</p>
+        </div>
       </div>
 
       <div class="success-actions-row">
         <a href="booking-history.html" class="btn btn-history-redirect">Xem lịch sử đặt phòng</a>
-        <a href="index.html" class="btn btn-home-redirect">Trở lại trang chủ</a>
+        <a href="search.html" class="btn btn-home-redirect">Tìm phòng khác</a>
       </div>
     </div>
   </main>
@@ -93,7 +96,7 @@
   </footer>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="js/supabase-client.js"></script>
-  <script src="js/booking.js"></script>
   <script src="js/header-auth.js"></script>
+  <script src="js/booking.js"></script>
 </body>
 </html>
