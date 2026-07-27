@@ -40,136 +40,60 @@
         </div>
     </header>
 
-    <!-- MAIN -->
     <main class="container detail-layout">
+        <p id="room-detail-loading" role="status">Đang tải thông tin phòng...</p>
+        <div id="room-detail-error" role="alert" hidden>
+            <p id="room-detail-error-message"></p>
+            <a href="search.html" class="btn-view-detail">Quay lại tìm phòng</a>
+        </div>
 
-        <!-- THÔNG TIN PHÒNG -->
-        <section class="detail-main">
-
+        <section class="detail-main" id="room-detail-content" hidden>
             <div class="detail-gallery">
                 <img src="https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=1200&q=80"
-                     alt="Sunrise Premier Room">
+                     alt="Phòng GoStay">
             </div>
 
             <div class="detail-header-info">
-
-                <h1>
-                    Sunrise Premier Room - Sunrise Hotel
-                </h1>
-
-                <div class="detail-meta-row">
-                    <p>📍 Hà Nội</p>
-                    <p>🛏️ Phòng đôi VIP</p>
-                </div>
-
+                <h1 id="room-detail-title"></h1>
+                <div class="detail-meta-row" id="room-detail-meta"></div>
             </div>
 
-            <!-- MÔ TẢ -->
+            <div class="room-specs" id="room-detail-specs"></div>
+
             <div class="detail-description">
-
-                <h3>Mô tả chi tiết phòng</h3>
-
-                <p>
-                    Tọa lạc ngay trung tâm Hà Nội,
-                    Sunrise Premier Room mang đến
-                    không gian nghỉ dưỡng yên tĩnh,
-                    hiện đại và đầy đủ tiện nghi.
-                </p>
-
-                <p>
-                    Thiết kế nội thất sang trọng,
-                    giường cỡ lớn, cửa sổ rộng,
-                    thích hợp cho du lịch hoặc công tác.
-                </p>
-
+                <h3>Thông tin phòng</h3>
+                <p id="room-detail-description"></p>
+                <p id="room-type-description"></p>
             </div>
-
-            <!-- TIỆN NGHI -->
-            <div class="detail-amenities">
-
-                <h3>Trang thiết bị tiện nghi</h3>
-
-                <ul class="amenities-list">
-                    <li>Điều hòa nhiệt độ</li>
-                    <li>Smart TV</li>
-                    <li>WiFi miễn phí</li>
-                    <li>Két sắt</li>
-                    <li>Minibar</li>
-                    <li>Máy sấy tóc</li>
-                    <li>Nước uống miễn phí</li>
-                </ul>
-
-            </div>
-
-            <!-- ĐÁNH GIÁ -->
-            <div class="detail-reviews">
-
-                <h3>Đánh giá khách hàng</h3>
-
-                <div class="review-item">
-                    <h4>Nguyễn Văn Hoàng ⭐⭐⭐⭐⭐</h4>
-
-                    <p>
-                        Phòng sạch sẽ, nhân viên thân thiện,
-                        vị trí rất thuận tiện.
-                    </p>
-
-                    <small>12/05/2026</small>
-                </div>
-
-                <div class="review-item">
-                    <h4>Phạm Minh Thư ⭐⭐⭐⭐</h4>
-
-                    <p>
-                        Giường ngủ rất thoải mái,
-                        bữa sáng ngon và đa dạng.
-                    </p>
-
-                    <small>01/05/2026</small>
-                </div>
-
-            </div>
-
         </section>
 
-        <!-- FORM ĐẶT PHÒNG -->
-        <aside class="booking-widget">
+        <aside class="booking-widget" id="room-booking-widget" hidden>
+            <div class="widget-price" id="room-estimated-price"></div>
+            <p>Giá trên chỉ là dự kiến. Tổng tiền chính thức sẽ do hệ thống xác nhận khi đặt phòng.</p>
 
-            <div class="widget-price">
-                850.000đ / đêm
-            </div>
-
-            <form class="booking-form">
-
+            <form class="booking-form" id="room-booking-form" novalidate>
                 <div class="form-group">
-                    <label>Ngày nhận phòng</label>
-                    <input type="date">
+                    <label for="check-in-date">Ngày nhận phòng</label>
+                    <input id="check-in-date" name="check_in_date" type="date" required>
                 </div>
 
                 <div class="form-group">
-                    <label>Ngày trả phòng</label>
-                    <input type="date">
+                    <label for="check-out-date">Ngày trả phòng</label>
+                    <input id="check-out-date" name="check_out_date" type="date" required>
                 </div>
 
                 <div class="form-group">
-                    <label>Số lượng khách</label>
-
-                    <select>
-                        <option>1 người lớn</option>
-                        <option>2 người lớn</option>
-                        <option>2 người lớn + 1 trẻ em</option>
-                        <option>Gia đình</option>
-                    </select>
+                    <label for="guest-count">Số lượng khách</label>
+                    <input id="guest-count" name="number_of_guests" type="number" min="1" step="1" value="1" required>
                 </div>
 
-                <button type="submit" class="btn-book-now">
+                <p id="room-booking-error" role="alert" hidden></p>
+
+                <button type="submit" class="btn-book-now" id="room-booking-submit" disabled>
                     Đặt phòng ngay
                 </button>
-
             </form>
-
         </aside>
-
     </main>
 
     <!-- FOOTER -->
@@ -217,8 +141,10 @@
 
     </footer>
 
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="js/supabase-client.js"></script>
+    <script src="js/header-auth.js"></script>
     <script src="js/room-detail-data.js"></script>
     <script src="js/cart.js"></script>
-    <script src="js/header-auth.js"></script>
 </body>
 </html>
