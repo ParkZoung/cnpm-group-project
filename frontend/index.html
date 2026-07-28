@@ -18,7 +18,7 @@
       <nav class="main-nav">
         <a href="index.html">Trang chủ</a>
         <a href="offers.html">Ưu đãi</a>
-        <a href="cart.html">Đặt phòng</a>
+        <a href="search.html">Đặt phòng</a>
         <a href="booking-history.html">Lịch sử đặt phòng</a>
       </nav>
 
@@ -144,51 +144,10 @@
         <a class="more" href="search.html">Xem tất cả &gt;</a>
       </div>
 
-      <div class="hotel-grid">
-        <article class="hotel-card">
-          <img src="https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=800&q=80" alt="Executive Suite Hướng Biển tại Nha Trang">
-          <div class="hotel-body">
-            <h3>Executive Suite Hướng Biển</h3>
-            <div class="sub">GoStay Nha Trang Bay • ★★★★★</div>
-            <p>Phòng khách riêng, bồn tắm, máy pha cà phê và ban công hướng biển.</p>
-            <div class="price">2.500.000 VND /đêm</div>
-            <a class="btn btn-detail" href="room5.html">Xem chi tiết</a>
-          </div>
-        </article>
-
-        <article class="hotel-card">
-          <img src="https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?auto=format&fit=crop&w=800&q=80" alt="Deluxe Hướng Biển tại Phú Quốc">
-          <div class="hotel-body">
-            <h3>Deluxe Hướng Biển 2 Giường Đơn</h3>
-            <div class="sub">GoStay Wonderworld Phú Quốc • ★★★★★</div>
-            <p>Ban công hướng biển, Smart TV, minibar và WiFi tốc độ cao.</p>
-            <div class="price">1.250.000 VND /đêm</div>
-            <a class="btn btn-detail" href="room2.html">Xem chi tiết</a>
-          </div>
-        </article>
-
-        <article class="hotel-card">
-          <img src="https://images.unsplash.com/photo-1590490360182-c33d57733427?auto=format&fit=crop&w=800&q=80" alt="Deluxe Hướng Biển tại Hội An">
-          <div class="hotel-body">
-            <h3>Deluxe Hướng Biển Giường Đôi</h3>
-            <div class="sub">GoStay Nam Hội An • ★★★★★</div>
-            <p>Giường King, ban công riêng, bồn tắm và tiện nghi nghỉ dưỡng cao cấp.</p>
-            <div class="price">3.200.000 VND /đêm</div>
-            <a class="btn btn-detail" href="room7.html">Xem chi tiết</a>
-          </div>
-        </article>
-
-        <article class="hotel-card">
-          <img src="https://images.unsplash.com/photo-1578683010236-d716f9a3f461?auto=format&fit=crop&w=800&q=80" alt="Deluxe Hướng Vịnh tại Hạ Long">
-          <div class="hotel-body">
-            <h3>Deluxe Hướng Vịnh Giường Đôi</h3>
-            <div class="sub">GoStay Resort &amp; Spa Hạ Long • ★★★★★</div>
-            <p>Ban công hướng vịnh, bồn tắm, minibar và dịch vụ phòng 24 giờ.</p>
-            <div class="price">1.800.000 VND /đêm</div>
-            <a class="btn btn-detail" href="room10.html">Xem chi tiết</a>
-          </div>
-        </article>
-      </div>
+      <p id="featured-rooms-loading" role="status">Đang tải phòng nổi bật...</p>
+      <p id="featured-rooms-error" role="alert" hidden></p>
+      <p id="featured-rooms-empty" role="status" hidden>Hiện chưa có phòng nổi bật.</p>
+      <div class="hotel-grid" id="featured-room-list" aria-busy="true"></div>
     </section>
 
    
@@ -232,7 +191,7 @@
         <h4>Khách hàng</h4>
         <ul>
           <li><a href="index.html">Trang chủ</a></li>
-          <li><a href="rooms.html">Danh sách phòng</a></li>
+          <li><a href="search.html">Danh sách phòng</a></li>
           <li><a href="search.html">Tìm kiếm phòng</a></li>
           <li><a href="booking-history.html">Lịch sử đặt phòng</a></li>
         </ul>
@@ -243,7 +202,7 @@
         <ul>
           <li><a href="login.html">Đăng nhập</a></li>
           <li><a href="register.html">Đăng ký</a></li>
-          <li><a href="cart.html">Giỏ đặt phòng</a></li>
+          <li><a href="search.html">Chọn phòng để đặt</a></li>
         </ul>
       </div>
 

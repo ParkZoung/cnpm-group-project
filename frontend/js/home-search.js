@@ -125,3 +125,187 @@ document.addEventListener('DOMContentLoaded', function () {
 
   renderCalendar();
 });
+
+(function () {
+  'use strict';
+
+  const FALLBACK_ROOM_IMAGE =
+    'https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=800&q=80';
+
+  document.addEventListener('DOMContentLoaded', initializeFeaturedRooms, { once: true });
+
+  async function initializeFeaturedRooms() {
+    const elements = getFeaturedRoomElements();
+
+    if (!elements) {
+      return;
+    }
+
+    if (!window.gostaySupabase) {
+      showFeaturedError(elements, 'Không thể khởi tạo dịch vụ dữ liệu phòng.');
+      return;
+    }
+
+    try {
+      const { data, error } = await window.gostaySupabase
+        .from('rooms')
+        .select(`
+          id,
+          room_number,
+          name,
+          description,
+          price_per_night,
+          status,
+          branch:branches!rooms_branch_id_fkey!inner(id, name, city, status),
+          room_type:room_types!rooms_room_type_id_fkey(id, name)
+        `)
+        .eq('status', 'available')
+        .eq('branch.status', 'active')
+        .order('id', { ascending: false })
+        .limit(4);
+
+      if (error) {
+        throw error;
+      }
+
+      const rooms = (data || []).filter(function (room) {
+        return room
+          && Number.isSafeInteger(Number(room.id))
+          && room.status === 'available'
+          && room.branch
+          && room.branch.status === 'active'
+          && room.room_type;
+      });
+
+      await attachFirstRoomImages(rooms);
+      renderFeaturedRooms(elements, rooms);
+    } catch (error) {
+      const message = String(error && error.message ? error.message : '').toLowerCase();
+      showFeaturedError(
+        elements,
+        message.includes('failed to fetch') || message.includes('network')
+          ? 'Không thể kết nối dữ liệu phòng. Vui lòng kiểm tra mạng và thử lại.'
+          : 'Không thể tải phòng nổi bật. Vui lòng thử lại sau.'
+      );
+    }
+  }
+
+  function getFeaturedRoomElements() {
+    const elements = {
+      list: document.getElementById('featured-room-list'),
+      loading: document.getElementById('featured-rooms-loading'),
+      empty: document.getElementById('featured-rooms-empty'),
+      error: document.getElementById('featured-rooms-error')
+    };
+
+    return Object.values(elements).every(Boolean) ? elements : null;
+  }
+
+  async function attachFirstRoomImages(rooms) {
+    const roomIds = rooms.map(function (room) {
+      return room.id;
+    });
+
+    if (!roomIds.length) {
+      return;
+    }
+
+    try {
+      const { data, error } = await window.gostaySupabase
+        .from('room_images')
+        .select('id, room_id, image_url, alt_text, sort_order')
+        .in('room_id', roomIds)
+        .order('sort_order', { ascending: true })
+        .order('id', { ascending: true });
+
+      if (error) {
+        throw error;
+      }
+
+      const firstImages = new Map();
+      (data || []).forEach(function (image) {
+        const key = String(image.room_id);
+        if (!firstImages.has(key)) {
+          firstImages.set(key, image);
+        }
+      });
+
+      rooms.forEach(function (room) {
+        room.first_image = firstImages.get(String(room.id)) || null;
+      });
+    } catch (error) {
+      console.warn('[featured-rooms] Không thể tải ảnh phòng, đang sử dụng ảnh fallback.', error);
+    }
+  }
+
+  function renderFeaturedRooms(elements, rooms) {
+    elements.list.innerHTML = '';
+    rooms.forEach(function (room) {
+      elements.list.appendChild(createFeaturedRoomCard(room));
+    });
+
+    elements.loading.hidden = true;
+    elements.empty.hidden = rooms.length !== 0;
+    elements.error.hidden = true;
+    elements.list.setAttribute('aria-busy', 'false');
+  }
+
+  function createFeaturedRoomCard(room) {
+    const card = document.createElement('article');
+    card.className = 'hotel-card';
+    card.dataset.roomId = String(room.id);
+
+    const image = document.createElement('img');
+    image.src = room.first_image && room.first_image.image_url
+      ? room.first_image.image_url
+      : FALLBACK_ROOM_IMAGE;
+    image.alt = room.first_image && room.first_image.alt_text
+      ? room.first_image.alt_text
+      : roomLabel(room) + ' tại ' + room.branch.name;
+
+    const body = document.createElement('div');
+    body.className = 'hotel-body';
+
+    const title = document.createElement('h3');
+    title.textContent = roomLabel(room);
+
+    const sub = document.createElement('div');
+    sub.className = 'sub';
+    sub.textContent = room.branch.name + ', ' + room.branch.city + ' • ' + room.room_type.name;
+
+    const description = document.createElement('p');
+    description.textContent = room.description || 'Thông tin phòng đang được cập nhật.';
+
+    const price = document.createElement('div');
+    price.className = 'price';
+    price.textContent = Number(room.price_per_night || 0).toLocaleString('vi-VN') + ' VND /đêm';
+
+    const link = document.createElement('a');
+    link.className = 'btn btn-detail';
+    link.href = 'room-detail.html?id=' + encodeURIComponent(room.id);
+    link.textContent = 'Xem chi tiết';
+
+    body.appendChild(title);
+    body.appendChild(sub);
+    body.appendChild(description);
+    body.appendChild(price);
+    body.appendChild(link);
+    card.appendChild(image);
+    card.appendChild(body);
+
+    return card;
+  }
+
+  function showFeaturedError(elements, message) {
+    elements.list.innerHTML = '';
+    elements.loading.hidden = true;
+    elements.empty.hidden = true;
+    elements.error.textContent = message;
+    elements.error.hidden = false;
+    elements.list.setAttribute('aria-busy', 'false');
+  }
+
+  function roomLabel(room) {
+    return room.name || ('Phòng ' + room.room_number);
+  }
+}());

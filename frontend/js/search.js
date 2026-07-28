@@ -4,6 +4,8 @@
   const catalogState = {
     rooms: []
   };
+  const FALLBACK_ROOM_IMAGE =
+    'https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=400&q=80';
 
   document.addEventListener('DOMContentLoaded', initializeCatalogSearch, { once: true });
 
@@ -33,12 +35,13 @@
           room_number,
           price_per_night,
           status,
-          branch:branches!rooms_branch_id_fkey(id, name, city, status),
+          branch:branches!rooms_branch_id_fkey!inner(id, name, city, status),
           room_type:room_types!rooms_room_type_id_fkey(
             id, name, capacity, bed_type, area_m2
           )
         `)
         .eq('status', 'available')
+        .eq('branch.status', 'active')
         .order('branch_id', { ascending: true })
         .order('room_number', { ascending: true });
 
@@ -47,6 +50,7 @@
       }
 
       catalogState.rooms = normalizeCatalogRooms(data || []);
+      await attachFirstRoomImages(catalogState.rooms);
       populateCatalogFilters(elements);
       applyUrlFilters(elements);
       renderFilteredCatalog(elements);
@@ -54,6 +58,43 @@
       showCatalogError(elements, friendlyCatalogError(error));
     } finally {
       setCatalogLoading(elements, false);
+    }
+  }
+
+  async function attachFirstRoomImages(rooms) {
+    const roomIds = rooms.map(function (room) {
+      return room.id;
+    });
+
+    if (!roomIds.length) {
+      return;
+    }
+
+    try {
+      const { data, error } = await window.gostaySupabase
+        .from('room_images')
+        .select('id, room_id, image_url, alt_text, sort_order')
+        .in('room_id', roomIds)
+        .order('sort_order', { ascending: true })
+        .order('id', { ascending: true });
+
+      if (error) {
+        throw error;
+      }
+
+      const firstImages = new Map();
+      (data || []).forEach(function (image) {
+        const key = String(image.room_id);
+        if (!firstImages.has(key)) {
+          firstImages.set(key, image);
+        }
+      });
+
+      rooms.forEach(function (room) {
+        room.first_image = firstImages.get(String(room.id)) || null;
+      });
+    } catch (error) {
+      console.warn('[room-catalog] Không thể tải ảnh phòng, đang sử dụng ảnh fallback.', error);
     }
   }
 
@@ -232,8 +273,12 @@
     imageWrap.className = 'room-img-wrap';
 
     const image = document.createElement('img');
-    image.src = 'https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=400&q=80';
-    image.alt = 'Phòng ' + room.room_number + ' tại ' + room.branch.name;
+    image.src = room.first_image && room.first_image.image_url
+      ? room.first_image.image_url
+      : FALLBACK_ROOM_IMAGE;
+    image.alt = room.first_image && room.first_image.alt_text
+      ? room.first_image.alt_text
+      : 'Phòng ' + room.room_number + ' tại ' + room.branch.name;
     imageWrap.appendChild(image);
 
     const body = document.createElement('div');

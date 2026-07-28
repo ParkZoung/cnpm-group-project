@@ -71,12 +71,35 @@
         return;
       }
 
+      data.first_image = await loadFirstRoomImage(roomId.value);
       window.gostayRoomDetailState.loading = false;
       window.gostayRoomDetailState.room = data;
       renderRoomDetail(elements, data);
       document.dispatchEvent(new CustomEvent('gostay:room-loaded', { detail: { room: data } }));
     } catch (error) {
       showRoomDetailError(elements, friendlyRoomDetailError(error));
+    }
+  }
+
+  async function loadFirstRoomImage(roomId) {
+    try {
+      const { data, error } = await window.gostaySupabase
+        .from('room_images')
+        .select('image_url, alt_text')
+        .eq('room_id', roomId)
+        .order('sort_order', { ascending: true })
+        .order('id', { ascending: true })
+        .limit(1)
+        .maybeSingle();
+
+      if (error) {
+        throw error;
+      }
+
+      return data || null;
+    } catch (error) {
+      console.warn('[room-detail] Không thể tải ảnh phòng, đang sử dụng ảnh fallback.', error);
+      return null;
     }
   }
 
@@ -132,7 +155,12 @@
     document.title = roomLabel + ' - ' + room.branch.name + ' | GoStay';
 
     elements.title.textContent = roomLabel + ' — Phòng ' + room.room_number;
-    elements.image.alt = roomLabel + ' tại ' + room.branch.name;
+    if (room.first_image && room.first_image.image_url) {
+      elements.image.src = room.first_image.image_url;
+    }
+    elements.image.alt = room.first_image && room.first_image.alt_text
+      ? room.first_image.alt_text
+      : roomLabel + ' tại ' + room.branch.name;
     elements.meta.innerHTML = '';
     appendTextItem(elements.meta, '📍 ' + room.branch.name + ', ' + room.branch.city);
     appendTextItem(elements.meta, '🏨 ' + room.room_type.name);
