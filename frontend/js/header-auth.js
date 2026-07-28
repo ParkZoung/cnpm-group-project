@@ -13,7 +13,7 @@
     const navLinks = document.querySelectorAll('.main-nav a');
     const currentPage = window.location.pathname.split('/').pop() || 'index.html';
     const bookingPages = ['booking.html', 'bookingsuccess.html'];
-    const activePage = bookingPages.includes(currentPage) ? 'cart.html' : currentPage;
+    const activePage = bookingPages.includes(currentPage) ? 'search.html' : currentPage;
 
     navLinks.forEach(function (link) {
       const isActive = link.getAttribute('href') === activePage;

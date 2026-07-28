@@ -21,9 +21,9 @@
    ========================================================== */
 
 const ROOM_STATUS_LABELS = {
-  available: { label: "Còn trống", cssClass: "status-success" },
-  maintenance: { label: "Đang dọn", cssClass: "status-warning" },
-  inactive: { label: "Hết phòng", cssClass: "status-danger" },
+  available: { label: "Đang hoạt động", cssClass: "status-success" },
+  maintenance: { label: "Đang bảo trì", cssClass: "status-warning" },
+  inactive: { label: "Ngừng hoạt động", cssClass: "status-danger" },
 };
 
 let cachedBranches = [];
