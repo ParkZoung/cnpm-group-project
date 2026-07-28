@@ -30,6 +30,9 @@ let cachedBranches = [];
 let cachedRoomTypes = [];
 
 document.addEventListener("DOMContentLoaded", async () => {
+  const adminContext = await window.gostayAdminReady;
+  if (!adminContext) return;
+
   await loadRoomReferences();
   await loadRooms();
 

@@ -85,6 +85,7 @@ function renderRoomTypes(data) {
 // ==========================================
 // 2. CREATE & UPDATE: Tạo mới và Lưu cập nhật
 // ==========================================
+function initializeRoomTypes() {
 roomTypeForm.addEventListener('submit', async (e) => {
     e.preventDefault();
     if (!checkConnection()) return;
@@ -203,6 +204,16 @@ roomTypeForm.addEventListener('reset', () => {
     idInput.value = '';
     if (btnUpdate) btnUpdate.style.display = 'none';
 });
+}
 
-// Chạy hàm lấy dữ liệu ngay khi cây thư mục DOM sẵn sàng
-document.addEventListener('DOMContentLoaded', fetchRoomTypes);
+// Chỉ khởi tạo CRUD sau khi session và quyền Admin đã được xác minh.
+document.addEventListener('DOMContentLoaded', async () => {
+    try {
+        const adminContext = await window.gostayAdminReady;
+        if (!adminContext) return;
+        initializeRoomTypes();
+        await fetchRoomTypes();
+    } catch (_error) {
+        return;
+    }
+});

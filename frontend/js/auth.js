@@ -1,183 +1,266 @@
-document.addEventListener('DOMContentLoaded', function () {
-  setupRegisterForm();
-  setupSupabaseLogin();
-}, { once: true });
+(function () {
+  'use strict';
 
-async function setupSupabaseLogin() {
-  const loginForm = document.getElementById('login-form');
-  const emailInput = document.getElementById('login-email');
-  const passwordInput = document.getElementById('login-password');
-  const submitButton = document.getElementById('login-submit');
-  const statusElement = document.getElementById('login-status');
+  document.addEventListener('DOMContentLoaded', function () {
+    setupLoginForm();
+    setupRegisterForm();
+  }, { once: true });
 
-  if (!loginForm || !emailInput || !passwordInput || !submitButton || !statusElement) {
-    return;
-  }
-
-  if (loginForm.dataset.authBound === 'true') {
-    return;
-  }
-
-  loginForm.dataset.authBound = 'true';
-
-  if (!window.gostaySupabase) {
-    setLoginStatus(statusElement, 'Không thể khởi tạo dịch vụ đăng nhập. Vui lòng tải lại trang.', 'error');
-    submitButton.disabled = true;
-    return;
-  }
-
-  setLoginLoading(submitButton, statusElement, true, 'Đang kiểm tra phiên đăng nhập...');
-
-  try {
-    const { data, error } = await window.gostaySupabase.auth.getSession();
+  async function getActiveProfile(userId) {
+    const { data, error } = await window.gostaySupabase
+      .from('profiles')
+      .select('id, full_name, role, status')
+      .eq('id', userId)
+      .maybeSingle();
 
     if (error) {
-      throw error;
+      throw new Error('Không thể kiểm tra hồ sơ tài khoản.');
     }
 
-    if (data.session) {
-      window.location.replace('search.html');
-      return;
+    if (!data) {
+      throw new Error('Tài khoản chưa có hồ sơ hợp lệ.');
     }
-  } catch (error) {
-    setLoginStatus(statusElement, getFriendlyAuthError(error, 'Không thể kiểm tra phiên đăng nhập.'), 'error');
-  } finally {
-    setLoginLoading(submitButton, statusElement, false);
+
+    if (data.status !== 'active') {
+      throw new Error(data.status === 'blocked'
+        ? 'Tài khoản đã bị khóa.'
+        : 'Tài khoản hiện không hoạt động.');
+    }
+
+    if (data.role !== 'admin' && data.role !== 'customer') {
+      throw new Error('Tài khoản có vai trò không hợp lệ.');
+    }
+
+    return data;
   }
 
-  loginForm.addEventListener('submit', async function (event) {
-    event.preventDefault();
-
-    const email = emailInput.value.trim();
-    const password = passwordInput.value;
-
-    if (!email || !emailInput.validity.valid) {
-      setLoginStatus(statusElement, 'Vui lòng nhập địa chỉ email hợp lệ.', 'error');
-      emailInput.focus();
-      return;
-    }
-
-    if (!password) {
-      setLoginStatus(statusElement, 'Vui lòng nhập mật khẩu.', 'error');
-      passwordInput.focus();
-      return;
-    }
-
-    setLoginLoading(submitButton, statusElement, true, 'Đang đăng nhập...');
+  async function signOutInvalidSession() {
+    if (!window.gostaySupabase) return;
 
     try {
-      const { data, error } = await window.gostaySupabase.auth.signInWithPassword({
-        email: email,
-        password: password
-      });
-
-      if (error) {
-        throw error;
-      }
-
-      if (!data.session || !data.user) {
-        throw new Error('Supabase không trả về phiên đăng nhập hợp lệ.');
-      }
-
-      setLoginStatus(statusElement, 'Đăng nhập thành công. Đang chuyển trang...', 'success');
-      window.location.assign('search.html');
+      const { error } = await window.gostaySupabase.auth.signOut();
+      if (!error) return;
+      console.error('Không thể hoàn tất đăng xuất:', error.message);
     } catch (error) {
-      setLoginStatus(statusElement, getFriendlyAuthError(error, 'Không thể đăng nhập. Vui lòng thử lại.'), 'error');
-      setLoginLoading(submitButton, statusElement, false);
+      console.error('Không thể hoàn tất đăng xuất:', error);
     }
-  });
-}
 
-function setLoginLoading(button, statusElement, isLoading, message) {
-  button.disabled = isLoading;
-  button.textContent = isLoading ? 'Đang xử lý...' : 'Đăng Nhập';
-
-  if (message) {
-    setLoginStatus(statusElement, message, 'loading');
-  }
-}
-
-function setLoginStatus(statusElement, message, type) {
-  statusElement.hidden = !message;
-  statusElement.textContent = message || '';
-  statusElement.dataset.status = type || '';
-}
-
-function getFriendlyAuthError(error, fallbackMessage) {
-  const message = String(error && error.message ? error.message : '').toLowerCase();
-
-  if (message.includes('invalid login credentials')) {
-    return 'Email hoặc mật khẩu không đúng.';
+    try {
+      const { error } = await window.gostaySupabase.auth.signOut({ scope: 'local' });
+      if (error) console.error('Không thể xóa phiên đăng nhập cục bộ:', error.message);
+    } catch (error) {
+      console.error('Không thể xóa phiên đăng nhập cục bộ:', error);
+    }
   }
 
-  if (message.includes('email not confirmed')) {
-    return 'Email chưa được xác nhận. Vui lòng kiểm tra hộp thư của bạn.';
+  function redirectForProfile(profile, replace) {
+    const destination = profile.role === 'admin'
+      ? 'admin-dashboard.html'
+      : 'index.html';
+
+    window.location[replace ? 'replace' : 'assign'](destination);
   }
 
-  if (message.includes('failed to fetch') || message.includes('network')) {
-    return 'Không thể kết nối dịch vụ đăng nhập. Vui lòng kiểm tra mạng và thử lại.';
+  async function validateSessionAndRedirect(session, replace) {
+    if (!session || !session.user || !session.user.id) {
+      return false;
+    }
+
+    try {
+      const profile = await getActiveProfile(session.user.id);
+      redirectForProfile(profile, replace);
+      return true;
+    } catch (error) {
+      await signOutInvalidSession();
+      throw error;
+    }
   }
 
-  return fallbackMessage;
-}
+  async function setupLoginForm() {
+    const form = document.getElementById('login-form');
+    const emailInput = document.getElementById('login-email');
+    const passwordInput = document.getElementById('login-password');
+    const submitButton = document.getElementById('login-submit');
+    const statusElement = document.getElementById('login-status');
 
-function setupRegisterForm() {
-  const registerForm = document.querySelector('.auth-form');
-  const fullnameInput = document.getElementById('fullname');
-  const emailInput = document.getElementById('email');
-  const phoneInput = document.getElementById('phone');
-  const usernameInput = document.getElementById('username');
-  const passwordInput = document.getElementById('password');
-  const agreeInput = document.querySelector('input[name="agree"]');
-
-  if (!registerForm || !fullnameInput || !emailInput || !usernameInput || !passwordInput) {
-    return;
-  }
-
-  registerForm.addEventListener('submit', function (event) {
-    event.preventDefault();
-
-    const fullname = fullnameInput.value.trim();
-    const email = emailInput.value.trim();
-    const phone = phoneInput.value.trim();
-    const username = usernameInput.value.trim();
-    const password = passwordInput.value.trim();
-
-    if (fullname === '' || email === '' || phone === '' || username === '' || password === '') {
-      alert('Please fill in all fields.');
+    if (!form || !emailInput || !passwordInput || !submitButton || !statusElement) {
       return;
     }
 
-    if (!email.includes('@')) {
-      alert('Please enter a valid email address.');
+    if (!window.gostaySupabase) {
+      setStatus(statusElement, 'Không thể khởi tạo dịch vụ đăng nhập.', 'error');
+      submitButton.disabled = true;
       return;
     }
 
-    if (password.length < 6) {
-      alert('Password must be at least 6 characters.');
+    setLoading(submitButton, statusElement, true, 'Đang kiểm tra phiên đăng nhập...', 'Đăng Nhập');
+
+    try {
+      const { data, error } = await window.gostaySupabase.auth.getSession();
+      if (error) throw error;
+      if (await validateSessionAndRedirect(data.session, true)) return;
+    } catch (error) {
+      setStatus(statusElement, friendlyError(error, 'Không thể kiểm tra phiên đăng nhập.'), 'error');
+    } finally {
+      setLoading(submitButton, statusElement, false, '', 'Đăng Nhập');
+    }
+
+    form.addEventListener('submit', async function (event) {
+      event.preventDefault();
+      const email = emailInput.value.trim();
+      const password = passwordInput.value;
+
+      if (!email || !emailInput.validity.valid) {
+        setStatus(statusElement, 'Vui lòng nhập địa chỉ email hợp lệ.', 'error');
+        emailInput.focus();
+        return;
+      }
+
+      if (!password) {
+        setStatus(statusElement, 'Vui lòng nhập mật khẩu.', 'error');
+        passwordInput.focus();
+        return;
+      }
+
+      setLoading(submitButton, statusElement, true, 'Đang đăng nhập...', 'Đăng Nhập');
+
+      try {
+        const { data, error } = await window.gostaySupabase.auth.signInWithPassword({
+          email: email,
+          password: password
+        });
+
+        if (error) throw error;
+        if (!data.session || !data.user) {
+          throw new Error('Supabase không trả về phiên đăng nhập hợp lệ.');
+        }
+
+        const profile = await getActiveProfile(data.user.id);
+        setStatus(statusElement, 'Đăng nhập thành công. Đang chuyển trang...', 'success');
+        redirectForProfile(profile, false);
+      } catch (error) {
+        try {
+          await signOutInvalidSession();
+        } finally {
+          setStatus(statusElement, friendlyError(error, 'Không thể đăng nhập. Vui lòng thử lại.'), 'error');
+          setLoading(submitButton, statusElement, false, '', 'Đăng Nhập');
+        }
+      }
+    });
+  }
+
+  function setupRegisterForm() {
+    const form = document.getElementById('register-form');
+    const fullnameInput = document.getElementById('fullname');
+    const emailInput = document.getElementById('email');
+    const phoneInput = document.getElementById('phone');
+    const passwordInput = document.getElementById('password');
+    const agreeInput = document.querySelector('input[name="agree"]');
+    const submitButton = document.getElementById('register-submit');
+    const statusElement = document.getElementById('register-status');
+
+    if (!form || !fullnameInput || !emailInput || !phoneInput ||
+        !passwordInput || !submitButton || !statusElement) {
       return;
     }
 
-    if (agreeInput && !agreeInput.checked) {
-      alert('Please agree to the terms before registering.');
+    if (!window.gostaySupabase) {
+      setStatus(statusElement, 'Không thể khởi tạo dịch vụ đăng ký.', 'error');
+      submitButton.disabled = true;
       return;
     }
 
-    const newUser = {
-      fullname: fullname,
-      email: email,
-      phone: phone,
-      username: username,
-      registeredAt: new Date().toISOString()
-    };
+    form.addEventListener('submit', async function (event) {
+      event.preventDefault();
 
-    const savedUsers = localStorage.getItem('gostayUsers');
-    const users = savedUsers ? JSON.parse(savedUsers) : [];
+      const fullname = fullnameInput.value.trim();
+      const email = emailInput.value.trim();
+      const phone = phoneInput.value.trim();
+      const password = passwordInput.value;
 
-    users.push(newUser);
-    localStorage.setItem('gostayUsers', JSON.stringify(users));
+      if (!fullname || !email || !phone || !password) {
+        setStatus(statusElement, 'Vui lòng điền đầy đủ thông tin.', 'error');
+        return;
+      }
 
-    alert('Register successful! Please login.');
-    window.location.href = 'login.html';
-  });
-}
+      if (!emailInput.validity.valid) {
+        setStatus(statusElement, 'Vui lòng nhập địa chỉ email hợp lệ.', 'error');
+        emailInput.focus();
+        return;
+      }
+
+      if (password.length < 6) {
+        setStatus(statusElement, 'Mật khẩu phải có ít nhất 6 ký tự.', 'error');
+        passwordInput.focus();
+        return;
+      }
+
+      if (agreeInput && !agreeInput.checked) {
+        setStatus(statusElement, 'Vui lòng đồng ý với Điều khoản và Chính sách.', 'error');
+        return;
+      }
+
+      setLoading(submitButton, statusElement, true, 'Đang đăng ký...', 'Đăng Ký');
+
+      try {
+        const { data, error } = await window.gostaySupabase.auth.signUp({
+          email: email,
+          password: password,
+          options: {
+            data: {
+              full_name: fullname,
+              phone: phone
+            }
+          }
+        });
+
+        if (error) throw error;
+        if (!data.user) throw new Error('Supabase không trả về tài khoản vừa tạo.');
+
+        if (!data.session) {
+          setStatus(statusElement, 'Đăng ký thành công. Vui lòng kiểm tra email để xác nhận tài khoản.', 'success');
+          form.reset();
+          submitButton.disabled = true;
+          return;
+        }
+
+        const profile = await getActiveProfile(data.user.id);
+        setStatus(statusElement, 'Đăng ký thành công. Đang chuyển trang...', 'success');
+        redirectForProfile(profile, false);
+      } catch (error) {
+        try {
+          await signOutInvalidSession();
+        } finally {
+          setStatus(statusElement, friendlyError(error, 'Không thể đăng ký. Vui lòng thử lại.'), 'error');
+          setLoading(submitButton, statusElement, false, '', 'Đăng Ký');
+        }
+      }
+    });
+  }
+
+  function setLoading(button, statusElement, loading, message, idleText) {
+    button.disabled = loading;
+    button.textContent = loading ? 'Đang xử lý...' : idleText;
+    if (message) setStatus(statusElement, message, 'loading');
+  }
+
+  function setStatus(element, message, type) {
+    element.hidden = !message;
+    element.textContent = message || '';
+    element.dataset.status = type || '';
+  }
+
+  function friendlyError(error, fallback) {
+    const message = String(error && error.message ? error.message : '');
+    const normalized = message.toLowerCase();
+
+    if (normalized.includes('invalid login credentials')) return 'Email hoặc mật khẩu không đúng.';
+    if (normalized.includes('email not confirmed')) return 'Email chưa được xác nhận. Vui lòng kiểm tra hộp thư.';
+    if (normalized.includes('user already registered')) return 'Email này đã được đăng ký.';
+    if (normalized.includes('failed to fetch') || normalized.includes('network')) {
+      return 'Không thể kết nối dịch vụ xác thực. Vui lòng kiểm tra mạng.';
+    }
+
+    return message || fallback;
+  }
+}());

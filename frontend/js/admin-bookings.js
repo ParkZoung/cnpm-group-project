@@ -159,5 +159,10 @@
     catch (error) { feedback('Không thể tải Supabase: ' + error.message, 'error'); }
   }
 
-  document.addEventListener('DOMContentLoaded', () => { bindEvents(); initialize(); });
+  document.addEventListener('DOMContentLoaded', async () => {
+    const adminContext = await window.gostayAdminReady;
+    if (!adminContext) return;
+    bindEvents();
+    initialize();
+  });
 }());

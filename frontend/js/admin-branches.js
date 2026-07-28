@@ -7,7 +7,10 @@
 
   document.addEventListener('DOMContentLoaded', init);
 
-  function init() {
+  async function init() {
+    const adminContext = await window.gostayAdminReady;
+    if (!adminContext) return;
+
     const page = document.querySelector('.admin-page-container');
     if (!page) return;
 
