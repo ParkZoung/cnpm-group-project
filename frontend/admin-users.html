@@ -61,7 +61,7 @@
           <h2>Khách hàng</h2>
           <p>Quản lý hồ sơ, vai trò và trạng thái tài khoản trong một nơi.</p>
         </div>
-        <button id="btnOpenAddModal" class="users-primary-btn" type="button"><span>＋</span> Thêm khách hàng</button>
+        <button id="btnOpenAddModal" class="users-primary-btn" type="button" disabled title="Chức năng tạo tài khoản từ Admin chưa được hỗ trợ an toàn"><span>＋</span> Thêm khách hàng (chưa hỗ trợ)</button>
       </section>
 
       <section class="users-stats" aria-label="Thống kê khách hàng">
@@ -107,19 +107,18 @@
     <div class="users-modal-backdrop" data-close-modal></div>
     <section class="users-modal-card" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
       <div class="users-modal-header">
-        <div><span class="eyebrow">HỒ SƠ KHÁCH HÀNG</span><h2 id="modalTitle">Thêm khách hàng</h2></div>
+        <div><span class="eyebrow">HỒ SƠ KHÁCH HÀNG</span><h2 id="modalTitle">Cập nhật quyền hồ sơ</h2></div>
         <button id="btnCloseModal" class="users-icon-btn" type="button" aria-label="Đóng">×</button>
       </div>
       <form id="profileForm">
         <input id="profileId" type="hidden">
         <div id="accountFields" class="users-form-grid">
-          <label>Email <input id="profileEmail" type="email" placeholder="customer@example.com"></label>
-          <label>Mật khẩu <input id="profilePassword" type="password" minlength="6" placeholder="Tối thiểu 6 ký tự"></label>
+          <label>Email <input id="profileEmail" type="text" readonly></label>
         </div>
-        <p id="accountHint" class="users-form-hint">Tài khoản Supabase Auth sẽ được tạo trước; UUID trả về sẽ dùng làm <code>profiles.id</code>.</p>
+        <p id="accountHint" class="users-form-hint">Admin frontend không tạo Auth user. Email không được lưu trong <code>public.profiles</code> nên không thể truy xuất từ màn hình này.</p>
         <div class="users-form-grid">
-          <label>Họ và tên <input id="profileFullName" type="text" maxlength="120" required></label>
-          <label>Số điện thoại <input id="profilePhone" type="tel" maxlength="20"></label>
+          <label>Họ và tên <input id="profileFullName" type="text" maxlength="120" readonly></label>
+          <label>Số điện thoại <input id="profilePhone" type="tel" maxlength="20" readonly></label>
           <label>Vai trò
             <select id="profileRole" required><option value="customer">Khách hàng</option><option value="admin">Quản trị viên</option></select>
           </label>
@@ -127,6 +126,7 @@
             <select id="profileStatus" required><option value="active">Hoạt động</option><option value="inactive">Ngưng hoạt động</option><option value="blocked">Đã khóa</option></select>
           </label>
         </div>
+        <p class="users-form-hint">Chỉ vai trò và trạng thái được cập nhật. Để vô hiệu hóa tài khoản, chọn “Ngưng hoạt động” hoặc “Đã khóa”.</p>
         <div class="users-modal-actions">
           <button class="users-secondary-btn" type="button" data-close-modal>Hủy</button>
           <button id="btnSaveProfile" class="users-primary-btn" type="submit">Lưu hồ sơ</button>
