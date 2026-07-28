@@ -116,6 +116,7 @@
   function renderSignedOut(authArea) {
     authArea.innerHTML = '';
     const loginLink = document.createElement('a');
+    loginLink.className = 'btn btn-outline';
     loginLink.href = 'login.html';
     loginLink.textContent = 'Đăng nhập';
     authArea.appendChild(loginLink);
