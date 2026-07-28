@@ -62,7 +62,10 @@
       <div class="admin-card-section">
         <div class="section-header-row">
           <h2>Danh sách booking</h2>
-          <button id="createBookingButton" type="button" class="btn-primary-admin">+ Tạo booking</button>
+          <div>
+            <button id="createBookingButton" type="button" class="btn-primary-admin" disabled>+ Tạo booking</button>
+            <small>Chức năng tạo booking thay khách hàng chưa được hỗ trợ an toàn.</small>
+          </div>
         </div>
 
         <p id="bookingFeedback" class="booking-feedback" role="status" aria-live="polite"></p>
@@ -71,7 +74,9 @@
           <input id="bookingSearch" type="search" placeholder="Tìm theo mã booking, tên khách hàng..." class="admin-search-input" aria-label="Tìm kiếm booking">
           <select id="bookingStatusFilter" class="admin-select-filter" aria-label="Lọc trạng thái booking">
             <option value="all">Tất cả trạng thái booking</option>
+            <option value="pending">Chờ xác nhận</option>
             <option value="confirmed">Đã xác nhận</option>
+            <option value="checked_in">Đã nhận phòng</option>
             <option value="cancelled">Đã hủy</option>
             <option value="completed">Hoàn thành</option>
           </select>
@@ -180,7 +185,7 @@
         </div>
         <div class="booking-form-actions">
           <button type="button" class="btn-outline" data-close-modal="bookingFormModal">Hủy</button>
-          <button id="bookingSubmitButton" type="submit" class="btn-primary-admin">Tạo booking</button>
+          <button id="bookingSubmitButton" type="submit" class="btn-primary-admin">Cập nhật trạng thái</button>
         </div>
       </form>
     </div>
