@@ -252,15 +252,22 @@
 
   function friendlyError(error, fallback) {
     const message = String(error && error.message ? error.message : '');
+    const code = String(error && error.code ? error.code : '').toLowerCase();
     const normalized = message.toLowerCase();
 
     if (normalized.includes('invalid login credentials')) return 'Email hoặc mật khẩu không đúng.';
     if (normalized.includes('email not confirmed')) return 'Email chưa được xác nhận. Vui lòng kiểm tra hộp thư.';
     if (normalized.includes('user already registered')) return 'Email này đã được đăng ký.';
+    if (code === 'over_email_send_rate_limit' || normalized.includes('email rate limit exceeded')) {
+      return 'Hệ thống đang gửi quá nhiều email xác nhận. Vui lòng chờ một lúc rồi thử lại.';
+    }
+    if (normalized.includes('email address') && normalized.includes('is invalid')) {
+      return 'Địa chỉ email không được hệ thống chấp nhận. Vui lòng sử dụng email khác.';
+    }
     if (normalized.includes('failed to fetch') || normalized.includes('network')) {
       return 'Không thể kết nối dịch vụ xác thực. Vui lòng kiểm tra mạng.';
     }
 
-    return message || fallback;
+    return fallback;
   }
 }());
