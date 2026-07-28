@@ -148,6 +148,49 @@
     });
   }
 
+  function compactRoomTypeName(name) {
+    return String(name || '')
+      .replace('Biệt Thự 3 Phòng Ngủ Có Hồ Bơi', 'Villa 3 Phòng Ngủ')
+      .replace('Three-Bedroom Pool Villa', 'Villa 3 Phòng Ngủ')
+      .replace('Junior Suite Hướng Vườn Giường Đôi', 'Junior Suite Vườn')
+      .replace('Junior Suite Hướng Biển Giường Đôi', 'Junior Suite Biển')
+      .replace('Junior Suite Garden View', 'Junior Suite Vườn')
+      .replace('Junior Suite Ocean View', 'Junior Suite Biển')
+      .replace('Deluxe Hướng Vườn 2 Giường Đơn', 'Deluxe Vườn Twin')
+      .replace('Deluxe Hướng Vườn Giường Đôi', 'Deluxe Vườn King')
+      .replace('Deluxe Hướng Biển 2 Giường Đơn', 'Deluxe Biển Twin')
+      .replace('Deluxe Hướng Biển Giường Đôi', 'Deluxe Biển King')
+      .replace('Deluxe Hướng Vịnh Giường Đôi', 'Deluxe Vịnh King')
+      .replace('Deluxe Garden View Twin', 'Deluxe Vườn Twin')
+      .replace('Deluxe Garden View King', 'Deluxe Vườn King')
+      .replace('Deluxe Ocean View Twin', 'Deluxe Biển Twin')
+      .replace('Deluxe Ocean View King', 'Deluxe Biển King')
+      .replace('Deluxe Bay View King', 'Deluxe Vịnh King')
+      .replace('Family Suite', 'Phòng Gia Đình');
+  }
+
+  function roomTypeCategory(name) {
+    const normalizedName = String(name || '').toLocaleLowerCase('vi');
+
+    if (normalizedName.includes('deluxe')) {
+      return 'Deluxe';
+    }
+    if (normalizedName.includes('junior suite')) {
+      return 'Junior Suite';
+    }
+    if (normalizedName.includes('villa') || normalizedName.includes('biệt thự')) {
+      return 'Villa';
+    }
+    if (normalizedName.includes('family') || normalizedName.includes('gia đình')) {
+      return 'Gia đình';
+    }
+    if (normalizedName.includes('vip')) {
+      return 'VIP';
+    }
+
+    return compactRoomTypeName(name);
+  }
+
   function populateCatalogFilters(elements) {
     const cities = uniqueSorted(catalogState.rooms.map(function (room) {
       return room.branch.city;
@@ -158,23 +201,23 @@
       elements.branchFilter.appendChild(createOption(city, city));
     });
 
-    const roomTypes = new Map();
+    const roomTypeCategories = new Set();
     catalogState.rooms.forEach(function (room) {
-      roomTypes.set(String(room.room_type.id), room.room_type.name);
+      roomTypeCategories.add(roomTypeCategory(room.room_type.name));
     });
 
     elements.roomTypeFilters.innerHTML = '';
-    Array.from(roomTypes.entries())
+    Array.from(roomTypeCategories)
       .sort(function (left, right) {
-        return String(left[1]).localeCompare(String(right[1]), 'vi');
+        return left.localeCompare(right, 'vi');
       })
-      .forEach(function (entry) {
+      .forEach(function (category) {
         const label = document.createElement('label');
         const checkbox = document.createElement('input');
         checkbox.type = 'checkbox';
-        checkbox.value = entry[0];
+        checkbox.value = category;
         label.appendChild(checkbox);
-        label.appendChild(document.createTextNode(' ' + entry[1]));
+        label.appendChild(document.createTextNode(' ' + category));
         elements.roomTypeFilters.appendChild(label);
       });
 
@@ -250,7 +293,7 @@
     const city = elements.branchFilter.value;
     const branchId = elements.hotelFilter.value;
     const priceRange = elements.priceFilter.value;
-    const roomTypeIds = Array.from(
+    const roomTypeCategories = Array.from(
       elements.roomTypeFilters.querySelectorAll('input[type="checkbox"]:checked')
     ).map(function (checkbox) {
       return checkbox.value;
@@ -259,7 +302,8 @@
     return catalogState.rooms.filter(function (room) {
       return (!city || room.branch.city === city)
         && (!branchId || String(room.branch.id) === branchId)
-        && (!roomTypeIds.length || roomTypeIds.includes(String(room.room_type.id)))
+        && (!roomTypeCategories.length
+          || roomTypeCategories.includes(roomTypeCategory(room.room_type.name)))
         && priceMatches(Number(room.price_per_night), priceRange);
     });
   }
@@ -285,7 +329,8 @@
     body.className = 'room-search-body';
 
     const title = document.createElement('h3');
-    title.textContent = 'Phòng ' + room.room_number + ' — ' + room.room_type.name;
+    title.textContent = 'Phòng ' + room.room_number + ' — '
+      + compactRoomTypeName(room.room_type.name);
 
     const location = document.createElement('div');
     location.className = 'room-meta';
@@ -298,11 +343,11 @@
 
     const price = document.createElement('div');
     price.className = 'room-price';
-    price.textContent = formatPrice(room.price_per_night) + ' / đêm (dự kiến)';
+    price.textContent = formatPrice(room.price_per_night) + ' / đêm';
 
     const status = document.createElement('div');
     status.className = 'room-status status-available';
-    status.textContent = 'Phòng đang hoạt động';
+    status.textContent = 'Đang hoạt động';
 
     const detailLink = document.createElement('a');
     detailLink.className = 'btn-view-detail';
