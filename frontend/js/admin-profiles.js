@@ -1,4 +1,7 @@
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("DOMContentLoaded", async () => {
+  const adminContext = await window.gostayAdminReady;
+  if (!adminContext) return;
+
   const db = window.gostaySupabase;
   const $ = (id) => document.getElementById(id);
   const tableBody = $("profilesTableBody");

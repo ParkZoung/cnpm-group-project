@@ -27,7 +27,7 @@
       <h2>Đăng Ký Tài Khoản</h2>
       <p class="auth-subtitle">Tạo tài khoản để trải nghiệm dịch vụ đặt phòng tốt nhất</p>
       
-      <form action="login.html" method="GET" class="auth-form">
+      <form class="auth-form" id="register-form" novalidate>
         <div class="form-group">
           <label for="fullname">Họ và tên</label>
           <input type="text" id="fullname" name="fullname" placeholder="Nhập đầy đủ họ và tên" >
@@ -44,7 +44,7 @@
         </div>
         
         <div class="form-group">
-          <label for="username">Tên đăng nhập</label>
+          <label for="username">Tên đăng nhập (không bắt buộc)</label>
           <input type="text" id="username" name="username" placeholder="Tạo tên tài khoản đăng nhập" >
         </div>
         
@@ -59,7 +59,8 @@
           </label>
         </div>
 
-        <button type="submit" class="btn-auth-submit">Đăng Ký</button>
+        <div id="register-status" role="status" aria-live="polite" hidden></div>
+        <button type="submit" class="btn-auth-submit" id="register-submit">Đăng Ký</button>
       </form>
       
       <div class="auth-footer-text">
@@ -105,6 +106,8 @@
       <div class="container">© 2025 GoStay. All rights reserved.</div>
     </div>
   </footer>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="js/supabase-client.js"></script>
   <script src="js/auth.js"></script>
   <script src="js/header-auth.js"></script>
 </body>
