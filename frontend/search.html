@@ -33,48 +33,62 @@
   <main class="search-page-container container">
     <aside class="filter-sidebar">
       <h2 style="text-align: center;">Bộ lọc tìm kiếm</h2>
-      <form>
+      <form id="availability-search-form" novalidate>
         <div class="filter-group">
-          <label for="branch-filter">Lựa chọn chi nhánh</label>
+          <label for="check-in-filter">Ngày nhận phòng</label>
+          <input id="check-in-filter" name="check_in" type="date" required>
+        </div>
+
+        <div class="filter-group">
+          <label for="check-out-filter">Ngày trả phòng</label>
+          <input id="check-out-filter" name="check_out" type="date" required>
+        </div>
+
+        <div class="filter-group">
+          <label for="guests-filter">Số khách</label>
+          <input id="guests-filter" name="guests" type="number" min="1" step="1" value="1" required>
+        </div>
+
+        <div class="filter-group">
+          <label for="branch-filter">Chi nhánh</label>
           <select id="branch-filter" name="branch">
             <option value="">Tất cả chi nhánh</option>
           </select>
         </div>
 
         <div class="filter-group">
-          <label for="hotel-filter">Khách sạn trong chi nhánh</label>
-          <select id="hotel-filter" name="hotel" disabled>
-            <option value="">Chọn chi nhánh trước</option>
+          <label for="room-type-filter">Loại phòng</label>
+          <select id="room-type-filter" name="room_type">
+            <option value="">Tất cả loại phòng</option>
           </select>
         </div>
 
         <div class="filter-group">
-          <label for="price-filter">Khoảng giá (đêm)</label>
-          <select id="price-filter" name="price">
-            <option value="">Tất cả mức giá</option>
-            <option value="0-500">Dưới 500.000đ</option>
-            <option value="500-1000">500.000đ - 1.000.000đ</option>
-            <option value="1000+">Trên 1.000.000đ</option>
-          </select>
+          <label for="min-price-filter">Giá tối thiểu / đêm</label>
+          <input id="min-price-filter" name="min_price" type="number" min="0" step="1000" placeholder="0">
         </div>
 
         <div class="filter-group">
-          <label>Loại phòng nghỉ</label>
-          <div class="checkbox-group" id="room-type-filters"></div>
+          <label for="max-price-filter">Giá tối đa / đêm</label>
+          <input id="max-price-filter" name="max_price" type="number" min="0" step="1000" placeholder="Không giới hạn">
         </div>
-        <button type="button" class="btn-apply-filter">Áp dụng bộ lọc</button>
+
+        <p id="availability-validation-error" class="search-validation-error" role="alert" hidden></p>
+        <button type="submit" class="btn-apply-filter">Kiểm tra phòng trống</button>
       </form>
     </aside>
 
     <section class="search-results-section">
       <div class="results-header">
-        <p id="catalog-loading" role="status">Đang tải danh sách phòng...</p>
+        <p id="catalog-incomplete" role="status">Chọn ngày nhận phòng, ngày trả phòng và số khách để kiểm tra phòng trống.</p>
+        <p id="catalog-loading" role="status" hidden>Đang kiểm tra phòng trống...</p>
         <p id="catalog-error" role="alert" hidden></p>
-        <p id="catalog-empty" role="status" hidden>Không tìm thấy phòng phù hợp.</p>
+        <button id="catalog-retry" type="button" class="btn-view-detail" hidden>Thử lại</button>
+        <p id="catalog-empty" role="status" hidden>Không có phòng trống phù hợp trong thời gian đã chọn.</p>
         <p id="catalog-result-count" role="status" hidden></p>
       </div>
 
-      <div class="rooms-search-grid" id="catalog-room-list" aria-busy="true"></div>
+      <div class="rooms-search-grid" id="catalog-room-list" aria-busy="false"></div>
     </section>
   </main>
 

@@ -71,8 +71,8 @@
               <svg class="search-icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="1"/><path d="M7 3v4M17 3v4M3 10h18M8 14h.01M12 14h.01M16 14h.01M8 18h.01M12 18h.01"/></svg>
               <span><span class="search-label">Chọn ngày</span><strong><span id="checkin-value">Nhận phòng</span><i></i><span id="checkout-value">Trả phòng</span></strong></span>
             </button>
-            <input id="checkin-input" type="hidden" name="checkin">
-            <input id="checkout-input" type="hidden" name="checkout">
+            <input id="checkin-input" type="hidden" name="check_in">
+            <input id="checkout-input" type="hidden" name="check_out">
             <div class="search-panel calendar-panel" id="calendar-panel" hidden>
               <div class="calendar-tabs"><button type="button" class="active">Lịch</button><button type="button">Ngày linh hoạt</button></div>
               <div class="calendar-months" id="calendar-months"></div>
@@ -89,6 +89,7 @@
             <input id="adults-input" type="hidden" name="adults" value="1">
             <input id="children-input" type="hidden" name="children" value="0">
             <input id="rooms-input" type="hidden" name="rooms" value="1">
+            <input id="total-guests-input" type="hidden" name="guests" value="1">
             <div class="search-panel guests-panel" id="guests-panel" hidden>
               <div class="guest-row" data-counter="adults"><span><strong>Người lớn</strong><small>Từ 18 tuổi</small></span><div><button type="button" data-change="-1">−</button><b>1</b><button type="button" data-change="1">+</button></div></div>
               <div class="guest-row" data-counter="children"><span><strong>Trẻ em</strong><small>Từ 0–17 tuổi</small></span><div><button type="button" data-change="-1">−</button><b>0</b><button type="button" data-change="1">+</button></div></div>
