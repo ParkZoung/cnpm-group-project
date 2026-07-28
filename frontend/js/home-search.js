@@ -46,6 +46,8 @@ document.addEventListener('DOMContentLoaded', function () {
       counterValues[key] = Math.max(minimums[key], Math.min(10, counterValues[key] + Number(button.dataset.change)));
       row.querySelector('b').textContent = counterValues[key];
       document.getElementById(key + '-input').value = counterValues[key];
+      document.getElementById('total-guests-input').value =
+        counterValues.adults + counterValues.children;
       document.getElementById('guests-value').textContent = counterValues.adults + ' người lớn · ' + counterValues.children + ' trẻ em · ' + counterValues.rooms + ' phòng';
     });
   });
@@ -124,6 +126,19 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 
   renderCalendar();
+
+  searchBox.addEventListener('submit', function (event) {
+    const checkInValue = document.getElementById('checkin-input').value;
+    const checkOutValue = document.getElementById('checkout-input').value;
+    if (!checkInValue || !checkOutValue || checkOutValue <= checkInValue) {
+      event.preventDefault();
+      document.getElementById('calendar-hint').textContent =
+        'Vui lòng chọn ngày nhận phòng và ngày trả phòng hợp lệ';
+      const calendarPanel = document.getElementById('calendar-panel');
+      closePanels(calendarPanel.id);
+      calendarPanel.hidden = false;
+    }
+  });
 });
 
 (function () {

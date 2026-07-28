@@ -20,6 +20,7 @@
 
     form.dataset.cartBound = 'true';
     setMinimumDates();
+    applySearchValuesFromUrl();
     updateRoomSelectionState();
 
     document.addEventListener('gostay:room-loaded', updateRoomSelectionState);
@@ -206,6 +207,27 @@
 
     if (checkOutInput) {
       checkOutInput.min = today;
+    }
+  }
+
+  function applySearchValuesFromUrl() {
+    const params = new URLSearchParams(window.location.search);
+    const checkIn = params.get('check_in') || params.get('checkin') || '';
+    const checkOut = params.get('check_out') || params.get('checkout') || '';
+    const guests = params.get('guests') || '';
+    const checkInInput = document.getElementById('check-in-date');
+    const checkOutInput = document.getElementById('check-out-date');
+    const guestInput = document.getElementById('guest-count');
+
+    if (checkInInput && /^\d{4}-\d{2}-\d{2}$/.test(checkIn)) {
+      checkInInput.value = checkIn;
+    }
+    if (checkOutInput && /^\d{4}-\d{2}-\d{2}$/.test(checkOut)) {
+      checkOutInput.value = checkOut;
+      checkOutInput.min = checkIn || getTodayDateString();
+    }
+    if (guestInput && /^[1-9]\d*$/.test(guests)) {
+      guestInput.value = guests;
     }
   }
 
