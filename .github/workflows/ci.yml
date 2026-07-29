@@ -67,10 +67,89 @@ jobs:
         run: |
           set -euo pipefail
 
-          if git ls-files | grep -E '(^|/)\.env$'; then
-            echo "A tracked .env file was found."
-            echo "Remove it from Git and keep only .env.example."
+          if git ls-files | grep -E '(^|/)\.env($|\.)' | grep -vE '(^|/)\.env\.example$'; then
+            echo "A tracked environment file was found."
+            echo "Remove it from Git and keep only .env.example with placeholder values."
             exit 1
           fi
 
-          echo "No tracked .env file found."
+          echo "No tracked secret environment file found."
+
+  e2e-pr-notice:
+    name: Customer booking E2E notice
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Explain E2E stabilization gate
+        run: |
+          echo "Customer booking E2E is skipped on Pull Requests during stabilization."
+          echo "This also prevents forked Pull Requests from attempting to access E2E secrets."
+          echo "Run the E2E job explicitly with workflow_dispatch."
+
+  e2e:
+    name: Customer booking E2E
+    if: github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    concurrency:
+      group: gostay-shared-e2e
+      cancel-in-progress: false
+    env:
+      GOSTAY_E2E_EMAIL: ${{ secrets.GOSTAY_E2E_EMAIL }}
+      GOSTAY_E2E_PASSWORD: ${{ secrets.GOSTAY_E2E_PASSWORD }}
+      GOSTAY_E2E_GUEST_NAME: ${{ secrets.GOSTAY_E2E_GUEST_NAME }}
+      GOSTAY_E2E_GUEST_PHONE: ${{ secrets.GOSTAY_E2E_GUEST_PHONE }}
+
+    steps:
+      - name: Checkout source code
+        uses: actions/checkout@v6
+
+      - name: Check E2E secrets
+        id: e2e-secrets
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          missing=()
+          [ -n "$GOSTAY_E2E_EMAIL" ] || missing+=("GOSTAY_E2E_EMAIL")
+          [ -n "$GOSTAY_E2E_PASSWORD" ] || missing+=("GOSTAY_E2E_PASSWORD")
+          [ -n "$GOSTAY_E2E_GUEST_NAME" ] || missing+=("GOSTAY_E2E_GUEST_NAME")
+          [ -n "$GOSTAY_E2E_GUEST_PHONE" ] || missing+=("GOSTAY_E2E_GUEST_PHONE")
+
+          if [ "${#missing[@]}" -gt 0 ]; then
+            echo "Skipping customer booking E2E. Missing repository secrets: ${missing[*]}"
+            echo "ready=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "All required E2E secrets are configured."
+            echo "ready=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Setup Node.js
+        if: steps.e2e-secrets.outputs.ready == 'true'
+        uses: actions/setup-node@v6
+        with:
+          node-version: 24
+          cache: npm
+
+      - name: Install dependencies
+        if: steps.e2e-secrets.outputs.ready == 'true'
+        run: npm ci
+
+      - name: Install Chromium
+        if: steps.e2e-secrets.outputs.ready == 'true'
+        run: npx playwright install --with-deps chromium
+
+      - name: Run customer booking E2E
+        if: steps.e2e-secrets.outputs.ready == 'true'
+        run: npm run test:e2e
+
+      - name: Upload Playwright failure artifacts
+        if: failure() && steps.e2e-secrets.outputs.ready == 'true'
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-failure-artifacts
+          path: |
+            playwright-report/
+            test-results/
+          if-no-files-found: ignore
+          retention-days: 7
