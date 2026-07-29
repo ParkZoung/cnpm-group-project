@@ -1,0 +1,13 @@
+{
+  "name": "gostay-e2e",
+  "version": "1.0.0",
+  "private": true,
+  "description": "End-to-end tests for the GoStay customer booking flow",
+  "scripts": {
+    "test:e2e": "node --env-file-if-exists=.env node_modules/@playwright/test/cli.js test tests/e2e/core-booking.spec.js",
+    "test:e2e:three": "node --env-file-if-exists=.env node_modules/@playwright/test/cli.js test tests/e2e/core-booking.spec.js --repeat-each=3"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.55.0"
+  }
+}
