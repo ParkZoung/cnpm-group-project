@@ -75,9 +75,11 @@ function renderRoomTypes(data) {
             <td>${formattedDate}</td>
             <td>
                 <button class="btn-action edit" onclick="editRoomType(${item.id})">Sửa</button>
-                <button class="btn-action delete" onclick="deleteRoomType(${item.id})">Xóa</button>
+                <button type="button" class="btn-action delete" data-action="delete-room-type">Xóa</button>
             </td>
         `;
+        const deleteButton = row.querySelector('[data-action="delete-room-type"]');
+        deleteButton.addEventListener('click', () => deleteRoomType(item, deleteButton));
         roomTypeTable.appendChild(row);
     });
 }
@@ -159,26 +161,63 @@ window.editRoomType = function(id) {
     if (btnUpdate) btnUpdate.style.display = 'inline-block';
 };
 
-window.deleteRoomType = async function(id) {
+async function deleteRoomType(item, button) {
     if (!checkConnection()) return;
-    if (!confirm(`Bạn có chắc muốn xóa loại phòng mang ID: ${id} không?`)) return;
+
+    const originalLabel = button.textContent;
+    button.disabled = true;
+    button.textContent = 'Đang kiểm tra...';
 
     try {
-        const { error } = await window.gostaySupabase
+        const { count, error: countError } = await window.gostaySupabase
+            .from('rooms')
+            .select('id', { count: 'exact', head: true })
+            .eq('room_type_id', item.id);
+
+        if (countError) throw countError;
+
+        if (Number(count || 0) > 0) {
+            alert(
+                `Không thể xóa loại phòng "${item.name}" vì đang được ${count} phòng sử dụng. ` +
+                'Vui lòng chuyển các phòng sang loại khác trước.'
+            );
+            return;
+        }
+
+        button.textContent = 'Xóa';
+        if (!confirm(
+            `Xóa loại phòng "${item.name}"?\n\n` +
+            'Chỉ loại phòng không được phòng nào sử dụng mới có thể xóa.'
+        )) return;
+
+        button.textContent = 'Đang xóa...';
+        const { error: deleteError } = await window.gostaySupabase
             .from('room_types')
             .delete()
-            .eq('id', id);
+            .eq('id', item.id);
 
-        if (error) throw error;
+        if (deleteError) throw deleteError;
 
-        alert('Xóa bản ghi thành công!');
-        if (idInput.value == id) resetForm();
-        fetchRoomTypes();
+        alert(`Đã xóa loại phòng "${item.name}".`);
+        if (String(idInput.value) === String(item.id)) resetForm();
+        await fetchRoomTypes();
     } catch (error) {
-        console.error('Lỗi khi xóa:', error.message);
-        alert('Không thể xóa loại phòng này: ' + error.message);
+        console.error('Lỗi khi xóa loại phòng:', error);
+        if (error && error.code === '23503') {
+            alert(
+                `Không thể xóa loại phòng "${item.name}" vì loại phòng vừa được gán cho một phòng. ` +
+                'Vui lòng chuyển phòng đó sang loại khác trước.'
+            );
+        } else {
+            alert('Không thể kiểm tra hoặc xóa loại phòng. Vui lòng thử lại.');
+        }
+    } finally {
+        if (button.isConnected) {
+            button.disabled = false;
+            button.textContent = originalLabel;
+        }
     }
-};
+}
 
 // ==========================================
 // 4. SEARCH & RESET: Lọc trực tiếp & Làm sạch Form

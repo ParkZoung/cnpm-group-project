@@ -188,13 +188,16 @@ function renderRooms(rows) {
         <div class="action-buttons">
           <button type="button" class="btn-action edit" data-action="view">Xem</button>
           <button type="button" class="btn-action edit" data-action="edit">Sửa</button>
-          <button type="button" class="btn-action delete" data-action="delete">Xóa</button>
+          <button type="button" class="btn-action delete" data-action="toggle-active">
+            ${row.status === "inactive" ? "Kích hoạt lại" : "Ngừng hoạt động"}
+          </button>
         </div>
       </td>
     `;
     tr.querySelector('[data-action="view"]').addEventListener("click", () => viewRoomDetail(row));
     tr.querySelector('[data-action="edit"]').addEventListener("click", () => startEditRoom(row));
-    tr.querySelector('[data-action="delete"]').addEventListener("click", () => deleteRoom(row));
+    const toggleButton = tr.querySelector('[data-action="toggle-active"]');
+    toggleButton.addEventListener("click", () => toggleRoomActiveStatus(row, toggleButton));
     tbody.appendChild(tr);
   });
 }
@@ -347,22 +350,51 @@ async function updateRoom(roomId) {
   loadRooms(getRoomFiltersState());
 }
 
-async function deleteRoom(row) {
-  if (!confirm(`Xóa phòng "${row.name}" (${row.room_number})? Thao tác không thể hoàn tác.`)) {
+async function toggleRoomActiveStatus(row, button) {
+  const isReactivating = row.status === "inactive";
+  const nextStatus = isReactivating ? "available" : "inactive";
+  const confirmationMessage = isReactivating
+    ? `Kích hoạt lại phòng "${row.name}" (${row.room_number})?\n\nPhòng sẽ có thể xuất hiện trong kết quả tìm kiếm cho những ngày còn trống.`
+    : `Ngừng hoạt động phòng "${row.name}" (${row.room_number})?\n\nPhòng sẽ không còn xuất hiện trong tìm kiếm của khách hàng. Các booking hiện tại và lịch sử booking vẫn được giữ nguyên.`;
+
+  if (!confirm(confirmationMessage)) {
     return;
   }
 
-  const { error } = await window.gostaySupabase.from("rooms").delete().eq("id", row.id);
+  const originalLabel = button.textContent;
+  button.disabled = true;
+  button.textContent = "Đang xử lý...";
 
-  if (error) {
-    console.error("[rooms] Lỗi khi xóa:", error.message);
-    showRoomMessage("Xóa thất bại: " + error.message, true);
-    return;
+  try {
+    const { error } = await window.gostaySupabase
+      .from("rooms")
+      .update({ status: nextStatus })
+      .eq("id", row.id);
+
+    if (error) throw error;
+
+    console.log(
+      isReactivating ? "[rooms] Đã kích hoạt lại phòng:" : "[rooms] Đã ngừng hoạt động phòng:",
+      row.id
+    );
+    showRoomMessage(
+      isReactivating
+        ? "Đã kích hoạt lại phòng " + row.room_number + "."
+        : "Đã ngừng hoạt động phòng " + row.room_number + ".",
+      false
+    );
+    await loadRooms(getRoomFiltersState());
+  } catch (error) {
+    console.error("[rooms] Lỗi khi cập nhật trạng thái:", error);
+    showRoomMessage(
+      isReactivating
+        ? "Không thể kích hoạt lại phòng. Vui lòng thử lại."
+        : "Không thể ngừng hoạt động phòng. Vui lòng thử lại.",
+      true
+    );
+    button.disabled = false;
+    button.textContent = originalLabel;
   }
-
-  console.log("[rooms] Đã xóa phòng:", row.id);
-  showRoomMessage("Đã xóa phòng " + row.room_number + ".", false);
-  loadRooms(getRoomFiltersState());
 }
 
 function resetRoomForm() {
