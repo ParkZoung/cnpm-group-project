@@ -1,0 +1,76 @@
+name: GoStay CI
+
+on:
+  push:
+    branches:
+      - main
+
+  pull_request:
+    branches:
+      - main
+
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  static-checks:
+    name: Static checks
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Checkout source code
+        uses: actions/checkout@v6
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: 24
+          package-manager-cache: false
+
+      - name: Check JavaScript syntax
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          count=0
+
+          while IFS= read -r -d '' file; do
+            echo "Checking: $file"
+            node --check "$file"
+            count=$((count + 1))
+          done < <(find frontend/js -type f -name '*.js' -print0)
+
+          if [ "$count" -eq 0 ]; then
+            echo "No JavaScript files were found."
+            exit 1
+          fi
+
+          echo "Checked $count JavaScript files successfully."
+
+      - name: Check unresolved merge conflicts
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          if git grep -nE '^(<<<<<<<|=======|>>>>>>>)' -- frontend supabase docs; then
+            echo "Unresolved Git merge conflict markers were found."
+            exit 1
+          fi
+
+          echo "No unresolved merge conflicts found."
+
+      - name: Ensure .env is not committed
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          if git ls-files | grep -E '(^|/)\.env$'; then
+            echo "A tracked .env file was found."
+            echo "Remove it from Git and keep only .env.example."
+            exit 1
+          fi
+
+          echo "No tracked .env file found."
