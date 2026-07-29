@@ -31,40 +31,52 @@
       <div class="topbar-left"><h1 class="topbar-title">Bảng điều khiển</h1></div>
       <div class="topbar-right">
         <div class="topbar-search"><input type="text" placeholder="Tìm kiếm nhanh..."></div>
-        <div class="topbar-user"><span class="user-name">Admin Khánh ▾</span></div>
+        <div class="topbar-user"><span id="adminUserName" class="user-name">Admin ▾</span></div>
       </div>
     </header>
 
     <main class="admin-page-container">
 
+      <div id="dashboardFeedback" class="booking-feedback" role="status" aria-live="polite" hidden>
+        <span id="dashboardFeedbackText"></span>
+        <button id="dashboardRetryButton" type="button" class="btn-primary-admin" hidden>Thử lại</button>
+      </div>
+
       <!-- Thẻ thống kê tổng quan -->
-      <section class="stat-grid">
+      <section class="stat-grid" aria-label="Thống kê tổng quan">
         <div class="stat-card">
           <div class="stat-icon teal">🛏️</div>
           <div class="stat-info">
-            <div class="stat-value">128</div>
+            <div id="totalRoomsValue" class="stat-value" aria-busy="true">—</div>
             <div class="stat-label">Tổng số phòng</div>
           </div>
         </div>
         <div class="stat-card">
           <div class="stat-icon green">✅</div>
           <div class="stat-info">
-            <div class="stat-value">42</div>
+            <div id="availableRoomsValue" class="stat-value" aria-busy="true">—</div>
             <div class="stat-label">Phòng đang trống</div>
           </div>
         </div>
         <div class="stat-card">
           <div class="stat-icon amber">📅</div>
           <div class="stat-info">
-            <div class="stat-value">17</div>
+            <div id="bookingsTodayValue" class="stat-value" aria-busy="true">—</div>
             <div class="stat-label">Đơn đặt hôm nay</div>
           </div>
         </div>
         <div class="stat-card">
           <div class="stat-icon blue">👥</div>
           <div class="stat-info">
-            <div class="stat-value">1.245</div>
+            <div id="totalCustomersValue" class="stat-value" aria-busy="true">—</div>
             <div class="stat-label">Tổng khách hàng</div>
+          </div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon teal">₫</div>
+          <div class="stat-info">
+            <div id="revenueValue" class="stat-value" aria-busy="true">—</div>
+            <div class="stat-label">Doanh thu</div>
           </div>
         </div>
       </section>
@@ -87,39 +99,8 @@
                 <th>Trạng thái</th>
               </tr>
             </thead>
-            <tbody>
-              <tr>
-                <td>#BK1001</td>
-                <td><strong>Trần Minh Hoàng</strong></td>
-                <td>Deluxe Premium - Nha Trang</td>
-                <td>16/06/2026</td>
-                <td>2.400.000đ</td>
-                <td><span class="status-badge status-success">Đã thanh toán</span></td>
-              </tr>
-              <tr>
-                <td>#BK1002</td>
-                <td><strong>Lê Thị Mai Anh</strong></td>
-                <td>Standard Room - Phú Quốc</td>
-                <td>16/06/2026</td>
-                <td>1.200.000đ</td>
-                <td><span class="status-badge status-warning">Chờ thanh toán</span></td>
-              </tr>
-              <tr>
-                <td>#BK1003</td>
-                <td><strong>Nguyễn Văn An</strong></td>
-                <td>Deluxe Premium - Phú Quốc</td>
-                <td>15/06/2026</td>
-                <td>3.600.000đ</td>
-                <td><span class="status-badge status-success">Đã thanh toán</span></td>
-              </tr>
-              <tr>
-                <td>#BK1004</td>
-                <td><strong>Phạm Thu Hà</strong></td>
-                <td>Standard Room - Nha Trang</td>
-                <td>15/06/2026</td>
-                <td>900.000đ</td>
-                <td><span class="status-badge status-danger">Đã hủy</span></td>
-              </tr>
+            <tbody id="recentBookingsTableBody">
+              <tr><td colspan="6">Đang tải dữ liệu booking...</td></tr>
             </tbody>
           </table>
         </div>
@@ -134,5 +115,6 @@
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="js/supabase-client.js"></script>
   <script src="js/admin-auth.js"></script>
+  <script src="js/admin-dashboard.js"></script>
 </body>
 </html>
