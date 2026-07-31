@@ -118,6 +118,311 @@
 /* --- CỘT PHẢI: DANH SÁCH PHÒNG KẾT QUẢ --- */
 .search-results-section {
   flex-grow: 1;
+  min-width: 0;
+}
+
+/* --- TRỢ LÝ AI GỢI Ý PHÒNG --- */
+.home-page main {
+  display: flex;
+  flex-direction: column;
+}
+
+.home-page main > .section.container,
+.home-page main > .why.container {
+  width: 100%;
+  max-width: 1140px;
+  box-sizing: border-box;
+}
+
+.home-page .ai-room-assistant {
+  width: 100%;
+  max-width: 1140px;
+  box-sizing: border-box;
+  order: 1;
+  margin-top: 10px;
+  margin-bottom: 28px;
+  padding: 16px 18px;
+  background: #ffffff;
+  border: 1px solid #dbe4ec;
+  border-radius: 10px;
+  box-shadow: 0 3px 12px rgba(11, 53, 88, 0.05);
+}
+
+.home-page .why {
+  order: 2;
+}
+
+.home-page .dest-card {
+  min-width: 0;
+}
+
+.home-page .dest-title {
+  right: 104px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.home-page .card-cta {
+  z-index: 1;
+  min-width: 88px;
+  text-align: center;
+  white-space: nowrap;
+}
+
+.ai-room-assistant__header {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.ai-room-assistant__icon {
+  display: grid;
+  flex: 0 0 32px;
+  width: 32px;
+  height: 32px;
+  place-items: center;
+  color: #12a6b8;
+  background: #ecfeff;
+  border-radius: 50%;
+  font-size: 17px;
+}
+
+.ai-room-assistant h1,
+.ai-room-assistant h2,
+.ai-room-assistant p {
+  margin: 0;
+}
+
+.ai-room-assistant h1 {
+  color: #0b3558;
+  font-size: 18px;
+  line-height: 1.25;
+}
+
+.ai-room-assistant__header p {
+  margin-top: 2px;
+  color: #64748b;
+  font-size: 13px;
+  line-height: 1.35;
+}
+
+.ai-room-assistant__context {
+  display: none;
+}
+
+.ai-room-assistant__context span:not(:first-child) {
+  padding: 5px 9px;
+  color: #0b6470;
+  background: #ecfeff;
+  border-radius: 999px;
+  font-weight: 700;
+}
+
+.ai-room-assistant__form label {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+.ai-room-assistant__form {
+  position: relative;
+  margin-top: 12px;
+}
+
+.ai-room-assistant__validation {
+  margin-top: 8px !important;
+  color: #b42318;
+  font-size: 13px;
+}
+
+.ai-room-assistant__form textarea {
+  width: 100%;
+  min-height: 42px;
+  height: 42px;
+  padding: 10px 190px 10px 12px;
+  resize: none;
+  color: #334155;
+  border: 1px solid #cbd5e1;
+  border-radius: 7px;
+  outline: none;
+  font: inherit;
+  line-height: 20px;
+}
+
+.ai-room-assistant__form textarea:focus {
+  border-color: #12a6b8;
+  box-shadow: 0 0 0 3px rgba(18, 166, 184, 0.12);
+}
+
+.ai-room-assistant__form-footer,
+.ai-room-assistant__result-heading,
+.ai-room-assistant__actions {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.ai-room-assistant__form-footer {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  margin: 0;
+}
+
+.ai-room-assistant__form-footer small {
+  display: none;
+}
+
+.ai-room-assistant__submit,
+.ai-room-assistant__button {
+  padding: 8px 13px;
+  color: #ffffff;
+  background: #0b3558;
+  border: 0;
+  border-radius: 7px;
+  cursor: pointer;
+  font-weight: 700;
+}
+
+.ai-room-assistant__submit:hover,
+.ai-room-assistant__button:hover {
+  background: #12a6b8;
+}
+
+.ai-room-assistant__submit:disabled {
+  cursor: wait;
+  opacity: 0.65;
+}
+
+.ai-room-assistant__state,
+.ai-room-assistant__result {
+  margin-top: 16px;
+  padding: 14px;
+  background: #f8fafc;
+  border-radius: 10px;
+  color: #475569;
+  font-size: 14px;
+}
+
+.ai-room-assistant__state--error {
+  color: #b42318;
+  background: #fff4f2;
+}
+
+.ai-room-assistant__state--error .ai-room-assistant__button {
+  margin-top: 10px;
+}
+
+.ai-room-assistant__loader {
+  display: inline-block;
+  width: 15px;
+  height: 15px;
+  margin-right: 7px;
+  border: 2px solid #bae6eb;
+  border-top-color: #12a6b8;
+  border-radius: 50%;
+  vertical-align: -3px;
+  animation: ai-room-spin 0.8s linear infinite;
+}
+
+.ai-room-assistant__result-heading {
+  margin-bottom: 12px;
+}
+
+.ai-room-assistant__result-heading h2 {
+  color: #0b3558;
+  font-size: 16px;
+}
+
+.ai-room-assistant__result-heading span {
+  color: #64748b;
+  font-size: 11px;
+}
+
+.ai-room-assistant__result-content {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+  color: #334155;
+  line-height: 1.6;
+}
+
+.ai-recommendation-card {
+  overflow: hidden;
+  background: #ffffff;
+  border: 1px solid #dbe4ec;
+  border-radius: 10px;
+}
+
+.ai-recommendation-card img {
+  width: 100%;
+  height: 150px;
+  object-fit: cover;
+}
+
+.ai-recommendation-card__body { padding: 12px; }
+
+.ai-recommendation-card h3 {
+  margin: 0 0 5px;
+  color: #0b3558;
+  font-size: 15px;
+}
+
+.ai-recommendation-card__meta {
+  color: #64748b;
+  font-size: 12px;
+}
+
+.ai-recommendation-card__price {
+  margin-top: 7px;
+  color: #0b6470;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.ai-recommendation-card__reason {
+  margin: 9px 0 !important;
+  padding: 8px;
+  color: #334155;
+  background: #ecfeff;
+  border-radius: 7px;
+  font-size: 13px;
+}
+
+.ai-recommendation-card__link {
+  display: inline-block;
+  padding: 7px 11px;
+  color: #ffffff;
+  background: #0b3558;
+  border-radius: 7px;
+  font-size: 12px;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.ai-room-assistant__empty {
+  grid-column: 1 / -1;
+  padding: 12px;
+  text-align: center;
+}
+
+.ai-room-assistant__actions {
+  justify-content: flex-end;
+  margin-top: 14px;
+}
+
+.ai-room-assistant__button--muted {
+  color: #475569;
+  background: #e2e8f0;
+}
+
+@keyframes ai-room-spin {
+  to { transform: rotate(360deg); }
 }
 
 .results-header {
@@ -489,5 +794,38 @@
     width: 100%;
     min-width: 100%;
     position: static;
+  }
+
+  .ai-room-assistant {
+    margin-top: 4px;
+    padding: 14px;
+  }
+
+  .ai-room-assistant__result-heading,
+  .ai-room-assistant__actions {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .ai-room-assistant__button {
+    width: 100%;
+  }
+
+  .ai-room-assistant__form textarea {
+    height: 76px;
+    padding: 10px 12px;
+  }
+
+  .ai-room-assistant__form-footer {
+    position: static;
+    margin-top: 8px;
+  }
+
+  .ai-room-assistant__result-content {
+    grid-template-columns: 1fr;
+  }
+
+  .ai-room-assistant__submit {
+    width: 100%;
   }
 }

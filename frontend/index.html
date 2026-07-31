@@ -7,8 +7,9 @@
   <title>GoStay - Trang chủ</title>
   <link rel="stylesheet" href="css/base.css">
   <link rel="stylesheet" href="css/home.css">
+  <link rel="stylesheet" href="css/dung.css">
 </head>
-<body>
+<body class="home-page">
   <header class="site-header">
     <div class="container header-inner">
       <a href="index.html" class="logo">
@@ -101,6 +102,56 @@
         </form>
       </div>
     </div>
+
+    <section class="ai-room-assistant container" aria-labelledby="ai-room-assistant-title">
+      <div class="ai-room-assistant__header">
+        <span class="ai-room-assistant__icon" aria-hidden="true">✦</span>
+        <div>
+          <h1 id="ai-room-assistant-title">Trợ lý chọn phòng GoStay</h1>
+          <p>Mô tả căn phòng bạn mong muốn, AI sẽ gợi ý lựa chọn phù hợp từ danh sách phòng GoStay.</p>
+        </div>
+      </div>
+
+      <form id="ai-room-suggestion-form" class="ai-room-assistant__form">
+        <label for="ai-room-needs">Nhu cầu về phòng</label>
+        <textarea
+          id="ai-room-needs"
+          name="room_needs"
+          maxlength="500"
+          rows="3"
+          placeholder="Tôi đi cùng gia đình, muốn phòng rộng, ưu tiên tiết kiệm và không cần view đẹp."
+          aria-describedby="ai-room-needs-help"
+          required
+        ></textarea>
+        <p id="ai-room-validation" class="ai-room-assistant__validation" role="alert" hidden></p>
+        <div class="ai-room-assistant__form-footer">
+          <small id="ai-room-needs-help">Tối đa 500 ký tự</small>
+          <button id="ai-room-submit" type="submit" class="ai-room-assistant__submit">Gợi ý phòng phù hợp</button>
+        </div>
+      </form>
+
+      <div id="ai-room-loading" class="ai-room-assistant__state" role="status" hidden>
+        <span class="ai-room-assistant__loader" aria-hidden="true"></span>
+        Đang tìm những phòng phù hợp với nhu cầu của bạn...
+      </div>
+
+      <div id="ai-room-error" class="ai-room-assistant__state ai-room-assistant__state--error" role="alert" hidden>
+        <p id="ai-room-error-message">GoStay chưa thể tạo gợi ý lúc này. Vui lòng thử lại.</p>
+        <button id="ai-room-retry" type="button" class="ai-room-assistant__button">Thử lại</button>
+      </div>
+
+      <div id="ai-room-result" class="ai-room-assistant__result" aria-live="polite" hidden>
+        <div class="ai-room-assistant__result-heading">
+          <h2>Gợi ý dành cho bạn</h2>
+          <span>Nội dung do AI tạo</span>
+        </div>
+        <div id="ai-room-result-content" class="ai-room-assistant__result-content"></div>
+        <div class="ai-room-assistant__actions">
+          <button id="ai-room-dismiss" type="button" class="ai-room-assistant__button ai-room-assistant__button--muted">Bỏ qua kết quả</button>
+          <button id="ai-room-more" type="button" class="ai-room-assistant__button">Xem thêm gợi ý</button>
+        </div>
+      </div>
+    </section>
 
     <section class="section container">
       <div class="section-header">
@@ -217,10 +268,10 @@
       <div class="container">© 2025 GoStay. All rights reserved.</div>
     </div>
   </footer>
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="js/supabase-client.js"></script>
   <script src="js/auth.js"></script>
   <script src="js/header-auth.js"></script>
   <script src="js/home-search.js"></script>
+  <script src="js/ai-recommendation.js"></script>
 </body>
 </html>

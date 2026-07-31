@@ -1,4 +1,9 @@
-# Public auth routes use explicit JWT middleware in the function.
+# Custom JavaScript entrypoints require Supabase CLI 1.215.0 or newer.
+[functions.recommend-rooms]
+entrypoint = "./functions/recommend-rooms/index.js"
+
+# Login and registration are public endpoints; all protected routes perform
+# explicit JWT verification in middleware before executing.
 [functions.api]
 entrypoint = "./functions/api/index.js"
 verify_jwt = false
