@@ -1,0 +1,4 @@
+# Public auth routes use explicit JWT middleware in the function.
+[functions.api]
+entrypoint = "./functions/api/index.js"
+verify_jwt = false
