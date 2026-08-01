@@ -119,7 +119,14 @@
     loginLink.className = 'btn btn-outline';
     loginLink.href = 'login.html';
     loginLink.textContent = 'Đăng nhập';
+
+    const registerLink = document.createElement('a');
+    registerLink.className = 'btn btn-primary';
+    registerLink.href = 'register.html';
+    registerLink.textContent = 'Đăng ký';
+
     authArea.appendChild(loginLink);
+    authArea.appendChild(registerLink);
   }
 
   async function signOutSafely() {

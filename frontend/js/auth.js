@@ -3,8 +3,32 @@
 
   document.addEventListener('DOMContentLoaded', function () {
     setupLoginForm();
+    setupGoogleLogin();
     setupRegisterForm();
   }, { once: true });
+
+  function setupGoogleLogin() {
+    const button = document.getElementById('google-login');
+    const statusElement = document.getElementById('login-status');
+    if (!button || !statusElement) return;
+
+    button.addEventListener('click', async function () {
+      if (!window.gostaySupabase || button.disabled) return;
+      button.disabled = true;
+      setStatus(statusElement, 'Đang chuyển đến Google...', 'loading');
+
+      try {
+        const { error } = await window.gostaySupabase.auth.signInWithOAuth({
+          provider: 'google',
+          options: { redirectTo: window.location.origin + window.location.pathname }
+        });
+        if (error) throw error;
+      } catch (error) {
+        setStatus(statusElement, friendlyError(error, 'Không thể đăng nhập bằng Google.'), 'error');
+        button.disabled = false;
+      }
+    });
+  }
 
   async function getActiveProfile(userId) {
     const { data, error } = await window.gostaySupabase
@@ -93,7 +117,9 @@
       return;
     }
 
-    setLoading(submitButton, statusElement, true, 'Đang kiểm tra phiên đăng nhập...', 'Đăng Nhập');
+    // Kiểm tra phiên hiện tại ở chế độ nền, không hiển thị trạng thái tạm thời
+    // trong form đăng nhập.
+    submitButton.disabled = true;
 
     try {
       const { data, error } = await window.gostaySupabase.auth.getSession();
@@ -102,7 +128,7 @@
     } catch (error) {
       setStatus(statusElement, friendlyError(error, 'Không thể kiểm tra phiên đăng nhập.'), 'error');
     } finally {
-      setLoading(submitButton, statusElement, false, '', 'Đăng Nhập');
+      submitButton.disabled = false;
     }
 
     form.addEventListener('submit', async function (event) {
@@ -207,6 +233,7 @@
           email: email,
           password: password,
           options: {
+            emailRedirectTo: new URL('login.html', window.location.href).href,
             data: {
               full_name: fullname,
               phone: phone
