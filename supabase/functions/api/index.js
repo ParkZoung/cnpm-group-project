@@ -70,6 +70,18 @@ function validIdentifier(value) {
 async function authRoute(path, body, req) {
   const client = publicClient();
 
+  function validRedirectUrl(value) {
+    if (typeof value !== "string") return null;
+    try {
+      const url = new URL(value);
+      return url.protocol === "https:" || url.hostname === "localhost" || url.hostname === "127.0.0.1"
+        ? url.toString()
+        : null;
+    } catch (_) {
+      return null;
+    }
+  }
+
   if (path === "/auth/register") {
     if (typeof body.email !== "string" || typeof body.password !== "string") {
       return fail("Email and password are required.");
@@ -83,7 +95,21 @@ async function authRoute(path, body, req) {
     const result = await client.auth.signUp({
       email: body.email.trim(),
       password: body.password,
-      options: { data: safeMetadata },
+      options: {
+        data: safeMetadata,
+        emailRedirectTo: validRedirectUrl(body.options?.emailRedirectTo) || undefined,
+      },
+    });
+    return json(result, result.error ? 400 : 200);
+  }
+
+  if (path === "/auth/oauth") {
+    if (body.provider !== "google") return fail("Unsupported OAuth provider.");
+    const redirectTo = validRedirectUrl(body.options?.redirectTo);
+    if (!redirectTo) return fail("A valid OAuth redirect URL is required.");
+    const result = await client.auth.signInWithOAuth({
+      provider: "google",
+      options: { redirectTo, skipBrowserRedirect: true },
     });
     return json(result, result.error ? 400 : 200);
   }

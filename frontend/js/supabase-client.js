@@ -7,6 +7,23 @@
   const SESSION_KEY = 'gostay.api.session';
   const listeners = new Set();
 
+  function captureOAuthSession() {
+    const params = new URLSearchParams(window.location.hash.slice(1));
+    const accessToken = params.get('access_token');
+    const refreshToken = params.get('refresh_token');
+    if (!accessToken || !refreshToken) return;
+
+    const expiresIn = Number(params.get('expires_in')) || 3600;
+    saveSession({
+      access_token: accessToken,
+      refresh_token: refreshToken,
+      token_type: params.get('token_type') || 'bearer',
+      expires_in: expiresIn,
+      expires_at: Math.floor(Date.now() / 1000) + expiresIn
+    }, 'SIGNED_IN');
+    window.history.replaceState({}, document.title, window.location.pathname + window.location.search);
+  }
+
   function readSession() {
     try {
       return JSON.parse(localStorage.getItem(SESSION_KEY)) || null;
@@ -172,6 +189,13 @@
         }
         return result;
       },
+      signInWithOAuth: async function (input) {
+        const result = await request('/auth/oauth', input, false);
+        if (!result.error && result.data && result.data.url) {
+          window.location.assign(result.data.url);
+        }
+        return result;
+      },
       signUp: async function (input) {
         const result = await request('/auth/register', input, false);
         if (!result.error && result.data && result.data.session) {
@@ -197,5 +221,6 @@
     }
   };
 
+  captureOAuthSession();
   window.gostaySupabase = client;
 }());
