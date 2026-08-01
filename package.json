@@ -8,6 +8,7 @@
     "test:e2e:three": "node --env-file-if-exists=.env node_modules/@playwright/test/cli.js test tests/e2e/core-booking.spec.js --repeat-each=3"
   },
   "devDependencies": {
-    "@playwright/test": "^1.55.0"
+    "@playwright/test": "^1.55.0",
+    "supabase": "^2.111.0"
   }
 }
