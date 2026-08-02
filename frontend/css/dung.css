@@ -11,6 +11,73 @@
   align-items: flex-start;
 }
 
+/* Release polish: search and room presentation */
+.search-layout {
+  align-items: start;
+  gap: 28px;
+}
+
+.search-sidebar,
+.room-search-card,
+.booking-widget,
+.detail-content {
+  border: 1px solid var(--ui-border);
+  border-radius: var(--ui-radius-md);
+  box-shadow: var(--ui-shadow);
+}
+
+.filter-group input,
+.filter-group select,
+.btn-apply-filter {
+  min-height: var(--ui-control-height);
+  border-radius: var(--ui-radius-sm);
+}
+
+.room-search-card {
+  overflow: hidden;
+  background: #fff;
+}
+
+.room-img-wrap img {
+  width: 100%;
+  height: 100%;
+  min-height: 220px;
+  object-fit: cover;
+}
+
+.room-search-body {
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+  padding: 20px;
+}
+
+.room-search-body .room-price {
+  color: #0f766e;
+  font-size: 1.08rem;
+  font-weight: 750;
+}
+
+.detail-gallery img {
+  width: 100%;
+  max-height: 500px;
+  object-fit: cover;
+}
+
+@media (max-width: 760px) {
+  .search-layout {
+    gap: 20px;
+  }
+
+  .room-search-card {
+    grid-template-columns: 1fr;
+  }
+
+  .room-img-wrap img {
+    height: 220px;
+  }
+}
+
 /* --- CỘT TRÁI: BỘ LỌC (SIDEBAR) --- */
 .filter-sidebar {
   width: 260px;

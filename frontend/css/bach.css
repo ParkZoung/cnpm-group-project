@@ -362,3 +362,57 @@
 .section-header-row a.btn-primary-admin {
   text-decoration: none;
 }
+
+/* Release polish: admin consistency */
+.admin-sidebar {
+  border-right: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.menu-item {
+  min-height: 44px;
+  border-radius: 10px;
+}
+
+.admin-topbar {
+  border-bottom: 1px solid var(--ui-border);
+}
+
+.admin-card-section,
+.stat-card {
+  border: 1px solid var(--ui-border);
+  border-radius: var(--ui-radius-md);
+  box-shadow: var(--ui-shadow);
+}
+
+.admin-search-input,
+.admin-select-filter,
+.topbar-search input,
+.btn-primary-admin {
+  min-height: var(--ui-control-height);
+  border-radius: var(--ui-radius-sm);
+}
+
+.admin-table th,
+.admin-table td {
+  vertical-align: middle;
+}
+
+.admin-table th {
+  letter-spacing: 0.01em;
+}
+
+.admin-table tbody tr:hover {
+  background: #f8fafc;
+}
+
+@media (max-width: 760px) {
+  .admin-page-container {
+    padding: 18px;
+  }
+
+  .admin-filter-bar,
+  .section-header-row {
+    align-items: stretch;
+    flex-direction: column;
+  }
+}

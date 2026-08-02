@@ -399,7 +399,7 @@ async function toggleRoomActiveStatus(row, button) {
   const nextStatus = isReactivating ? "available" : "inactive";
   const confirmationMessage = isReactivating
     ? `Kích hoạt lại phòng "${row.name}" (${row.room_number})?\n\nPhòng sẽ có thể xuất hiện trong kết quả tìm kiếm cho những ngày còn trống.`
-    : `Ngừng hoạt động phòng "${row.name}" (${row.room_number})?\n\nPhòng sẽ không còn xuất hiện trong tìm kiếm của khách hàng. Các booking hiện tại và lịch sử booking vẫn được giữ nguyên.`;
+    : `Ngừng hoạt động phòng "${row.name}" (${row.room_number})?\n\nPhòng sẽ không còn xuất hiện trong tìm kiếm của khách hàng. Các đặt phòng hiện tại và lịch sử đặt phòng vẫn được giữ nguyên.`;
 
   if (!confirm(confirmationMessage)) {
     return;

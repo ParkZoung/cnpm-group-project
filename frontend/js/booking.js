@@ -46,7 +46,7 @@
       }
 
       if (!data.session.user.email) {
-        showCheckoutError(elements, 'Tài khoản đăng nhập không có email hợp lệ để tạo booking.');
+        showCheckoutError(elements, 'Tài khoản đăng nhập không có email hợp lệ để đặt phòng.');
         return;
       }
 
@@ -118,12 +118,12 @@
 
         elements.error.hidden = true;
         elements.success.textContent =
-          'Đã tạo booking ' + booking.booking_code + '. Tổng chính thức: ' + formatMoney(booking.total_amount) + '.';
+          'Đã tạo đặt phòng ' + booking.booking_code + '. Tổng chính thức: ' + formatMoney(booking.total_amount) + '.';
         elements.success.hidden = false;
         localStorage.removeItem(CART_KEY);
         window.location.assign('bookingsuccess.html?id=' + encodeURIComponent(booking.booking_id));
       } catch (error) {
-        showCheckoutError(elements, friendlyBookingError(error, 'Không thể tạo booking. Vui lòng thử lại.'), false);
+        showCheckoutError(elements, friendlyBookingError(error, 'Không thể đặt phòng. Vui lòng thử lại.'), false);
         setCheckoutSubmitting(elements, false);
       }
     });
@@ -397,7 +397,7 @@
   function setCheckoutSubmitting(elements, isSubmitting) {
     elements.submit.dataset.submitting = String(isSubmitting);
     elements.submit.disabled = isSubmitting;
-    elements.submit.textContent = isSubmitting ? 'Đang tạo booking...' : 'Xác nhận đặt phòng';
+    elements.submit.textContent = isSubmitting ? 'Đang tạo đặt phòng...' : 'Xác nhận đặt phòng';
   }
 
   function friendlyBookingError(error, fallback) {
@@ -408,7 +408,7 @@
     }
 
     if (message.includes('authenticated profile is not allowed')) {
-      return 'Tài khoản hiện tại không được phép tạo booking.';
+      return 'Tài khoản hiện tại không được phép đặt phòng.';
     }
 
     if (message.includes('booking date range is invalid')) {
@@ -428,7 +428,7 @@
     }
 
     if (message.includes('selected room is not available')) {
-      return 'Phòng hoặc chi nhánh không còn hoạt động để nhận booking.';
+      return 'Phòng hoặc chi nhánh không còn hoạt động để nhận đặt phòng.';
     }
 
     if (message.includes('required guest contact information is invalid')) {

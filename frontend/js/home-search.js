@@ -228,8 +228,9 @@ document.addEventListener('DOMContentLoaded', function () {
     try {
       const { data, error } = await window.gostaySupabase
         .from('room_images')
-        .select('id, room_id, image_url, alt_text, sort_order')
+        .select('id, room_id, image_url, alt_text, is_primary, sort_order')
         .in('room_id', roomIds)
+        .order('is_primary', { ascending: false })
         .order('sort_order', { ascending: true })
         .order('id', { ascending: true });
 
@@ -289,11 +290,11 @@ document.addEventListener('DOMContentLoaded', function () {
     sub.textContent = room.branch.name + ', ' + room.branch.city + ' • ' + room.room_type.name;
 
     const description = document.createElement('p');
-    description.textContent = room.description || 'Thông tin phòng đang được cập nhật.';
+    description.textContent = cleanDisplayText(room.description) || 'Không gian nghỉ tiện nghi tại hệ thống GoStay.';
 
     const price = document.createElement('div');
     price.className = 'price';
-    price.textContent = Number(room.price_per_night || 0).toLocaleString('vi-VN') + ' VND /đêm';
+    price.textContent = formatRoomPrice(room.price_per_night);
 
     const link = document.createElement('a');
     link.className = 'btn btn-detail';
@@ -322,5 +323,13 @@ document.addEventListener('DOMContentLoaded', function () {
 
   function roomLabel(room) {
     return room.name || ('Phòng ' + room.room_number);
+  }
+
+  function cleanDisplayText(value) {
+    return String(value || '').replace(/\[GOSTAY_DEMO_V1\]/gi, '').replace(/\s{2,}/g, ' ').trim();
+  }
+
+  function formatRoomPrice(value) {
+    return Number(value || 0).toLocaleString('vi-VN') + ' VNĐ / đêm';
   }
 }());

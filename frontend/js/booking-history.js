@@ -16,7 +16,7 @@
     bindHistoryActions(elements);
 
     if (!window.gostaySupabase) {
-      showHistoryError(elements, 'Không thể khởi tạo dịch vụ booking. Vui lòng tải lại trang.');
+      showHistoryError(elements, 'Không thể khởi tạo dịch vụ đặt phòng. Vui lòng tải lại trang.');
       return;
     }
 
@@ -75,7 +75,7 @@
       const bookings = Array.isArray(data) ? data : [];
       renderBookingHistory(elements, bookings);
     } catch (error) {
-      showHistoryError(elements, friendlyHistoryError(error, 'Không thể tải lịch sử booking.'));
+      showHistoryError(elements, friendlyHistoryError(error, 'Không thể tải lịch sử đặt phòng.'));
     } finally {
       setHistoryLoading(elements, false);
     }
@@ -121,7 +121,7 @@
       cancelButton.className = 'btn-remove-cart';
       cancelButton.dataset.action = 'cancel-booking';
       cancelButton.dataset.bookingId = booking.id;
-      cancelButton.textContent = 'Hủy booking';
+      cancelButton.textContent = 'Hủy đặt phòng';
       actionCell.appendChild(cancelButton);
     } else {
       actionCell.textContent = '—';
@@ -153,11 +153,11 @@
     const bookingId = button.dataset.bookingId;
 
     if (!UUID_PATTERN.test(String(bookingId || ''))) {
-      showHistoryError(elements, 'Mã booking không hợp lệ.');
+      showHistoryError(elements, 'Mã đặt phòng không hợp lệ.');
       return;
     }
 
-    if (!window.confirm('Bạn có chắc muốn hủy booking này không?')) {
+    if (!window.confirm('Bạn có chắc muốn hủy đặt phòng này không?')) {
       return;
     }
 
@@ -186,14 +186,14 @@
         throw new Error('cancel_own_booking did not return a valid row.');
       }
 
-      elements.success.textContent = 'Đã hủy booking thành công.';
+      elements.success.textContent = 'Đã hủy đặt phòng thành công.';
       elements.success.hidden = false;
       await loadBookingHistory(elements);
     } catch (error) {
-      showHistoryError(elements, friendlyHistoryError(error, 'Không thể hủy booking.'));
+      showHistoryError(elements, friendlyHistoryError(error, 'Không thể hủy đặt phòng.'));
       button.dataset.submitting = 'false';
       button.disabled = false;
-      button.textContent = 'Hủy booking';
+      button.textContent = 'Hủy đặt phòng';
     }
   }
 
@@ -232,7 +232,7 @@
     elements.error.innerHTML = '';
 
     const message = document.createElement('p');
-    message.textContent = 'Bạn cần đăng nhập để xem lịch sử booking.';
+    message.textContent = 'Bạn cần đăng nhập để xem lịch sử đặt phòng.';
 
     const link = document.createElement('a');
     link.href = 'login.html';
@@ -259,15 +259,15 @@
     const message = String(error && error.message ? error.message : '').toLowerCase();
 
     if (message.includes('authentication is required to cancel')) {
-      return 'Bạn cần đăng nhập để hủy booking.';
+      return 'Bạn cần đăng nhập để hủy đặt phòng.';
     }
 
     if (message.includes('booking cannot be cancelled')) {
-      return 'Booking không tồn tại, không thuộc tài khoản này hoặc trạng thái hiện tại không cho phép hủy.';
+      return 'Đặt phòng không tồn tại, không thuộc tài khoản này hoặc trạng thái hiện tại không cho phép hủy.';
     }
 
     if (message.includes('failed to fetch') || message.includes('network')) {
-      return 'Không thể kết nối hệ thống booking. Vui lòng kiểm tra mạng và thử lại.';
+      return 'Không thể kết nối hệ thống đặt phòng. Vui lòng kiểm tra mạng và thử lại.';
     }
 
     return fallback;

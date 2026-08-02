@@ -135,7 +135,7 @@
     const rows = visibleBookings();
 
     if (!rows.length) {
-      body.innerHTML = '<tr><td colspan="11">Không có booking phù hợp.</td></tr>';
+      body.innerHTML = '<tr><td colspan="11">Không có đặt phòng phù hợp.</td></tr>';
       return;
     }
 
@@ -276,7 +276,7 @@
 
     $('bookingDetailContent').innerHTML =
       '<dl class="booking-detail-list">' +
-      '<div><dt>Mã booking</dt><dd>' + escapeHtml(bookingCode(booking)) + '</dd></div>' +
+      '<div><dt>Mã đặt phòng</dt><dd>' + escapeHtml(bookingCode(booking)) + '</dd></div>' +
       '<div><dt>Khách hàng</dt><dd>' + escapeHtml(booking.guest_name) + '</dd></div>' +
       '<div><dt>Phòng</dt><dd>' +
         escapeHtml(roomLabel(findRoom(booking.room_id))) + '</dd></div>' +
@@ -295,10 +295,10 @@
     const normalized = message.toLowerCase();
 
     if (normalized.includes('transition is not allowed')) {
-      return 'Trạng thái booking đã thay đổi hoặc bước chuyển không hợp lệ.';
+      return 'Trạng thái đặt phòng đã thay đổi hoặc bước chuyển không hợp lệ.';
     }
     if (normalized.includes('booking was not found')) {
-      return 'Không tìm thấy booking cần cập nhật.';
+      return 'Không tìm thấy đặt phòng cần cập nhật.';
     }
     if (normalized.includes('authorization')) {
       return 'Phiên đăng nhập không còn quyền quản trị.';
@@ -386,7 +386,7 @@
       }
 
       closeModal('bookingFormModal', true);
-      await reloadAfterMutationSuccess('Đã cập nhật trạng thái booking.');
+      await reloadAfterMutationSuccess('Đã cập nhật trạng thái đặt phòng.');
     } finally {
       setMutationLock(false);
     }
@@ -394,7 +394,7 @@
 
   async function cancelBooking(id) {
     if (state.isUpdating) return;
-    if (!window.confirm('Bạn có muốn hủy booking này không?')) return;
+    if (!window.confirm('Bạn có muốn hủy đặt phòng này không?')) return;
 
     setMutationLock(true);
 
@@ -408,7 +408,7 @@
         return;
       }
 
-      await reloadAfterMutationSuccess('Đã hủy booking.');
+      await reloadAfterMutationSuccess('Đã hủy đặt phòng.');
     } finally {
       setMutationLock(false);
     }
@@ -455,9 +455,9 @@
     try {
       await loadRooms();
       await loadBookings();
-      feedback('Đã tải dữ liệu booking từ Supabase.', 'success');
+      feedback('Đã tải dữ liệu đặt phòng.', 'success');
     } catch (error) {
-      feedback('Không thể tải dữ liệu booking: ' + error.message, 'error');
+      feedback('Không thể tải dữ liệu đặt phòng: ' + error.message, 'error');
     }
   }
 
