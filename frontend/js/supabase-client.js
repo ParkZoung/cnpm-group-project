@@ -207,6 +207,22 @@
         }
         return result;
       },
+      resetPasswordForEmail: async function (email, options) {
+        return request('/auth/recovery/request', {
+          email: email,
+          redirectTo: options && options.redirectTo
+        }, false);
+      },
+      verifyOtp: async function (input) {
+        const result = await request('/auth/recovery/verify', input, false);
+        if (!result.error && result.data && result.data.session) {
+          saveSession(result.data.session, 'PASSWORD_RECOVERY');
+        }
+        return result;
+      },
+      updateUser: async function (attributes) {
+        return request('/auth/recovery/update', attributes, true);
+      },
       signOut: async function () {
         const result = await request('/auth/logout', {}, true);
         saveSession(null, 'SIGNED_OUT');

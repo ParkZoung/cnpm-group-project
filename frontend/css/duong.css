@@ -205,13 +205,13 @@
 .otp-input-group {
   display: flex;
   justify-content: center;
-  gap: 15px;
+  gap: 8px;
   margin: 20px 0;
 }
 
 .otp-box {
-  width: 55px !important;
-  height: 55px !important;
+  width: 46px !important;
+  height: 52px !important;
   text-align: center;
   font-size: 24px !important;
   font-weight: 700;
@@ -246,6 +246,38 @@
   font-size: 13px;
   color: #64748b;
   margin-top: 15px;
+}
+
+.resend-button {
+  padding: 6px 14px;
+  border: 1px solid #12a6b8;
+  border-radius: 6px;
+  background: #ffffff;
+  color: #12a6b8;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.resend-button:hover:not(:disabled) {
+  background: #12a6b8;
+  color: #ffffff;
+}
+
+.resend-button:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+@media (max-width: 480px) {
+  .otp-input-group {
+    gap: 5px;
+  }
+
+  .otp-box {
+    width: 40px !important;
+    height: 48px !important;
+  }
 }
 
 /* --- 5. HỆ THỐNG GIAO DIỆN QUẢN TRỊ ADMIN (MÀU CHUẨN THỰC TẾ) --- */
