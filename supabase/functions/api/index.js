@@ -157,7 +157,7 @@ async function queryRoute(body, req) {
     return fail("Invalid query shape.");
   }
   if (body.filters.some((f) =>
-    !["eq", "neq", "gte", "in"].includes(f.operator) || !validIdentifier(f.column) ||
+    !["eq", "neq", "gte", "lt", "in"].includes(f.operator) || !validIdentifier(f.column) ||
     (f.operator === "in" && !Array.isArray(f.value)))) {
     return fail("Invalid filter.");
   }

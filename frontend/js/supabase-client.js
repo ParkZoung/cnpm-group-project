@@ -118,6 +118,10 @@
     this.payload.filters.push({ operator: 'gte', column: column, value: value });
     return this;
   };
+  QueryBuilder.prototype.lt = function (column, value) {
+    this.payload.filters.push({ operator: 'lt', column: column, value: value });
+    return this;
+  };
   QueryBuilder.prototype.order = function (column, options) {
     this.payload.orders.push({
       column: column,
