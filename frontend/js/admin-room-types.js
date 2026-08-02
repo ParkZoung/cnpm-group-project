@@ -53,10 +53,16 @@ async function fetchRoomTypes() {
 }
 
 function renderRoomTypes(data) {
-    roomTypeTable.innerHTML = '';
+    roomTypeTable.replaceChildren();
 
     if (data.length === 0) {
-        roomTypeTable.innerHTML = `<tr><td colspan="8" style="text-align:center;">Không có dữ liệu loại phòng nào được tìm thấy</td></tr>`;
+        const emptyRow = document.createElement('tr');
+        const emptyCell = document.createElement('td');
+        emptyCell.colSpan = 8;
+        emptyCell.style.textAlign = 'center';
+        emptyCell.textContent = 'Không có dữ liệu loại phòng nào được tìm thấy';
+        emptyRow.appendChild(emptyCell);
+        roomTypeTable.appendChild(emptyRow);
         return;
     }
 
@@ -65,21 +71,57 @@ function renderRoomTypes(data) {
         const formattedPrice = new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(item.base_price);
         const formattedDate = new Date(item.created_at).toLocaleDateString('vi-VN');
 
-        row.innerHTML = `
-            <td>${item.id}</td>
-            <td><strong>${item.name}</strong><br><small style="color:#666">${item.description || ''}</small></td>
-            <td>${item.capacity} người</td>
-            <td>${item.bed_type || 'N/A'}</td>
-            <td>${item.area_m2} m²</td>
-            <td>${formattedPrice}</td>
-            <td>${formattedDate}</td>
-            <td>
-                <button class="btn-action edit" onclick="editRoomType(${item.id})">Sửa</button>
-                <button type="button" class="btn-action delete" data-action="delete-room-type">Xóa</button>
-            </td>
-        `;
-        const deleteButton = row.querySelector('[data-action="delete-room-type"]');
+        const idCell = document.createElement('td');
+        idCell.textContent = item.id;
+
+        const nameCell = document.createElement('td');
+        const name = document.createElement('strong');
+        name.textContent = item.name;
+        const description = document.createElement('small');
+        description.style.color = '#666';
+        description.textContent = item.description || '';
+        nameCell.append(name, document.createElement('br'), description);
+
+        const capacityCell = document.createElement('td');
+        capacityCell.textContent = `${item.capacity} người`;
+
+        const bedTypeCell = document.createElement('td');
+        bedTypeCell.textContent = item.bed_type || 'N/A';
+
+        const areaCell = document.createElement('td');
+        areaCell.textContent = `${item.area_m2} m²`;
+
+        const priceCell = document.createElement('td');
+        priceCell.textContent = formattedPrice;
+
+        const dateCell = document.createElement('td');
+        dateCell.textContent = formattedDate;
+
+        const actionCell = document.createElement('td');
+        const editButton = document.createElement('button');
+        editButton.type = 'button';
+        editButton.className = 'btn-action edit';
+        editButton.textContent = 'Sửa';
+        editButton.addEventListener('click', () => editRoomType(item.id));
+
+        const deleteButton = document.createElement('button');
+        deleteButton.type = 'button';
+        deleteButton.className = 'btn-action delete';
+        deleteButton.dataset.action = 'delete-room-type';
+        deleteButton.textContent = 'Xóa';
         deleteButton.addEventListener('click', () => deleteRoomType(item, deleteButton));
+        actionCell.append(editButton, deleteButton);
+
+        row.append(
+            idCell,
+            nameCell,
+            capacityCell,
+            bedTypeCell,
+            areaCell,
+            priceCell,
+            dateCell,
+            actionCell
+        );
         roomTypeTable.appendChild(row);
     });
 }

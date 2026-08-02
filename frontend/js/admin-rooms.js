@@ -162,10 +162,15 @@ async function loadRooms(filters = {}) {
 
 function renderRooms(rows) {
   const tbody = document.getElementById("room-table-body");
-  tbody.innerHTML = "";
+  tbody.replaceChildren();
 
   if (rows.length === 0) {
-    tbody.innerHTML = `<tr><td colspan="7">Không tìm thấy phòng phù hợp.</td></tr>`;
+    const emptyRow = document.createElement("tr");
+    const emptyCell = document.createElement("td");
+    emptyCell.colSpan = 7;
+    emptyCell.textContent = "Không tìm thấy phòng phù hợp.";
+    emptyRow.appendChild(emptyCell);
+    tbody.appendChild(emptyRow);
     return;
   }
 
@@ -177,27 +182,66 @@ function renderRooms(rows) {
 
     const tr = document.createElement("tr");
     tr.dataset.id = row.id;
-    tr.innerHTML = `
-      <td>${row.room_number}</td>
-      <td><strong>${row.name}</strong></td>
-      <td>${row.room_types ? row.room_types.name : ""}</td>
-      <td>${row.branches ? row.branches.name : ""}</td>
-      <td>${formatPrice(row.price_per_night)}</td>
-      <td><span class="status-badge ${statusInfo.cssClass}">${statusInfo.label}</span></td>
-      <td>
-        <div class="action-buttons">
-          <button type="button" class="btn-action edit" data-action="view">Xem</button>
-          <button type="button" class="btn-action edit" data-action="edit">Sửa</button>
-          <button type="button" class="btn-action delete" data-action="toggle-active">
-            ${row.status === "inactive" ? "Kích hoạt lại" : "Ngừng hoạt động"}
-          </button>
-        </div>
-      </td>
-    `;
-    tr.querySelector('[data-action="view"]').addEventListener("click", () => viewRoomDetail(row));
-    tr.querySelector('[data-action="edit"]').addEventListener("click", () => startEditRoom(row));
-    const toggleButton = tr.querySelector('[data-action="toggle-active"]');
+
+    const roomNumberCell = document.createElement("td");
+    roomNumberCell.textContent = row.room_number;
+
+    const nameCell = document.createElement("td");
+    const roomName = document.createElement("strong");
+    roomName.textContent = row.name;
+    nameCell.appendChild(roomName);
+
+    const roomTypeCell = document.createElement("td");
+    roomTypeCell.textContent = row.room_types ? row.room_types.name : "";
+
+    const branchCell = document.createElement("td");
+    branchCell.textContent = row.branches ? row.branches.name : "";
+
+    const priceCell = document.createElement("td");
+    priceCell.textContent = formatPrice(row.price_per_night);
+
+    const statusCell = document.createElement("td");
+    const statusBadge = document.createElement("span");
+    statusBadge.className = `status-badge ${statusInfo.cssClass}`;
+    statusBadge.textContent = statusInfo.label;
+    statusCell.appendChild(statusBadge);
+
+    const actionCell = document.createElement("td");
+    const actionButtons = document.createElement("div");
+    actionButtons.className = "action-buttons";
+
+    const viewButton = document.createElement("button");
+    viewButton.type = "button";
+    viewButton.className = "btn-action edit";
+    viewButton.dataset.action = "view";
+    viewButton.textContent = "Xem";
+    viewButton.addEventListener("click", () => viewRoomDetail(row));
+
+    const editButton = document.createElement("button");
+    editButton.type = "button";
+    editButton.className = "btn-action edit";
+    editButton.dataset.action = "edit";
+    editButton.textContent = "Sửa";
+    editButton.addEventListener("click", () => startEditRoom(row));
+
+    const toggleButton = document.createElement("button");
+    toggleButton.type = "button";
+    toggleButton.className = "btn-action delete";
+    toggleButton.dataset.action = "toggle-active";
+    toggleButton.textContent = row.status === "inactive" ? "Kích hoạt lại" : "Ngừng hoạt động";
     toggleButton.addEventListener("click", () => toggleRoomActiveStatus(row, toggleButton));
+
+    actionButtons.append(viewButton, editButton, toggleButton);
+    actionCell.appendChild(actionButtons);
+    tr.append(
+      roomNumberCell,
+      nameCell,
+      roomTypeCell,
+      branchCell,
+      priceCell,
+      statusCell,
+      actionCell
+    );
     tbody.appendChild(tr);
   });
 }
