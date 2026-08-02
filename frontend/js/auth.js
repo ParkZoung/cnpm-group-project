@@ -117,6 +117,11 @@
       return;
     }
 
+    if (new URLSearchParams(window.location.search).get('password_reset') === 'success') {
+      setStatus(statusElement, 'Mật khẩu đã được cập nhật. Vui lòng đăng nhập lại.', 'success');
+      window.history.replaceState({}, document.title, window.location.pathname);
+    }
+
     // Kiểm tra phiên hiện tại ở chế độ nền, không hiển thị trạng thái tạm thời
     // trong form đăng nhập.
     submitButton.disabled = true;
