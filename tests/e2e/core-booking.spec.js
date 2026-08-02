@@ -229,7 +229,7 @@ test.describe('GoStay customer booking core flow', function () {
     await page.goto('/login.html');
     await page.getByLabel('Email').fill(credentials.email);
     await page.getByLabel('Mật khẩu').fill(credentials.password);
-    await page.getByRole('button', { name: 'Đăng Nhập' }).click();
+    await page.locator('#login-submit').click();
 
     await expect(page).toHaveURL(/\/index\.html$/);
     await expect(page.getByRole('link', { name: 'Đăng xuất' })).toBeVisible();
