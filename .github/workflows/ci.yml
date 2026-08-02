@@ -75,6 +75,62 @@ jobs:
 
           echo "No tracked secret environment file found."
 
+  security-runtime:
+    name: Runtime security tests
+    if: >-
+      github.event_name == 'workflow_dispatch' ||
+      (github.event_name == 'push' && github.ref == 'refs/heads/main')
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    concurrency:
+      group: gostay-shared-security-runtime
+      cancel-in-progress: false
+    env:
+      GOSTAY_SECURITY_API_URL: ${{ secrets.GOSTAY_SECURITY_API_URL }}
+      GOSTAY_E2E_EMAIL: ${{ secrets.GOSTAY_E2E_EMAIL }}
+      GOSTAY_E2E_PASSWORD: ${{ secrets.GOSTAY_E2E_PASSWORD }}
+      GOSTAY_E2E_CUSTOMER_B_EMAIL: ${{ secrets.GOSTAY_E2E_CUSTOMER_B_EMAIL }}
+      GOSTAY_E2E_CUSTOMER_B_PASSWORD: ${{ secrets.GOSTAY_E2E_CUSTOMER_B_PASSWORD }}
+      GOSTAY_E2E_ADMIN_EMAIL: ${{ secrets.GOSTAY_E2E_ADMIN_EMAIL }}
+      GOSTAY_E2E_ADMIN_PASSWORD: ${{ secrets.GOSTAY_E2E_ADMIN_PASSWORD }}
+
+    steps:
+      - name: Checkout source code
+        uses: actions/checkout@v6
+
+      - name: Check security test secrets
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          missing=()
+          [ -n "$GOSTAY_SECURITY_API_URL" ] || missing+=("GOSTAY_SECURITY_API_URL")
+          [ -n "$GOSTAY_E2E_EMAIL" ] || missing+=("GOSTAY_E2E_EMAIL")
+          [ -n "$GOSTAY_E2E_PASSWORD" ] || missing+=("GOSTAY_E2E_PASSWORD")
+          [ -n "$GOSTAY_E2E_CUSTOMER_B_EMAIL" ] || missing+=("GOSTAY_E2E_CUSTOMER_B_EMAIL")
+          [ -n "$GOSTAY_E2E_CUSTOMER_B_PASSWORD" ] || missing+=("GOSTAY_E2E_CUSTOMER_B_PASSWORD")
+          [ -n "$GOSTAY_E2E_ADMIN_EMAIL" ] || missing+=("GOSTAY_E2E_ADMIN_EMAIL")
+          [ -n "$GOSTAY_E2E_ADMIN_PASSWORD" ] || missing+=("GOSTAY_E2E_ADMIN_PASSWORD")
+
+          if [ "${#missing[@]}" -gt 0 ]; then
+            echo "Missing required repository secrets: ${missing[*]}"
+            exit 1
+          fi
+
+          echo "All required runtime security test secrets are configured."
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: 24
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run runtime security tests
+        run: npm run test:security
+
   e2e-pr-notice:
     name: Customer booking E2E notice
     if: github.event_name == 'pull_request'

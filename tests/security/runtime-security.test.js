@@ -1,11 +1,8 @@
 const { after, before, describe, it } = require('node:test');
 const assert = require('node:assert/strict');
 
-const API_URL =
-  process.env.GOSTAY_SECURITY_API_URL ||
-  'https://wpecaxsuadawaxadxqhj.supabase.co/functions/v1/api';
-
 const REQUIRED_ENV = [
+  'GOSTAY_SECURITY_API_URL',
   'GOSTAY_E2E_EMAIL',
   'GOSTAY_E2E_PASSWORD',
   'GOSTAY_E2E_CUSTOMER_B_EMAIL',
@@ -18,14 +15,17 @@ function environment() {
   const missing = REQUIRED_ENV.filter((name) => !String(process.env[name] || '').trim());
   assert.deepEqual(missing, [], `Missing environment variables: ${missing.join(', ')}`);
   return {
+    apiUrl: process.env.GOSTAY_SECURITY_API_URL.trim(),
     customerA: { email: process.env.GOSTAY_E2E_EMAIL, password: process.env.GOSTAY_E2E_PASSWORD },
     customerB: { email: process.env.GOSTAY_E2E_CUSTOMER_B_EMAIL, password: process.env.GOSTAY_E2E_CUSTOMER_B_PASSWORD },
     admin: { email: process.env.GOSTAY_E2E_ADMIN_EMAIL, password: process.env.GOSTAY_E2E_ADMIN_PASSWORD }
   };
 }
 
+let apiUrl;
+
 async function request(path, body, token) {
-  const response = await fetch(`${API_URL}${path}`, {
+  const response = await fetch(`${apiUrl}${path}`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -90,6 +90,7 @@ describe('GoStay runtime RLS, authorization and booking concurrency', { concurre
 
   before(async () => {
     const credentials = environment();
+    apiUrl = credentials.apiUrl;
     [state.customerA, state.customerB, state.admin] = await Promise.all([
       login(credentials.customerA),
       login(credentials.customerB),
