@@ -132,7 +132,7 @@ async function acceptCancellation(page, row) {
     expect(dialog.type()).toBe('confirm');
     await dialog.accept();
   });
-  await row.getByRole('button', { name: 'Hủy booking' }).click();
+  await row.getByRole('button', { name: 'Hủy đặt phòng' }).click();
   await dialogPromise;
 }
 
@@ -158,7 +158,7 @@ async function cleanupCreatedBooking(page, booking) {
     );
   }
 
-  const cancelButton = row.getByRole('button', { name: 'Hủy booking' });
+  const cancelButton = row.getByRole('button', { name: 'Hủy đặt phòng' });
   if (await cancelButton.count() === 0) {
     await expect(row).toContainText('Đã hủy');
     booking.cancelled = true;
@@ -166,7 +166,7 @@ async function cleanupCreatedBooking(page, booking) {
   }
 
   await acceptCancellation(page, row);
-  await expect(page.locator('#history-success')).toHaveText('Đã hủy booking thành công.');
+  await expect(page.locator('#history-success')).toHaveText('Đã hủy đặt phòng thành công.');
 
   if (booking.code) {
     await expect(bookingRowByCode(page, booking.code)).toContainText('Đã hủy');
@@ -281,7 +281,7 @@ test.describe('GoStay customer booking core flow', function () {
     await expect(bookingRow).toContainText(displayDate(selection.checkOut));
 
     await acceptCancellation(page, bookingRow);
-    await expect(page.locator('#history-success')).toHaveText('Đã hủy booking thành công.');
+    await expect(page.locator('#history-success')).toHaveText('Đã hủy đặt phòng thành công.');
     await expect(bookingRowByCode(page, booking.code)).toContainText('Đã hủy');
     booking.cancelled = true;
 

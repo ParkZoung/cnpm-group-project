@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="icon" type="image/png" href="images/logo-gostay.png">
-  <title>GoStay Admin - Quản lý booking</title>
+  <title>GoStay Admin - Quản lý đặt phòng</title>
   <link rel="stylesheet" href="css/base.css">
   <link rel="stylesheet" href="css/bach.css">
   <style>
@@ -42,7 +42,7 @@
       <a href="admin-products.html" class="menu-item"><span class="icon">🛏️</span> Quản lý phòng</a>
       <a href="admin-room-types.html" class="menu-item"><span class="icon">🏷️</span> Quản lý loại phòng</a>
       <a href="admin-categories.html" class="menu-item"><span class="icon">📁</span> Quản lý chi nhánh</a>
-      <a href="admin-bookings.html" class="menu-item active"><span class="icon">📄</span> Quản lý booking</a>
+      <a href="admin-bookings.html" class="menu-item active"><span class="icon">📄</span> Quản lý đặt phòng</a>
       <a href="admin-users.html" class="menu-item"><span class="icon">👥</span> Khách hàng</a>
       <hr class="sidebar-divider">
       <a href="login.html" class="menu-item logout-item"><span class="icon">🚪</span> Đăng xuất</a>
@@ -51,9 +51,9 @@
 
   <div class="admin-main-content">
     <header class="admin-topbar">
-      <div class="topbar-left"><h1 class="topbar-title">Quản lý booking</h1></div>
+      <div class="topbar-left"><h1 class="topbar-title">Quản lý đặt phòng</h1></div>
       <div class="topbar-right">
-        <div class="topbar-search"><input id="topbarBookingSearch" type="search" placeholder="Tìm kiếm booking..." aria-label="Tìm kiếm booking nhanh"></div>
+        <div class="topbar-search"><input id="topbarBookingSearch" type="search" placeholder="Tìm kiếm đặt phòng..." aria-label="Tìm kiếm đặt phòng nhanh"></div>
         <div class="topbar-user"><span class="user-name">Admin Khánh ▾</span></div>
       </div>
     </header>
@@ -61,26 +61,22 @@
     <main class="admin-page-container">
       <div class="admin-card-section">
         <div class="section-header-row">
-          <h2>Danh sách booking</h2>
-          <div>
-            <button id="createBookingButton" type="button" class="btn-primary-admin" disabled>+ Tạo booking</button>
-            <small>Chức năng tạo booking thay khách hàng chưa được hỗ trợ an toàn.</small>
-          </div>
+          <h2>Danh sách đặt phòng</h2>
         </div>
 
         <p id="bookingFeedback" class="booking-feedback" role="status" aria-live="polite"></p>
 
         <div class="admin-filter-bar">
-          <input id="bookingSearch" type="search" placeholder="Tìm theo mã booking, tên khách hàng..." class="admin-search-input" aria-label="Tìm kiếm booking">
-          <select id="bookingStatusFilter" class="admin-select-filter" aria-label="Lọc trạng thái booking">
-            <option value="all">Tất cả trạng thái booking</option>
+          <input id="bookingSearch" type="search" placeholder="Tìm theo mã đặt phòng, tên khách hàng..." class="admin-search-input" aria-label="Tìm kiếm đặt phòng">
+          <select id="bookingStatusFilter" class="admin-select-filter" aria-label="Lọc trạng thái đặt phòng">
+            <option value="all">Tất cả trạng thái đặt phòng</option>
             <option value="pending">Chờ xác nhận</option>
             <option value="confirmed">Đã xác nhận</option>
             <option value="checked_in">Đã nhận phòng</option>
             <option value="cancelled">Đã hủy</option>
             <option value="completed">Hoàn thành</option>
           </select>
-          <select id="bookingSort" class="admin-select-filter" aria-label="Sắp xếp booking">
+          <select id="bookingSort" class="admin-select-filter" aria-label="Sắp xếp đặt phòng">
             <option value="newest">Mới nhất trước</option>
             <option value="oldest">Cũ nhất trước</option>
             <option value="checkin-asc">Ngày nhận gần nhất</option>
@@ -92,7 +88,7 @@
           <table class="admin-table">
             <thead>
               <tr>
-                <th>Mã booking</th>
+                <th>Mã đặt phòng</th>
                 <th>Khách hàng</th>
                 <th>Phòng</th>
                 <th>Ngày nhận</th>
@@ -101,12 +97,12 @@
                 <th>Tổng tiền</th>
                 <th>Phương thức thanh toán</th>
                 <th>Trạng thái thanh toán</th>
-                <th>Trạng thái booking</th>
+                <th>Trạng thái đặt phòng</th>
                 <th>Thao tác</th>
               </tr>
             </thead>
             <tbody id="bookingsTableBody">
-              <tr><td colspan="11">Đang tải dữ liệu booking...</td></tr>
+              <tr><td colspan="11">Đang tải dữ liệu đặt phòng...</td></tr>
             </tbody>
           </table>
         </div>
@@ -121,7 +117,7 @@
   <div id="bookingFormModal" class="booking-modal" hidden role="dialog" aria-modal="true" aria-labelledby="bookingFormTitle">
     <div class="booking-modal__dialog">
       <div class="booking-modal__header">
-        <h2 id="bookingFormTitle">Tạo booking</h2>
+        <h2 id="bookingFormTitle">Cập nhật đặt phòng</h2>
         <button type="button" class="booking-modal__close" data-close-modal="bookingFormModal" aria-label="Đóng">×</button>
       </div>
       <form id="bookingForm" novalidate>
@@ -175,7 +171,7 @@
             </select>
           </label>
           <label class="booking-field booking-field--full">
-            Trạng thái booking
+            Trạng thái đặt phòng
             <select id="bookingStatus" required>
               <option value="confirmed">Đã xác nhận</option>
               <option value="completed">Hoàn thành</option>
@@ -194,7 +190,7 @@
   <div id="bookingDetailModal" class="booking-modal" hidden role="dialog" aria-modal="true" aria-labelledby="bookingDetailTitle">
     <div class="booking-modal__dialog">
       <div class="booking-modal__header">
-        <h2 id="bookingDetailTitle">Chi tiết booking</h2>
+        <h2 id="bookingDetailTitle">Chi tiết đặt phòng</h2>
         <button type="button" class="booking-modal__close" data-close-modal="bookingDetailModal" aria-label="Đóng">×</button>
       </div>
       <div id="bookingDetailContent"></div>

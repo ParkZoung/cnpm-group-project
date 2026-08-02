@@ -8,6 +8,39 @@
   padding-top: 10px;
   padding-bottom: 48px;
 }
+
+/* Release polish: booking and account surfaces */
+.checkout-form-panel,
+.billing-summary-card,
+.history-table-container,
+.success-card-panel,
+.auth-card {
+  border: 1px solid var(--ui-border);
+  border-radius: var(--ui-radius-md);
+  box-shadow: var(--ui-shadow);
+}
+
+.checkout-form-panel input,
+.checkout-form-panel textarea,
+.auth-card input,
+.btn-checkout-action-submit {
+  border-radius: var(--ui-radius-sm);
+}
+
+.history-table th,
+.history-table td {
+  vertical-align: middle;
+}
+
+@media (max-width: 760px) {
+  .cart-split-layout {
+    gap: 20px;
+  }
+
+  .history-table-container {
+    overflow-x: auto;
+  }
+}
 .page-header-block {
   margin: 34px 0 24px 0;
 }

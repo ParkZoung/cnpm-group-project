@@ -12,6 +12,44 @@
   box-sizing: border-box;
 }
 
+/* Release polish: shared interaction rhythm */
+:root {
+  --ui-radius-sm: 10px;
+  --ui-radius-md: 16px;
+  --ui-control-height: 44px;
+  --ui-border: #e2e8f0;
+  --ui-shadow: 0 10px 30px rgba(15, 23, 42, 0.08);
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+}
+
+input:not([type="checkbox"]):not([type="radio"]):not([type="hidden"]),
+select,
+button,
+.btn {
+  min-height: var(--ui-control-height);
+}
+
+button,
+.btn,
+a {
+  -webkit-tap-highlight-color: transparent;
+}
+
+button:focus-visible,
+a:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+  outline: 3px solid rgba(37, 99, 235, 0.24);
+  outline-offset: 2px;
+}
+
 html,
 body,
 div,

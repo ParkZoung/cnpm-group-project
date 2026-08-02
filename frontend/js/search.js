@@ -279,7 +279,7 @@
         + (room.room_type_bed_type ? ' • ' + room.room_type_bed_type : ''),
       'room-meta'
     );
-    appendElement(body, 'div', formatPrice(room.price_per_night) + ' / đêm', 'room-price');
+    appendElement(body, 'div', formatPrice(room.price_per_night), 'room-price');
     appendElement(body, 'div', 'Còn trống trong thời gian đã chọn', 'room-status status-available');
 
     const link = document.createElement('a');
@@ -412,7 +412,7 @@
   }
 
   function formatPrice(value) {
-    return Number(value || 0).toLocaleString('vi-VN') + 'đ';
+    return Number(value || 0).toLocaleString('vi-VN') + ' VNĐ / đêm';
   }
 
   function friendlyError(error) {

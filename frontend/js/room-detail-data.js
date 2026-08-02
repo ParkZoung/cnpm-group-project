@@ -85,8 +85,9 @@
     try {
       const { data, error } = await window.gostaySupabase
         .from('room_images')
-        .select('image_url, alt_text')
+        .select('image_url, alt_text, is_primary, sort_order')
         .eq('room_id', roomId)
+        .order('is_primary', { ascending: false })
         .order('sort_order', { ascending: true })
         .order('id', { ascending: true })
         .limit(1)
@@ -175,10 +176,10 @@
       room.room_type.area_m2 ? room.room_type.area_m2 + ' m²' : 'Chưa cập nhật'
     );
 
-    elements.description.textContent = room.description || 'Thông tin mô tả phòng đang được cập nhật.';
+    elements.description.textContent = cleanDisplayText(room.description) || 'Không gian nghỉ tiện nghi tại hệ thống GoStay.';
     elements.roomTypeDescription.textContent =
       room.room_type.description || 'Thông tin hạng phòng đang được cập nhật.';
-    elements.price.textContent = formatRoomPrice(room.price_per_night) + ' / đêm (dự kiến)';
+    elements.price.textContent = formatRoomPrice(room.price_per_night);
     elements.loading.hidden = true;
     elements.error.hidden = true;
     elements.content.hidden = false;
@@ -229,6 +230,10 @@
   }
 
   function formatRoomPrice(price) {
-    return Number(price || 0).toLocaleString('vi-VN') + 'đ';
+    return Number(price || 0).toLocaleString('vi-VN') + ' VNĐ / đêm';
+  }
+
+  function cleanDisplayText(value) {
+    return String(value || '').replace(/\[GOSTAY_DEMO_V1\]/gi, '').replace(/\s{2,}/g, ' ').trim();
   }
 }());

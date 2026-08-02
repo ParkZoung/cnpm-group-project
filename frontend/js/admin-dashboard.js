@@ -62,7 +62,7 @@
       node.setAttribute('aria-busy', 'true');
     });
     $('recentBookingsTableBody').replaceChildren(
-      createMessageRow('Đang tải dữ liệu booking...')
+      createMessageRow('Đang tải dữ liệu đặt phòng...')
     );
     showFeedback('', false, false);
   }
@@ -182,7 +182,7 @@
       }));
 
       if (!bookings.length) {
-        body.replaceChildren(createMessageRow('Chưa có booking nào.'));
+        body.replaceChildren(createMessageRow('Chưa có đặt phòng nào.'));
         return true;
       }
 
@@ -215,7 +215,7 @@
       return true;
     } catch (error) {
       console.error('[dashboard] Không thể tải booking gần đây:', error);
-      body.replaceChildren(createMessageRow('Không thể tải booking gần đây.'));
+      body.replaceChildren(createMessageRow('Không thể tải đặt phòng gần đây.'));
       return false;
     }
   }
