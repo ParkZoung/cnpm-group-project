@@ -2,7 +2,7 @@ const { defineConfig, devices } = require('@playwright/test');
 
 module.exports = defineConfig({
   testDir: './tests/e2e',
-  testMatch: 'core-booking.spec.js',
+  testMatch: ['core-booking.spec.js', 'admin.spec.js'],
   fullyParallel: false,
   workers: 1,
   retries: 0,

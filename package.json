@@ -6,6 +6,7 @@
   "scripts": {
     "test:e2e": "node --env-file-if-exists=.env node_modules/@playwright/test/cli.js test tests/e2e/core-booking.spec.js",
     "test:e2e:three": "node --env-file-if-exists=.env node_modules/@playwright/test/cli.js test tests/e2e/core-booking.spec.js --repeat-each=3",
+    "test:e2e:admin": "node --env-file-if-exists=.env node_modules/@playwright/test/cli.js test tests/e2e/admin.spec.js --workers=1",
     "test:security": "node --env-file-if-exists=.env --test tests/security/runtime-security.test.js"
   },
   "devDependencies": {
