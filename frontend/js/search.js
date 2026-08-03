@@ -266,6 +266,9 @@
     const image = document.createElement('img');
     image.src = room.image_url || FALLBACK_ROOM_IMAGE;
     image.alt = room.image_alt_text || ('Phòng ' + room.room_number + ' tại ' + room.branch_name);
+    image.addEventListener('error', function () {
+      if (image.src !== FALLBACK_ROOM_IMAGE) image.src = FALLBACK_ROOM_IMAGE;
+    });
     imageWrap.appendChild(image);
 
     const body = document.createElement('div');

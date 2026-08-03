@@ -374,14 +374,19 @@
     elements.sessionStatus.hidden = true;
     elements.form.hidden = true;
     elements.error.innerHTML = '';
+    elements.error.classList.add('auth-required-card');
+
+    const title = document.createElement('h2');
+    title.textContent = 'Đăng nhập để đặt phòng';
 
     const text = document.createElement('p');
-    text.textContent = 'Bạn cần đăng nhập trước khi đặt phòng.';
+    text.textContent = 'Đăng nhập để tiếp tục xác nhận thông tin và hoàn tất đặt phòng.';
 
     const link = document.createElement('a');
     link.href = 'login.html';
     link.textContent = 'Đăng nhập';
 
+    elements.error.appendChild(title);
     elements.error.appendChild(text);
     elements.error.appendChild(link);
     elements.error.hidden = false;

@@ -36,19 +36,15 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   });
 
-  const counterValues = { adults: 1, children: 0, rooms: 1 };
-  const minimums = { adults: 1, children: 0, rooms: 1 };
+  let guestCount = 1;
 
   searchBox.querySelectorAll('.guest-row button').forEach(function (button) {
     button.addEventListener('click', function () {
       const row = button.closest('.guest-row');
-      const key = row.dataset.counter;
-      counterValues[key] = Math.max(minimums[key], Math.min(10, counterValues[key] + Number(button.dataset.change)));
-      row.querySelector('b').textContent = counterValues[key];
-      document.getElementById(key + '-input').value = counterValues[key];
-      document.getElementById('total-guests-input').value =
-        counterValues.adults + counterValues.children;
-      document.getElementById('guests-value').textContent = counterValues.adults + ' người lớn · ' + counterValues.children + ' trẻ em · ' + counterValues.rooms + ' phòng';
+      guestCount = Math.max(1, Math.min(10, guestCount + Number(button.dataset.change)));
+      row.querySelector('b').textContent = guestCount;
+      document.getElementById('total-guests-input').value = guestCount;
+      document.getElementById('guests-value').textContent = guestCount + ' khách';
     });
   });
 
@@ -278,6 +274,9 @@ document.addEventListener('DOMContentLoaded', function () {
     image.alt = room.first_image && room.first_image.alt_text
       ? room.first_image.alt_text
       : roomLabel(room) + ' tại ' + room.branch.name;
+    image.addEventListener('error', function () {
+      if (image.src !== FALLBACK_ROOM_IMAGE) image.src = FALLBACK_ROOM_IMAGE;
+    });
 
     const body = document.createElement('div');
     body.className = 'hotel-body';

@@ -34,6 +34,7 @@
       }
 
       bindAdminLogout();
+      showAuthenticatedAdmin(session.user, profile);
       return { session: session, user: session.user, profile: profile };
     } catch (error) {
       await signOutAndRedirect();
@@ -64,6 +65,13 @@
     } else {
       bind();
     }
+  }
+
+  function showAuthenticatedAdmin(user, profile) {
+    const label = String(profile.full_name || user.email || 'Admin').trim() || 'Admin';
+    document.querySelectorAll('.user-name').forEach(function (element) {
+      element.textContent = label + ' ▾';
+    });
   }
 
   async function signOutAndRedirect() {

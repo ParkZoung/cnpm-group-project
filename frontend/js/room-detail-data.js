@@ -16,6 +16,11 @@
       return;
     }
 
+    elements.image.addEventListener('error', function () {
+      const fallback = elements.image.dataset.fallbackSrc;
+      if (fallback && elements.image.src !== fallback) elements.image.src = fallback;
+    });
+
     const roomId = getRoomIdFromUrl();
 
     if (roomId.error) {
@@ -178,7 +183,7 @@
 
     elements.description.textContent = cleanDisplayText(room.description) || 'Không gian nghỉ tiện nghi tại hệ thống GoStay.';
     elements.roomTypeDescription.textContent =
-      room.room_type.description || 'Thông tin hạng phòng đang được cập nhật.';
+      cleanDisplayText(room.room_type.description) || 'Thông tin hạng phòng đang được cập nhật.';
     elements.price.textContent = formatRoomPrice(room.price_per_night);
     elements.loading.hidden = true;
     elements.error.hidden = true;

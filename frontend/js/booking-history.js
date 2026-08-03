@@ -230,14 +230,19 @@
     elements.tableContainer.hidden = true;
     elements.empty.hidden = true;
     elements.error.innerHTML = '';
+    elements.error.classList.add('auth-required-card');
+
+    const title = document.createElement('h2');
+    title.textContent = 'Đăng nhập để xem lịch sử';
 
     const message = document.createElement('p');
-    message.textContent = 'Bạn cần đăng nhập để xem lịch sử đặt phòng.';
+    message.textContent = 'Đăng nhập để xem và quản lý các đặt phòng của bạn.';
 
     const link = document.createElement('a');
     link.href = 'login.html';
     link.textContent = 'Đăng nhập';
 
+    elements.error.appendChild(title);
     elements.error.appendChild(message);
     elements.error.appendChild(link);
     elements.error.hidden = false;
