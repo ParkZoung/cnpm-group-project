@@ -437,6 +437,8 @@
   box-shadow: 0 0 0 3px rgba(18, 166, 184, 0.1);
 }
 
+.topbar-search { display: none; }
+
 .topbar-user {
   font-size: 14px;
   font-weight: 600;
