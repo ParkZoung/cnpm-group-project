@@ -409,7 +409,97 @@
 .topbar-search { display: none; }
 .admin-table td { line-height: 1.45; overflow-wrap: anywhere; }
 
+/* Booking table: preserve identifiers and compact values while allowing
+   descriptive columns to wrap at normal word boundaries. */
+.booking-admin-table {
+  min-width: 1820px;
+}
+
+.booking-admin-table th,
+.booking-admin-table td {
+  overflow-wrap: normal;
+  word-break: normal;
+}
+
+.booking-admin-table th:nth-child(1),
+.booking-admin-table td:nth-child(1),
+.booking-admin-table th:nth-child(4),
+.booking-admin-table td:nth-child(4),
+.booking-admin-table th:nth-child(5),
+.booking-admin-table td:nth-child(5),
+.booking-admin-table th:nth-child(6),
+.booking-admin-table td:nth-child(6),
+.booking-admin-table th:nth-child(7),
+.booking-admin-table td:nth-child(7),
+.booking-admin-table th:nth-child(8),
+.booking-admin-table td:nth-child(8),
+.booking-admin-table th:nth-child(9),
+.booking-admin-table td:nth-child(9),
+.booking-admin-table th:nth-child(10),
+.booking-admin-table td:nth-child(10),
+.booking-admin-table th:nth-child(11),
+.booking-admin-table td:nth-child(11),
+.booking-admin-table .status-badge,
+.booking-admin-table .action-buttons {
+  white-space: nowrap;
+}
+
+.booking-admin-table th:nth-child(1),
+.booking-admin-table td:nth-child(1) {
+  min-width: 170px;
+}
+
+.booking-admin-table th:nth-child(2),
+.booking-admin-table td:nth-child(2) {
+  min-width: 240px;
+  white-space: normal;
+}
+
+.booking-admin-table th:nth-child(3),
+.booking-admin-table td:nth-child(3) {
+  min-width: 220px;
+  white-space: normal;
+}
+
+.booking-admin-table th:nth-child(4),
+.booking-admin-table td:nth-child(4),
+.booking-admin-table th:nth-child(5),
+.booking-admin-table td:nth-child(5) {
+  min-width: 120px;
+}
+
+.booking-admin-table th:nth-child(7),
+.booking-admin-table td:nth-child(7) {
+  min-width: 140px;
+}
+
+.booking-admin-table th:nth-child(9),
+.booking-admin-table td:nth-child(9),
+.booking-admin-table th:nth-child(10),
+.booking-admin-table td:nth-child(10) {
+  min-width: 180px;
+}
+
 @media (max-width: 760px) {
+  .admin-bookings-page .admin-sidebar {
+    position: relative !important;
+    top: auto !important;
+    right: auto !important;
+    bottom: auto !important;
+    left: auto !important;
+    width: 100% !important;
+  }
+
+  .admin-bookings-page .admin-main-content {
+    margin-left: 0 !important;
+    min-width: 0;
+  }
+
+  .admin-bookings-page .admin-page-container,
+  .admin-bookings-page .admin-card-section {
+    padding: 18px !important;
+  }
+
   .admin-page-container {
     padding: 18px;
   }

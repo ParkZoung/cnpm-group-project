@@ -296,8 +296,14 @@
 }
 
 .ai-room-assistant__form {
-  position: relative;
   margin-top: 12px;
+}
+
+.ai-room-assistant__input-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 12px;
+  align-items: stretch;
 }
 
 .ai-room-assistant__validation {
@@ -308,10 +314,9 @@
 
 .ai-room-assistant__form textarea {
   width: 100%;
-  min-height: 42px;
-  height: 42px;
-  padding: 10px 190px 10px 12px;
-  resize: none;
+  min-height: 76px;
+  padding: 10px 12px;
+  resize: vertical;
   color: #334155;
   border: 1px solid #cbd5e1;
   border-radius: 7px;
@@ -335,14 +340,19 @@
 }
 
 .ai-room-assistant__form-footer {
-  position: absolute;
-  top: 4px;
-  right: 4px;
   margin: 0;
+  flex-direction: column;
+  align-items: flex-end;
+  justify-content: space-between;
 }
 
 .ai-room-assistant__form-footer small {
-  display: none;
+  color: #64748b;
+  font-size: 11px;
+}
+
+.ai-room-assistant__submit {
+  white-space: nowrap;
 }
 
 .ai-room-assistant__submit,
@@ -879,13 +889,15 @@
   }
 
   .ai-room-assistant__form textarea {
-    height: 76px;
-    padding: 10px 12px;
+    min-height: 92px;
+  }
+
+  .ai-room-assistant__input-row {
+    grid-template-columns: 1fr;
   }
 
   .ai-room-assistant__form-footer {
-    position: static;
-    margin-top: 8px;
+    align-items: stretch;
   }
 
   .ai-room-assistant__result-content {

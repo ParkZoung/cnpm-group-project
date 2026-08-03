@@ -69,6 +69,10 @@
             <input id="checkin-input" type="hidden" name="check_in">
             <input id="checkout-input" type="hidden" name="check_out">
             <div class="search-panel calendar-panel" id="calendar-panel" hidden>
+              <div class="calendar-navigation" aria-label="Điều hướng tháng">
+                <button id="calendar-prev" type="button" aria-label="Xem tháng trước">‹</button>
+                <button id="calendar-next" type="button" aria-label="Xem tháng tiếp theo">›</button>
+              </div>
               <div class="calendar-months" id="calendar-months"></div>
               <p class="calendar-hint" id="calendar-hint">Chọn ngày nhận phòng</p>
             </div>
@@ -102,20 +106,22 @@
 
       <form id="ai-room-suggestion-form" class="ai-room-assistant__form">
         <label for="ai-room-needs">Nhu cầu về phòng</label>
-        <textarea
-          id="ai-room-needs"
-          name="room_needs"
-          maxlength="500"
-          rows="3"
-          placeholder="Tôi đi cùng gia đình, muốn phòng rộng, ưu tiên tiết kiệm và không cần view đẹp."
-          aria-describedby="ai-room-needs-help"
-          required
-        ></textarea>
-        <p id="ai-room-validation" class="ai-room-assistant__validation" role="alert" hidden></p>
-        <div class="ai-room-assistant__form-footer">
-          <small id="ai-room-needs-help">Tối đa 500 ký tự</small>
-          <button id="ai-room-submit" type="submit" class="ai-room-assistant__submit">Gợi ý phòng phù hợp</button>
+        <div class="ai-room-assistant__input-row">
+          <textarea
+            id="ai-room-needs"
+            name="room_needs"
+            maxlength="500"
+            rows="3"
+            placeholder="Tôi đi cùng gia đình, muốn phòng rộng, ưu tiên tiết kiệm và không cần view đẹp."
+            aria-describedby="ai-room-needs-help"
+            required
+          ></textarea>
+          <div class="ai-room-assistant__form-footer">
+            <small id="ai-room-needs-help">Tối đa 500 ký tự</small>
+            <button id="ai-room-submit" type="submit" class="ai-room-assistant__submit">Gợi ý phòng phù hợp</button>
+          </div>
         </div>
+        <p id="ai-room-validation" class="ai-room-assistant__validation" role="alert" hidden></p>
       </form>
 
       <div id="ai-room-loading" class="ai-room-assistant__state" role="status" hidden>
