@@ -200,8 +200,11 @@
     card.dataset.roomId = String(room.room_id);
 
     const image = document.createElement('img');
-    image.src = room.image_url || FALLBACK_ROOM_IMAGE;
     image.alt = room.image_alt_text || roomLabel(room) + ' tại ' + room.branch_name;
+    image.addEventListener('error', function () {
+      if (image.src !== FALLBACK_ROOM_IMAGE) image.src = FALLBACK_ROOM_IMAGE;
+    });
+    image.src = room.image_url || FALLBACK_ROOM_IMAGE;
 
     const body = document.createElement('div');
     body.className = 'ai-recommendation-card__body';
