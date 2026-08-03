@@ -240,7 +240,7 @@
     setLoadingState();
 
     if (adminContext && adminContext.profile && adminContext.profile.full_name) {
-      $('adminUserName').textContent = 'Admin ' + adminContext.profile.full_name + ' ▾';
+      $('adminUserName').textContent = adminContext.profile.full_name;
     }
 
     const interval = getBusinessDayUtcInterval(new Date());

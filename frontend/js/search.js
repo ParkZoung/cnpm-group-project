@@ -4,7 +4,7 @@
   const FALLBACK_ROOM_IMAGE =
     'https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=400&q=80';
   let latestRequestId = 0;
-  let metadata = { branches: [], roomTypes: [] };
+  let metadata = { branches: [] };
 
   document.addEventListener('DOMContentLoaded', initializeAvailabilitySearch, { once: true });
 
@@ -43,7 +43,6 @@
       checkOut: document.getElementById('check-out-filter'),
       guests: document.getElementById('guests-filter'),
       branch: document.getElementById('branch-filter'),
-      roomType: document.getElementById('room-type-filter'),
       minPrice: document.getElementById('min-price-filter'),
       submit: document.querySelector('.btn-apply-filter'),
       validation: document.getElementById('availability-validation-error'),
@@ -72,53 +71,33 @@
   }
 
   async function loadFilterMetadata() {
-    const results = await Promise.all([
-      window.gostaySupabase
-        .from('branches')
-        .select('id, name, city, address, status')
-        .eq('status', 'active')
-        .order('name', { ascending: true }),
-      window.gostaySupabase
-        .from('room_types')
-        .select('id, name, capacity')
-        .order('name', { ascending: true })
-    ]);
+    const result = await window.gostaySupabase
+      .from('branches')
+      .select('id, name, city, address, status')
+      .eq('status', 'active')
+      .neq('city', 'New York')
+      .order('name', { ascending: true });
 
-    if (results[0].error) throw results[0].error;
-    if (results[1].error) throw results[1].error;
+    if (result.error) throw result.error;
 
     return {
-      branches: results[0].data || [],
-      roomTypes: results[1].data || []
+      branches: result.data || []
     };
   }
 
   function populateMetadataFilters(elements) {
     const selectedBranch = elements.branch.value;
-    const selectedRoomType = elements.roomType.value;
 
     metadata.branches.forEach(function (branch) {
       elements.branch.appendChild(createOption(
         branch.id,
-        branch.name + (branch.city ? ' — ' + branch.city : '')
+        branchOptionLabel(branch, metadata.branches)
       ));
     });
-    metadata.roomTypes.forEach(function (roomType) {
-      elements.roomType.appendChild(createOption(
-        roomType.id,
-        roomType.name + ' (' + roomType.capacity + ' khách)'
-      ));
-    });
-
     if (metadata.branches.some(function (branch) {
       return String(branch.id) === selectedBranch;
     })) {
       elements.branch.value = selectedBranch;
-    }
-    if (metadata.roomTypes.some(function (roomType) {
-      return String(roomType.id) === selectedRoomType;
-    })) {
-      elements.roomType.value = selectedRoomType;
     }
   }
 
@@ -128,9 +107,6 @@
     elements.checkOut.value = params.get('check_out') || params.get('checkout') || '';
     elements.guests.value = deriveGuests(params);
     elements.branch.value = positiveIntegerParam(params.get('branch_id')) || '';
-    elements.roomType.value = positiveIntegerParam(
-      params.get('room_type_id') || params.get('room_type')
-    ) || '';
     elements.minPrice.value = nonNegativeIntegerParam(params.get('min_price')) || '';
     elements.checkOut.min = elements.checkIn.value || todayString();
   }
@@ -224,7 +200,7 @@
       checkOut: checkOut,
       guests: guests,
       branchId: optionalPositiveInteger(elements.branch.value),
-      roomTypeId: optionalPositiveInteger(elements.roomType.value),
+      roomTypeId: null,
       minPrice: minPrice,
       maxPrice: null
     };
@@ -393,6 +369,25 @@
     option.value = String(value);
     option.textContent = label;
     return option;
+  }
+
+  function branchOptionLabel(branch, branches) {
+    if (!branch.city) return branch.name;
+
+    const sameCityCount = branches.filter(function (item) {
+      return item.city === branch.city;
+    }).length;
+    const baseLabel = 'GoStay ' + branch.city;
+
+    if (sameCityCount <= 1) return baseLabel;
+
+    const escapedCity = branch.city.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    const qualifier = String(branch.name || '')
+      .replace(/^GoStay\s*/i, '')
+      .replace(new RegExp('\\s*' + escapedCity + '\\s*$', 'i'), '')
+      .trim();
+
+    return qualifier ? baseLabel + ' — ' + qualifier : baseLabel;
   }
 
   function appendElement(parent, tag, text, className) {
