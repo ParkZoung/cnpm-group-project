@@ -24,6 +24,10 @@
           flex-direction: column;
       }
 
+      .form-group[hidden] {
+          display: none;
+      }
+
       .form-group label {
           font-weight: 600;
           font-size: 14px;
@@ -206,7 +210,7 @@
 
                 <form id="roomTypeForm" class="new-grid-form">
                     <!-- Hàng 1 -->
-                    <div class="form-group">
+                    <div class="form-group" hidden>
                         <label for="id">ID</label>
                         <input type="text" id="id" placeholder="Tự động tạo" readonly>
                     </div>
