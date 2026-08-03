@@ -70,7 +70,7 @@
   function showAuthenticatedAdmin(user, profile) {
     const label = String(profile.full_name || user.email || 'Admin').trim() || 'Admin';
     document.querySelectorAll('.user-name').forEach(function (element) {
-      element.textContent = label + ' ▾';
+      element.textContent = label;
     });
   }
 

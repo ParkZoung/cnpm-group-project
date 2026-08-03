@@ -30,7 +30,10 @@ document.addEventListener('DOMContentLoaded', function () {
 
   searchBox.querySelectorAll('.place-option').forEach(function (option) {
     option.addEventListener('click', function () {
-      document.getElementById('destination-value').textContent = option.dataset.place;
+      const displayLabel = option.querySelector('strong');
+      document.getElementById('destination-value').textContent = displayLabel
+        ? displayLabel.textContent
+        : option.dataset.place;
       document.getElementById('destination-input').value = option.dataset.place;
       closePanels();
     });
