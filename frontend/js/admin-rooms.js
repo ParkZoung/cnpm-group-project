@@ -28,6 +28,9 @@ const ROOM_STATUS_LABELS = {
 
 let cachedBranches = [];
 let cachedRoomTypes = [];
+let cachedAmenities = [];
+let amenitiesLoaded = false;
+let amenitySelectionEditable = false;
 
 document.addEventListener("DOMContentLoaded", async () => {
   const adminContext = await window.gostayAdminReady;
@@ -78,6 +81,50 @@ async function loadRoomReferences() {
     cachedRoomTypes = roomTypes;
     fillSelectOptions("room-type", roomTypes, "-- Chọn loại phòng --");
   }
+
+  const { data: amenities, error: amenityError } = await window.gostaySupabase
+    .from("amenities")
+    .select("id, name, icon")
+    .eq("status", "active")
+    .order("name", { ascending: true });
+
+  if (amenityError) {
+    console.error("[amenities] Lỗi khi tải:", amenityError.message);
+    renderAmenityOptions([], "Không thể tải danh sách tiện nghi.");
+  } else {
+    cachedAmenities = amenities || [];
+    amenitiesLoaded = true;
+    amenitySelectionEditable = true;
+    renderAmenityOptions(cachedAmenities);
+  }
+}
+
+function renderAmenityOptions(amenities, emptyMessage) {
+  const container = document.getElementById("room-amenities-options");
+  container.replaceChildren();
+
+  if (!amenities.length) {
+    const message = document.createElement("span");
+    message.className = "room-amenities-placeholder";
+    message.textContent = emptyMessage || "Chưa có tiện nghi đang hoạt động.";
+    container.appendChild(message);
+    return;
+  }
+
+  amenities.forEach((amenity) => {
+    const label = document.createElement("label");
+    label.className = "room-amenity-option";
+
+    const checkbox = document.createElement("input");
+    checkbox.type = "checkbox";
+    checkbox.name = "room-amenity";
+    checkbox.value = String(amenity.id);
+
+    const text = document.createElement("span");
+    text.textContent = amenity.name;
+    label.append(checkbox, text);
+    container.appendChild(label);
+  });
 }
 
 function fillSelectOptions(selectId, rows, placeholderLabel) {
@@ -288,7 +335,42 @@ function readRoomForm() {
     price: Number(document.getElementById("room-price").value),
     description: document.getElementById("room-description").value.trim() || null,
     status: document.getElementById("room-status").value,
+    amenityIds: Array.from(document.querySelectorAll('input[name="room-amenity"]:checked'))
+      .map((input) => Number(input.value)),
   };
+}
+
+async function syncRoomAmenities(roomId, amenityIds) {
+  if (!amenitiesLoaded || !amenitySelectionEditable) return;
+
+  const { data: currentLinks, error: readError } = await window.gostaySupabase
+    .from("room_amenities")
+    .select("amenity_id")
+    .eq("room_id", roomId);
+  if (readError) throw readError;
+
+  const currentIds = new Set((currentLinks || []).map((item) => Number(item.amenity_id)));
+  const selectedIds = new Set(amenityIds.map(Number));
+  const linksToAdd = amenityIds
+    .filter((amenityId) => !currentIds.has(Number(amenityId)))
+    .map((amenityId) => ({ room_id: Number(roomId), amenity_id: Number(amenityId) }));
+
+  if (linksToAdd.length) {
+    const { error: insertError } = await window.gostaySupabase
+      .from("room_amenities")
+      .insert(linksToAdd);
+    if (insertError) throw insertError;
+  }
+
+  const linksToRemove = Array.from(currentIds).filter((amenityId) => !selectedIds.has(amenityId));
+  for (const amenityId of linksToRemove) {
+    const { error: deleteError } = await window.gostaySupabase
+      .from("room_amenities")
+      .delete()
+      .eq("room_id", roomId)
+      .eq("amenity_id", amenityId);
+    if (deleteError) throw deleteError;
+  }
 }
 
 function validateRoomForm(form) {
@@ -319,19 +401,33 @@ async function createRoom() {
     return;
   }
 
-  const { error } = await window.gostaySupabase.from("rooms").insert({
-    room_number: form.roomNumber,
-    name: form.name,
-    branch_id: form.branchId,
-    room_type_id: form.roomTypeId,
-    price_per_night: form.price,
-    description: form.description,
-    status: form.status,
-  });
+  const { data: createdRoom, error } = await window.gostaySupabase
+    .from("rooms")
+    .insert({
+      room_number: form.roomNumber,
+      name: form.name,
+      branch_id: form.branchId,
+      room_type_id: form.roomTypeId,
+      price_per_night: form.price,
+      description: form.description,
+      status: form.status,
+    })
+    .select("id")
+    .single();
 
   if (error) {
     console.error("[rooms] Lỗi khi thêm:", error.message);
     showRoomMessage("Thêm phòng thất bại: " + error.message, true);
+    return;
+  }
+
+  try {
+    await syncRoomAmenities(createdRoom.id, form.amenityIds);
+  } catch (amenityError) {
+    console.error("[room_amenities] Phòng đã tạo nhưng lưu tiện nghi thất bại:", amenityError.message);
+    document.getElementById("room-id").value = createdRoom.id;
+    showRoomMessage("Phòng đã được tạo nhưng chưa lưu được tiện nghi. Hãy thử cập nhật lại.", true);
+    await loadRooms(getRoomFiltersState());
     return;
   }
 
@@ -341,7 +437,7 @@ async function createRoom() {
   loadRooms(getRoomFiltersState());
 }
 
-function startEditRoom(row) {
+async function startEditRoom(row) {
   document.getElementById("room-id").value = row.id;
   document.getElementById("room-number").value = row.room_number;
   document.getElementById("room-name").value = row.name;
@@ -350,13 +446,44 @@ function startEditRoom(row) {
   document.getElementById("room-price").value = row.price_per_night;
   document.getElementById("room-description").value = row.description || "";
   document.getElementById("room-status").value = row.status;
+  showRoomMessage("", false);
+
+  await loadRoomAmenitySelection(row.id);
 
   document.getElementById("room-form-title").textContent = "Cập nhật phòng: " + row.room_number;
   document.getElementById("room-submit-btn").textContent = "Cập nhật phòng";
-  showRoomMessage("", false);
 
   if (typeof document.getElementById("room-form").scrollIntoView === "function") {
     document.getElementById("room-form").scrollIntoView({ behavior: "smooth" });
+  }
+}
+
+async function loadRoomAmenitySelection(roomId) {
+  document.querySelectorAll('input[name="room-amenity"]').forEach((input) => {
+    input.checked = false;
+  });
+  amenitySelectionEditable = false;
+  if (!amenitiesLoaded) return;
+
+  const submitButton = document.getElementById("room-submit-btn");
+  submitButton.disabled = true;
+  try {
+    const { data, error } = await window.gostaySupabase
+      .from("room_amenities")
+      .select("amenity_id")
+      .eq("room_id", roomId);
+    if (error) throw error;
+
+    const selectedIds = new Set((data || []).map((item) => String(item.amenity_id)));
+    document.querySelectorAll('input[name="room-amenity"]').forEach((input) => {
+      input.checked = selectedIds.has(input.value);
+    });
+    amenitySelectionEditable = true;
+  } catch (error) {
+    console.error("[room_amenities] Không thể tải tiện nghi của phòng:", error.message);
+    showRoomMessage("Không thể tải tiện nghi hiện tại; các tiện nghi sẽ được giữ nguyên khi cập nhật.", true);
+  } finally {
+    submitButton.disabled = false;
   }
 }
 
@@ -385,6 +512,15 @@ async function updateRoom(roomId) {
   if (error) {
     console.error("[rooms] Lỗi khi cập nhật:", error.message);
     showRoomMessage("Cập nhật thất bại: " + error.message, true);
+    return;
+  }
+
+  try {
+    await syncRoomAmenities(roomId, form.amenityIds);
+  } catch (amenityError) {
+    console.error("[room_amenities] Phòng đã cập nhật nhưng lưu tiện nghi thất bại:", amenityError.message);
+    showRoomMessage("Thông tin phòng đã cập nhật nhưng chưa lưu được tiện nghi. Hãy thử lại.", true);
+    await loadRooms(getRoomFiltersState());
     return;
   }
 
@@ -446,6 +582,10 @@ function resetRoomForm() {
   document.getElementById("room-id").value = "";
   document.getElementById("room-form-title").textContent = "Thêm phòng mới";
   document.getElementById("room-submit-btn").textContent = "Lưu phòng";
+  amenitySelectionEditable = amenitiesLoaded;
+  document.querySelectorAll('input[name="room-amenity"]').forEach((input) => {
+    input.checked = false;
+  });
 }
 
 /* ---------- TIỆN ÍCH ---------- */

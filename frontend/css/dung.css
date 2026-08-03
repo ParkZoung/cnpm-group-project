@@ -635,6 +635,10 @@
   transition: background 0.2s !important;
 }
 
+#catalog-retry[hidden] {
+  display: none !important;
+}
+
 .btn-view-detail:hover {
   background: #1f8f8f !important;
 }
@@ -739,11 +743,18 @@
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 10px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
 }
 
 .amenities-list li {
   font-size: 13px;
   color: #475569;
+}
+
+.detail-amenities[hidden] {
+  display: none !important;
 }
 
 /* KHỐI ĐÁNH GIÁ KHÁCH HÀNG */

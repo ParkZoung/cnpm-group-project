@@ -415,6 +415,53 @@
   min-width: 1820px;
 }
 
+.room-amenities-fieldset {
+  flex: 1 1 100%;
+  margin: 4px 0 0;
+  padding: 14px;
+  border: 1px solid #cbd5e1;
+  border-radius: 10px;
+}
+
+.room-amenities-fieldset legend {
+  padding: 0 6px;
+  color: #0b3558;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.room-amenities-fieldset p {
+  margin: 0 0 10px;
+  color: #64748b;
+  font-size: 12px;
+}
+
+.room-amenities-options {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+  gap: 9px 14px;
+}
+
+.room-amenity-option {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #334155;
+  font-size: 13px;
+  cursor: pointer;
+}
+
+.room-amenity-option input {
+  width: 16px;
+  height: 16px;
+  accent-color: #12a6b8;
+}
+
+.room-amenities-placeholder {
+  color: #64748b;
+  font-size: 13px;
+}
+
 .booking-admin-table th,
 .booking-admin-table td {
   overflow-wrap: normal;

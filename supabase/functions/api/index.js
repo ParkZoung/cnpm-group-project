@@ -9,6 +9,7 @@ const corsHeaders = {
 
 const TABLES = new Set([
   "profiles", "branches", "room_types", "rooms", "room_images", "bookings",
+  "amenities", "room_amenities",
 ]);
 const RPCS = new Set([
   "search_available_rooms", "create_booking", "cancel_own_booking",

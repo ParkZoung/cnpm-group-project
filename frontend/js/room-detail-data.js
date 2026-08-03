@@ -76,7 +76,12 @@
         return;
       }
 
-      data.first_image = await loadFirstRoomImage(roomId.value);
+      const roomExtras = await Promise.all([
+        loadFirstRoomImage(roomId.value),
+        loadRoomAmenities(roomId.value)
+      ]);
+      data.first_image = roomExtras[0];
+      data.amenities = roomExtras[1];
       window.gostayRoomDetailState.loading = false;
       window.gostayRoomDetailState.room = data;
       renderRoomDetail(elements, data);
@@ -106,6 +111,31 @@
     } catch (error) {
       console.warn('[room-detail] Không thể tải ảnh phòng, đang sử dụng ảnh fallback.', error);
       return null;
+    }
+  }
+
+  async function loadRoomAmenities(roomId) {
+    try {
+      const { data, error } = await window.gostaySupabase
+        .from('room_amenities')
+        .select(`
+          amenity:amenities!room_amenities_amenity_id_fkey(
+            id, name, icon, description, status
+          )
+        `)
+        .eq('room_id', roomId);
+
+      if (error) throw error;
+
+      return (data || [])
+        .map(function (item) { return item.amenity; })
+        .filter(function (amenity) { return amenity && amenity.status === 'active'; })
+        .sort(function (left, right) {
+          return String(left.name).localeCompare(String(right.name), 'vi');
+        });
+    } catch (error) {
+      console.warn('[room-detail] Không thể tải tiện nghi phòng.', error);
+      return [];
     }
   }
 
@@ -141,6 +171,8 @@
       specs: document.getElementById('room-detail-specs'),
       description: document.getElementById('room-detail-description'),
       roomTypeDescription: document.getElementById('room-type-description'),
+      amenities: document.getElementById('room-detail-amenities'),
+      amenitiesList: document.getElementById('room-amenities-list'),
       price: document.getElementById('room-estimated-price'),
       image: document.querySelector('#room-detail-content .detail-gallery img')
     };
@@ -184,6 +216,15 @@
     elements.description.textContent = cleanDisplayText(room.description) || 'Không gian nghỉ tiện nghi tại hệ thống GoStay.';
     elements.roomTypeDescription.textContent =
       cleanDisplayText(room.room_type.description) || 'Thông tin hạng phòng đang được cập nhật.';
+
+    elements.amenitiesList.replaceChildren();
+    (room.amenities || []).forEach(function (amenity) {
+      const item = document.createElement('li');
+      item.textContent = '✓ ' + amenity.name;
+      elements.amenitiesList.appendChild(item);
+    });
+    elements.amenities.hidden = !room.amenities || room.amenities.length === 0;
+
     elements.price.textContent = formatRoomPrice(room.price_per_night);
     elements.loading.hidden = true;
     elements.error.hidden = true;
