@@ -45,7 +45,6 @@
       branch: document.getElementById('branch-filter'),
       roomType: document.getElementById('room-type-filter'),
       minPrice: document.getElementById('min-price-filter'),
-      maxPrice: document.getElementById('max-price-filter'),
       submit: document.querySelector('.btn-apply-filter'),
       validation: document.getElementById('availability-validation-error'),
       incomplete: document.getElementById('catalog-incomplete'),
@@ -133,7 +132,6 @@
       params.get('room_type_id') || params.get('room_type')
     ) || '';
     elements.minPrice.value = nonNegativeIntegerParam(params.get('min_price')) || '';
-    elements.maxPrice.value = nonNegativeIntegerParam(params.get('max_price')) || '';
     elements.checkOut.min = elements.checkIn.value || todayString();
   }
 
@@ -204,7 +202,6 @@
     const checkOut = elements.checkOut.value;
     const guests = Number(elements.guests.value);
     const minPrice = optionalInteger(elements.minPrice.value);
-    const maxPrice = optionalInteger(elements.maxPrice.value);
 
     if (!checkIn || !checkOut) {
       return { error: 'Vui lòng chọn ngày nhận phòng và ngày trả phòng.' };
@@ -218,11 +215,8 @@
     if (!Number.isSafeInteger(guests) || guests < 1) {
       return { error: 'Số khách phải là số nguyên lớn hơn hoặc bằng 1.' };
     }
-    if (minPrice === false || maxPrice === false) {
+    if (minPrice === false) {
       return { error: 'Giá phải là số nguyên không âm.' };
-    }
-    if (minPrice !== null && maxPrice !== null && minPrice > maxPrice) {
-      return { error: 'Giá tối thiểu không được lớn hơn giá tối đa.' };
     }
 
     return {
@@ -232,7 +226,7 @@
       branchId: optionalPositiveInteger(elements.branch.value),
       roomTypeId: optionalPositiveInteger(elements.roomType.value),
       minPrice: minPrice,
-      maxPrice: maxPrice
+      maxPrice: null
     };
   }
 
@@ -310,7 +304,6 @@
     if (filters.branchId !== null) params.set('branch_id', String(filters.branchId));
     if (filters.roomTypeId !== null) params.set('room_type_id', String(filters.roomTypeId));
     if (filters.minPrice !== null) params.set('min_price', String(filters.minPrice));
-    if (filters.maxPrice !== null) params.set('max_price', String(filters.maxPrice));
     window.history.replaceState(null, '', 'search.html?' + params.toString());
   }
 

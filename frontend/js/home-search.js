@@ -52,6 +52,9 @@ document.addEventListener('DOMContentLoaded', function () {
   today.setHours(0, 0, 0, 0);
   let checkin = null;
   let checkout = null;
+  let visibleMonthOffset = 0;
+  const previousMonthButton = document.getElementById('calendar-prev');
+  const nextMonthButton = document.getElementById('calendar-next');
   const weekdays = ['Thứ 2', 'Thứ 3', 'Thứ 4', 'Thứ 5', 'Thứ 6', 'Thứ 7', 'CN'];
 
   function isoDate(date) {
@@ -66,9 +69,14 @@ document.addEventListener('DOMContentLoaded', function () {
   function renderCalendar() {
     const months = document.getElementById('calendar-months');
     months.innerHTML = '';
+    previousMonthButton.disabled = visibleMonthOffset === 0;
 
     [0, 1].forEach(function (offset) {
-      const monthDate = new Date(today.getFullYear(), today.getMonth() + offset, 1);
+      const monthDate = new Date(
+        today.getFullYear(),
+        today.getMonth() + visibleMonthOffset + offset,
+        1
+      );
       const month = document.createElement('div');
       month.className = 'calendar-month';
       month.innerHTML = '<h4>tháng ' + (monthDate.getMonth() + 1) + ' năm ' + monthDate.getFullYear() + '</h4>';
@@ -101,6 +109,17 @@ document.addEventListener('DOMContentLoaded', function () {
       months.appendChild(month);
     });
   }
+
+  previousMonthButton.addEventListener('click', function () {
+    if (visibleMonthOffset === 0) return;
+    visibleMonthOffset -= 1;
+    renderCalendar();
+  });
+
+  nextMonthButton.addEventListener('click', function () {
+    visibleMonthOffset += 1;
+    renderCalendar();
+  });
 
   function selectDate(date) {
     if (!checkin || checkout || date <= checkin) {
