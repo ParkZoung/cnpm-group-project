@@ -1,8 +1,6 @@
-/* ==========================================================================
-   HỆ THỐNG CSS AUTHENTICATION & ADMIN DASHBOARD - BẢN FULL CODE HOÀN THIỆN
-   ========================================================================== */
 
-/* --- 1. KHUNG DIỆN MẠO AUTH (ĐĂNG NHẬP / ĐĂNG KÝ / QUÊN MẬT KHẨU) --- */
+
+
 .auth-page-container {
   min-height: calc(100vh - 220px);
   display: flex;
@@ -68,7 +66,7 @@
   border-color: #12a6b8;
 }
 
-/* NÚT SUBMIT LỚN (ĐĂNG NHẬP / ĐĂNG KÝ / ĐỔI MẬT KHẨU) */
+
 .btn-auth-submit {
   width: 100%;
   background: #12a6b8;
@@ -147,7 +145,7 @@
 }
 
 
-/* --- 2. BIẾN CÁC CHỮ TÍM GẠCH CHÂN THÀNH NÚT KHUNG NHỎ XINH --- */
+
 .form-actions-row {
   display: flex !important;
   justify-content: space-between !important;
@@ -165,35 +163,35 @@
   font-size: 13px;
 }
 
-/* Nhắm mục tiêu chính xác vào link Quên Mật Khẩu và các link Quay Lại trong thẻ Auth */
+
 .auth-form a.forgot-pass,
 .form-actions-row a,
 .auth-card a,
 .resend-text a,
 .auth-footer-text a {
   display: inline-block !important;
-  padding: 6px 14px !important;       /* Tạo độ rộng khung nhỏ nhắn vừa vặn */
-  font-size: 13px !important;          /* Chữ nhỏ gọn, thanh thoát */
+  padding: 6px 14px !important;
+  font-size: 13px !important;
   font-weight: 700 !important;
-  text-decoration: none !important;    /* BIẾN MẤT HOÀN TOÀN DẤU GẠCH CHÂN TÍM CŨ */
-  border-radius: 6px !important;       /* Bo góc mềm mại ăn rơ với nút lớn */
-  
-  /* Trạng thái mặc định: Nền trắng, khung viền mảnh màu xanh Teal, chữ xanh Teal */
+  text-decoration: none !important;
+  border-radius: 6px !important;
+
+
   background-color: #ffffff !important;
   color: #12a6b8 !important;
   border: 1px solid #12a6b8 !important;
-  
+
   transition: all 0.2s ease-in-out !important;
   cursor: pointer !important;
 }
 
-/* Hiệu ứng mượt mà khi di chuột (Hover) vào các nút nhỏ */
+
 .auth-form a.forgot-pass:hover,
 .form-actions-row a:hover,
 .auth-card a:hover,
 .resend-text a:hover,
 .auth-footer-text a:hover {
-  /* Khi rê chuột: Nút đổ đầy màu nền xanh Teal, chữ chuyển sang trắng như nút Đăng nhập */
+
   background-color: #12a6b8 !important;
   color: #ffffff !important;
   border-color: #12a6b8 !important;
@@ -201,7 +199,7 @@
 }
 
 
-/* --- 3. PHẦN GIAO DIỆN BOX NHẬP MÃ XÁC THỰC OTP --- */
+
 .otp-input-group {
   display: flex;
   justify-content: center;
@@ -280,7 +278,7 @@
   }
 }
 
-/* --- 5. HỆ THỐNG GIAO DIỆN QUẢN TRỊ ADMIN (MÀU CHUẨN THỰC TẾ) --- */
+
 .admin-dashboard-body {
   margin: 0 !important;
   padding: 0 !important;
@@ -333,7 +331,7 @@
   padding: 10px 16px 0 16px;
 }
 
-/* MENU TRÊN SIDEBAR */
+
 .sidebar-menu {
   flex-grow: 1;
   padding: 0 16px;
@@ -364,7 +362,7 @@
   background-color: rgba(255, 255, 255, 0.08);
 }
 
-/* MỤC MENU ACTIVE - ĐỔI SANG TEAL SÁNG (#12a6b8) TRÊN NỀN NAVY */
+
 .sidebar-menu .menu-item.active {
   color: #ffffff !important;
   background-color: #12a6b8 !important;
@@ -383,7 +381,7 @@
   color: #ffffff !important;
 }
 
-/* KHỐI NỘI DUNG CHÍNH BÊN PHẢI */
+
 .admin-main-content {
   margin-left: 260px !important;
   padding: 0 !important;
@@ -393,7 +391,7 @@
   box-sizing: border-box;
 }
 
-/* THANH TOPBAR TRÊN CÙNG - MÀU NỀN TRẮNG TINH TẾ (#ffffff) */
+
 .admin-topbar {
   background-color: #ffffff !important;
   height: 75px !important;
@@ -445,7 +443,7 @@
   color: #0b3558;
 }
 
-/* KHU VỰC THAO TÁC BẢNG DỮ LIỆU TRONG TRANG */
+
 .admin-page-container {
   padding: 40px !important;
   box-sizing: border-box;
@@ -514,7 +512,7 @@
   color: #475569;
 }
 
-/* PHẦN ĐỊNH DẠNG BẢNG ADMIN KHANH */
+
 .admin-table-wrapper {
   background: #ffffff;
   border: 1px solid #e2e8f0;

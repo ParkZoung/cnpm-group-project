@@ -1,8 +1,6 @@
-/* ==========================================================================
-   CUSTOM CSS - LUỒNG TÌM KIẾM VÀ XEM DANH SÁCH PHÒNG (BẢN FULL FIX LỖI)
-   ========================================================================== */
 
-/* --- BỐ CỤC CHÍNH (2 CỘT CHO TRANG TÌM KIẾM) --- */
+
+
 .search-page-container {
   display: flex;
   gap: 24px;
@@ -11,7 +9,7 @@
   align-items: flex-start;
 }
 
-/* Release polish: search and room presentation */
+
 .search-layout {
   align-items: start;
   gap: 28px;
@@ -78,7 +76,7 @@
   }
 }
 
-/* --- CỘT TRÁI: BỘ LỌC (SIDEBAR) --- */
+
 .filter-sidebar {
   width: 260px;
   min-width: 260px;
@@ -110,7 +108,7 @@
   margin-bottom: 8px;
 }
 
-/* Kiểu dáng cho ô nhập tìm kiếm từ khóa văn bản mới */
+
 .filter-group input[type="text"],
 .filter-group input[type="date"],
 .filter-group input[type="number"] {
@@ -182,13 +180,13 @@
   background: #12a6b8;
 }
 
-/* --- CỘT PHẢI: DANH SÁCH PHÒNG KẾT QUẢ --- */
+
 .search-results-section {
   flex-grow: 1;
   min-width: 0;
 }
 
-/* --- TRỢ LÝ AI GỢI Ý PHÒNG --- */
+
 .home-page main {
   display: flex;
   flex-direction: column;
@@ -515,67 +513,65 @@
 }
 
 
-/* ==========================================================================
-   MỚI CHỈNH SỬA: ĐƯA DANH SÁCH PHÒNG VỀ DẠNG LƯỚI KHUNG BỌC CÁCH NHAU THOÁNG MẮT
-   ========================================================================== */
 
-/* Ép danh sách phòng hiển thị dạng Lưới (Grid) - Tự động chia cột theo màn hình */
+
+
 .rooms-search-grid {
   display: grid !important;
-  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)) !important; /* Chia 2-3 cột tăm tắp */
-  gap: 30px !important;                 /* Tạo khoảng trống 30px GIỮA CÁC Ô PHÒNG rất thoáng */
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)) !important;
+  gap: 30px !important;
   width: 100% !important;
   margin-top: 20px !important;
   margin-bottom: 50px !important;
 }
 
-/* Định dạng cấu trúc từng ô Card phòng đơn lẻ */
+
 .room-search-card {
   display: flex !important;
-  flex-direction: column !important;    /* Ảnh nằm ở trên, chữ nằm ở dưới */
+  flex-direction: column !important;
   background: #ffffff !important;
   border: 1px solid #e2e8f0 !important;
-  border-radius: 12px !important;       /* Bo góc tròn mềm mại */
-  overflow: hidden !important;          /* Giấu phần thừa lồi ra ngoài */
-  box-shadow: 0 4px 12px rgba(11, 53, 88, 0.04) !important; /* Đổ bóng mờ luxury */
+  border-radius: 12px !important;
+  overflow: hidden !important;
+  box-shadow: 0 4px 12px rgba(11, 53, 88, 0.04) !important;
   transition: transform 0.3s ease, box-shadow 0.3s ease !important;
 }
 
-/* Hiệu ứng nhấc nhẹ ô phòng lên khi người dùng rê chuột vào */
+
 .room-search-card:hover {
   transform: translateY(-5px) !important;
   box-shadow: 0 8px 24px rgba(11, 53, 88, 0.1) !important;
 }
 
-/* KHỐNG CHẾ KHUNG ẢNH PHÒNG - Tuyệt đối không cho ảnh tràn tự do */
+
 .room-img-wrap {
   width: 100% !important;
-  height: 220px !important;             /* Ép tất cả các ảnh cao bằng chằn chặn nhau 220px */
-  overflow: hidden !important;          /* Cắt bỏ phần rìa thừa */
+  height: 220px !important;
+  overflow: hidden !important;
   position: relative !important;
   background: #f1f5f9;
   flex-shrink: 0 !important;
 }
 
-/* Ép bức ảnh thực tế khớp hoàn toàn vào khung chứa */
+
 .room-img-wrap img {
   width: 100% !important;
   height: 100% !important;
-  object-fit: cover !important;         /* Cắt ảnh thông minh, không lo bị bóp móp méo hình */
+  object-fit: cover !important;
   transition: transform 0.4s ease !important;
 }
 
-/* Ảnh hơi phóng to nhẹ hướng về người dùng khi hover */
+
 .room-search-card:hover .room-img-wrap img {
   transform: scale(1.06) !important;
 }
 
-/* Định dạng khoảng đệm chữ và nội dung thông tin bên trong Card phòng */
+
 .room-search-body {
-  padding: 20px !important;             /* Tạo khoảng cách trống từ viền vào trong chữ */
+  padding: 20px !important;
   display: flex !important;
   flex-direction: column !important;
-  gap: 10px !important;                 /* Các dòng chữ cách đều nhau một khoảng nhỏ gọn gàng */
+  gap: 10px !important;
   flex-grow: 1 !important;
 }
 
@@ -600,7 +596,7 @@
 .room-price {
   font-size: 18px !important;
   font-weight: 700 !important;
-  color: #12a6b8 !important;            /* Đồng bộ màu xanh chủ đạo */
+  color: #12a6b8 !important;
   margin: 5px 0 0 0 !important;
 }
 
@@ -618,7 +614,7 @@
   color: #c62828 !important;
 }
 
-/* Nút xem chi tiết phòng kéo rộng full chiều ngang cho cân xứng */
+
 .btn-view-detail {
   display: block !important;
   text-align: center !important;
@@ -631,7 +627,7 @@
   font-size: 13px !important;
   font-weight: 700 !important;
   border-radius: 6px !important;
-  margin-top: auto !important;          /* Luôn ghim chặt nút ở đáy ô */
+  margin-top: auto !important;
   transition: background 0.2s !important;
 }
 
@@ -644,7 +640,7 @@
 }
 
 
-/* --- TRANG CHI TIẾT PHÒNG KHÁCH SẠN (ROOM-DETAIL.HTML) --- */
+
 .detail-layout {
   display: flex;
   gap: 30px;
@@ -757,7 +753,7 @@
   display: none !important;
 }
 
-/* KHỐI ĐÁNH GIÁ KHÁCH HÀNG */
+
 .detail-reviews {
   border-top: 1px solid #e2e8f0;
   padding-top: 24px;
@@ -805,7 +801,7 @@
   color: #94a3b8;
 }
 
-/* CỘT WIDGET ĐẶT PHÒNG BÊN PHẢI */
+
 .booking-widget {
   width: 320px;
   min-width: 320px;
@@ -873,7 +869,7 @@
 }
 
 
-/* --- ĐÁP ỨNG MÀN HÌNH NHỎ (RESPONSIVE) --- */
+
 @media (max-width: 768px) {
   .search-page-container, .detail-layout {
     flex-direction: column;

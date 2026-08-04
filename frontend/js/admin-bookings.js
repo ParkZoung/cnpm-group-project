@@ -1,4 +1,4 @@
-/* Quản lý booking Admin: chỉ đọc bảng bookings và đổi trạng thái qua RPC. */
+
 (function () {
   'use strict';
 
