@@ -409,6 +409,64 @@
 .topbar-search { display: none; }
 .admin-table td { line-height: 1.45; overflow-wrap: anywhere; }
 
+/* Room management tables keep short values and actions readable. Long names
+   still wrap at word boundaries, while the wrapper provides horizontal scroll
+   on narrow screens. */
+.room-admin-table,
+.room-type-admin-table {
+  table-layout: auto;
+}
+
+.room-admin-table th,
+.room-admin-table td,
+.room-type-admin-table th,
+.room-type-admin-table td {
+  overflow-wrap: normal;
+  word-break: normal;
+}
+
+.room-admin-table th,
+.room-admin-table td:first-child,
+.room-admin-table td:nth-child(5),
+.room-admin-table .status-badge,
+.room-admin-table .action-buttons,
+.room-type-admin-table th,
+.room-type-admin-table td:first-child,
+.room-type-admin-table td:nth-child(3),
+.room-type-admin-table td:nth-child(4),
+.room-type-admin-table td:nth-child(5),
+.room-type-admin-table td:nth-child(6),
+.room-type-admin-table td:nth-child(7),
+.room-type-admin-table .action-buttons {
+  white-space: nowrap;
+}
+
+.room-admin-table .action-buttons,
+.room-type-admin-table .action-buttons {
+  flex-wrap: nowrap;
+}
+
+.room-admin-table .btn-action,
+.room-type-admin-table .btn-action {
+  white-space: nowrap;
+}
+
+.room-admin-table th:last-child,
+.room-admin-table td:last-child {
+  min-width: 270px;
+}
+
+.room-type-admin-table th:nth-child(2),
+.room-type-admin-table td:nth-child(2) {
+  min-width: 260px;
+  white-space: normal;
+}
+
+.room-type-admin-table th:last-child,
+.room-type-admin-table td:last-child {
+  min-width: 145px;
+}
+
 /* Booking table: preserve identifiers and compact values while allowing
    descriptive columns to wrap at normal word boundaries. */
 .booking-admin-table {

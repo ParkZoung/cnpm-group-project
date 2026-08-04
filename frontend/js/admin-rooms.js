@@ -26,6 +26,13 @@ const ROOM_STATUS_LABELS = {
   inactive: { label: "Ngừng hoạt động", cssClass: "status-danger" },
 };
 
+function cleanCatalogText(value) {
+  return String(value || "")
+    .replace(/\[GOSTAY_DEMO_V1\]/gi, "")
+    .replace(/\s{2,}/g, " ")
+    .trim();
+}
+
 let cachedBranches = [];
 let cachedRoomTypes = [];
 let cachedAmenities = [];
@@ -235,14 +242,14 @@ function renderRooms(rows) {
 
     const nameCell = document.createElement("td");
     const roomName = document.createElement("strong");
-    roomName.textContent = row.name;
+    roomName.textContent = cleanCatalogText(row.name);
     nameCell.appendChild(roomName);
 
     const roomTypeCell = document.createElement("td");
-    roomTypeCell.textContent = row.room_types ? row.room_types.name : "";
+    roomTypeCell.textContent = row.room_types ? cleanCatalogText(row.room_types.name) : "";
 
     const branchCell = document.createElement("td");
-    branchCell.textContent = row.branches ? row.branches.name : "";
+    branchCell.textContent = row.branches ? cleanCatalogText(row.branches.name) : "";
 
     const priceCell = document.createElement("td");
     priceCell.textContent = formatPrice(row.price_per_night);
@@ -313,11 +320,11 @@ function viewRoomDetail(row) {
   const statusInfo = ROOM_STATUS_LABELS[row.status] || { label: row.status };
   alert(
     `Mã phòng: ${row.room_number}\n` +
-    `Tên phòng: ${row.name}\n` +
-    `Chi nhánh: ${row.branches ? row.branches.name : ""}\n` +
-    `Loại phòng: ${row.room_types ? row.room_types.name : ""}\n` +
+    `Tên phòng: ${cleanCatalogText(row.name)}\n` +
+    `Chi nhánh: ${row.branches ? cleanCatalogText(row.branches.name) : ""}\n` +
+    `Loại phòng: ${row.room_types ? cleanCatalogText(row.room_types.name) : ""}\n` +
     `Giá / đêm: ${formatPrice(row.price_per_night)}\n` +
-    `Mô tả: ${row.description || "(không có)"}\n` +
+    `Mô tả: ${cleanCatalogText(row.description) || "(không có)"}\n` +
     `Trạng thái: ${statusInfo.label}\n` +
     `Tạo lúc: ${formatDateTime(row.created_at)}\n` +
     `Cập nhật lúc: ${formatDateTime(row.updated_at)}`
@@ -440,11 +447,11 @@ async function createRoom() {
 async function startEditRoom(row) {
   document.getElementById("room-id").value = row.id;
   document.getElementById("room-number").value = row.room_number;
-  document.getElementById("room-name").value = row.name;
+  document.getElementById("room-name").value = cleanCatalogText(row.name);
   document.getElementById("room-branch").value = row.branch_id;
   document.getElementById("room-type").value = row.room_type_id;
   document.getElementById("room-price").value = row.price_per_night;
-  document.getElementById("room-description").value = row.description || "";
+  document.getElementById("room-description").value = cleanCatalogText(row.description);
   document.getElementById("room-status").value = row.status;
   showRoomMessage("", false);
 

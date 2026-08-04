@@ -20,6 +20,13 @@ const btnUpdate = document.getElementById('btnUpdate');
 if (btnUpdate) btnUpdate.style.display = 'none';
 let listRoomTypes = [];
 
+function cleanCatalogText(value) {
+    return String(value || '')
+        .replace(/\[GOSTAY_DEMO_V1\]/gi, '')
+        .replace(/\s{2,}/g, ' ')
+        .trim();
+}
+
 // Hàm chặn lỗi an toàn nếu file cấu hình chưa kịp chạy hoặc lỗi tên file
 function checkConnection() {
     if (!window.gostaySupabase) {
@@ -76,10 +83,10 @@ function renderRoomTypes(data) {
 
         const nameCell = document.createElement('td');
         const name = document.createElement('strong');
-        name.textContent = item.name;
+        name.textContent = cleanCatalogText(item.name);
         const description = document.createElement('small');
         description.style.color = '#666';
-        description.textContent = item.description || '';
+        description.textContent = cleanCatalogText(item.description);
         nameCell.append(name, document.createElement('br'), description);
 
         const capacityCell = document.createElement('td');
@@ -110,7 +117,10 @@ function renderRoomTypes(data) {
         deleteButton.dataset.action = 'delete-room-type';
         deleteButton.textContent = 'Xóa';
         deleteButton.addEventListener('click', () => deleteRoomType(item, deleteButton));
-        actionCell.append(editButton, deleteButton);
+        const actionButtons = document.createElement('div');
+        actionButtons.className = 'action-buttons';
+        actionButtons.append(editButton, deleteButton);
+        actionCell.appendChild(actionButtons);
 
         row.append(
             idCell,
@@ -193,8 +203,8 @@ window.editRoomType = function(id) {
     if (!item) return;
 
     idInput.value = item.id;
-    nameInput.value = item.name;
-    descriptionInput.value = item.description || '';
+    nameInput.value = cleanCatalogText(item.name);
+    descriptionInput.value = cleanCatalogText(item.description);
     capacityInput.value = item.capacity;
     bedTypeSelect.value = item.bed_type || '';
     areaInput.value = item.area_m2;
