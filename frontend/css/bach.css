@@ -1,13 +1,7 @@
-/* ==========================================================
-   GoStay Admin - bach.css
-   Layout trang quản trị: ĐỒNG BỘ 100% với duong.css
-   (để chuyển trang không bị lệch sidebar / topbar)
-   Bổ sung thêm: thẻ thống kê dashboard + badge "Chờ xử lý"
-   Chỉ dùng HTML + CSS, KHÔNG dùng JavaScript
-   ========================================================== */
 
 
-/* ===== KHUNG NỀN ADMIN ===== */
+
+
 .admin-dashboard-body {
   margin: 0 !important;
   padding: 0 !important;
@@ -19,7 +13,7 @@
 }
 
 
-/* ===== SIDEBAR TRÁI (cố định, rộng 260px) ===== */
+
 .admin-sidebar {
   position: fixed !important;
   top: 0 !important;
@@ -103,7 +97,7 @@
 }
 
 
-/* ===== KHỐI NỘI DUNG PHẢI ===== */
+
 .admin-main-content {
   margin-left: 260px !important;
   padding: 0 !important;
@@ -114,7 +108,7 @@
 }
 
 
-/* ===== TOPBAR ===== */
+
 .admin-topbar {
   background-color: #ffffff !important;
   height: 75px !important;
@@ -165,7 +159,7 @@
 }
 
 
-/* ===== KHUNG TRANG ===== */
+
 .admin-page-container {
   padding: 40px !important;
   box-sizing: border-box;
@@ -195,7 +189,7 @@
 }
 
 
-/* ===== NÚT BẤM ===== */
+
 .btn-primary-admin {
   background-color: #12a6b8;
   color: #ffffff;
@@ -212,7 +206,7 @@
 }
 
 
-/* ===== THANH BỘ LỌC ===== */
+
 .admin-filter-bar {
   display: flex;
   gap: 12px;
@@ -239,7 +233,7 @@
 }
 
 
-/* ===== BẢNG DỮ LIỆU ===== */
+
 .admin-table-wrapper {
   background: #ffffff;
   border: 1px solid #e2e8f0;
@@ -277,7 +271,7 @@
 }
 
 
-/* ===== BADGE / TRẠNG THÁI ===== */
+
 .badge { display: inline-block; padding: 4px 8px; border-radius: 6px; font-size: 11px; font-weight: 700; }
 .badge-admin { background-color: #fef2f2; color: #ef4444; }
 .badge-user { background-color: #f0fdf4; color: #15803d; }
@@ -285,16 +279,16 @@
 .status-badge { display: inline-block; padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: 600; }
 .status-badge.status-success { background-color: #dcfce7; color: #16a34a; }
 .status-badge.status-danger { background-color: #fee2e2; color: #dc2626; }
-.status-badge.status-warning { background-color: #fef9c3; color: #a16207; }   /* thêm: Chờ xử lý / Đang dọn */
+.status-badge.status-warning { background-color: #fef9c3; color: #a16207; }
 
 
-/* ===== NÚT THAO TÁC TRONG BẢNG ===== */
+
 .action-buttons { display: flex; gap: 8px; }
 .btn-action { border: 1px solid #e2e8f0; padding: 6px 12px; border-radius: 6px; font-size: 12px; font-weight: 600; cursor: pointer; background-color: #ffffff; color: #475569; transition: all 0.2s; }
 .btn-action:hover { background-color: #f1f5f9; }
 
 
-/* ===== LAYOUT 2 CỘT ===== */
+
 .admin-two-columns-layout {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -302,7 +296,7 @@
 }
 
 
-/* ===== FOOTER ===== */
+
 .admin-footer {
   background-color: #ffffff;
   padding: 20px 40px;
@@ -313,9 +307,7 @@
 .admin-footer p { margin: 0; }
 
 
-/* ==========================================================
-   BỔ SUNG RIÊNG CHO TRANG DASHBOARD (duong.css chưa có)
-   ========================================================== */
+
 .stat-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
@@ -364,7 +356,7 @@
   text-decoration: none;
 }
 
-/* Release polish: admin consistency */
+
 .admin-sidebar {
   border-right: 1px solid rgba(255, 255, 255, 0.08);
 }
@@ -409,9 +401,7 @@
 .topbar-search { display: none; }
 .admin-table td { line-height: 1.45; overflow-wrap: anywhere; }
 
-/* Room management tables keep short values and actions readable. Long names
-   still wrap at word boundaries, while the wrapper provides horizontal scroll
-   on narrow screens. */
+
 .room-admin-table,
 .room-type-admin-table {
   table-layout: auto;
@@ -467,8 +457,7 @@
   min-width: 145px;
 }
 
-/* Booking table: preserve identifiers and compact values while allowing
-   descriptive columns to wrap at normal word boundaries. */
+
 .booking-admin-table {
   min-width: 1820px;
 }

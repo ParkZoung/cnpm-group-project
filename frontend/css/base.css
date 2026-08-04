@@ -1,18 +1,14 @@
-/* ==========================================================================
-   GỌI BỘ FONT CHỮ TỪ GOOGLE FONTS (ĐƯỢC TỰ ĐỘNG ÁP DỤNG TOÀN HỆ THỐNG)
-   ========================================================================== */
+
 @import url('https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
 
-/* ==========================================================================
-   RESET AND BASE STYLES - GOSTAY SYSTEM (BẢN FULL CHUẨN KHÔNG LỖI LOGO)
-   ========================================================================== */
 
-/* 1. KHỞI TẠO RESET BỐ CỤC TOÀN HỆ THỐNG */
+
+
 * {
   box-sizing: border-box;
 }
 
-/* Release polish: shared interaction rhythm */
+
 :root {
   --ui-radius-sm: 10px;
   --ui-radius-md: 16px;
@@ -126,7 +122,7 @@ img {
   display: block;
 }
 
-/* 2. ÁP DỤNG FONT CHỮ CHUNG CHO TOÀN BỘ NỘI DUNG TEXT */
+
 body {
   font-family: 'Be Vietnam Pro', 'Segoe UI', Arial, sans-serif;
   font-size: 16px;
@@ -154,7 +150,7 @@ textarea {
   font: inherit;
 }
 
-/* Biến chung định nghĩa bảng màu cốt lõi của website */
+
 :root {
   --navy: #0b3558;
   --teal: #12a6b8;
@@ -163,7 +159,7 @@ textarea {
 }
 
 
-/* 3. KHUNG KHÔNG GIAN CHUNG (CONTAINER) */
+
 .container {
   max-width: 1140px;
   margin: 0 auto;
@@ -171,7 +167,7 @@ textarea {
 }
 
 
-/* 4. CẤU TRÚC THANH ĐẦU TRANG HEADER TĨNH & VÁ LỖI LOGO PHÌNH TO */
+
 .site-header {
   background: #ffffff;
   box-shadow: 0 2px 10px rgba(11, 53, 88, 0.04);
@@ -180,43 +176,43 @@ textarea {
   z-index: 100;
 }
 
-/* Ép thanh Header trang chủ luôn xếp ngay ngắn trên cùng một hàng ngang */
+
 .header-inner {
   display: flex !important;
   flex-direction: row !important;
-  flex-wrap: nowrap !important;   /* Tuyệt đối cấm rớt hàng xuống đáy */
+  flex-wrap: nowrap !important;
   align-items: center;
   justify-content: space-between;
   height: 70px;
 }
 
-/* Ép cứng chiều rộng vùng chứa logo không cho phép tự co giãn chiếm chỗ */
+
 .site-header a.logo {
   display: inline-block !important;
-  width: 130px !important;       
+  width: 130px !important;
   max-width: 130px !important;
-  height: 70px !important;        
-  min-width: unset !important;    /* Gỡ bỏ hoàn toàn min-width cũ lỗi của trình duyệt */
-  flex: none !important;          
+  height: 70px !important;
+  min-width: unset !important;
+  flex: none !important;
   margin: 0 !important;
   padding: 0 !important;
   border: none !important;
   overflow: hidden !important;
 }
 
-/* Khống chế trực tiếp thẻ img thực tế của logo trang chủ */
+
 .site-header a.logo img {
   width: 100% !important;
   max-width: 130px !important;
   height: 100% !important;
   max-height: 70px !important;
   display: block !important;
-  object-fit: contain !important; /* Giữ đúng tỷ lệ ảnh gốc, không móp méo */
+  object-fit: contain !important;
   margin: 0 !important;
 }
 
 
-/* 5. CẤU HÌNH MENU */
+
 .main-nav {
   display: flex;
   gap: 24px;
@@ -243,7 +239,7 @@ textarea {
   border-bottom: 0;
 }
 
-/* Đồng bộ toàn bộ giá tiền với màu xanh nổi bật của GoStay. */
+
 .price,
 .room-price,
 .widget-price,
@@ -260,7 +256,7 @@ textarea {
 }
 
 
-/* 6. KHU VỰC CÁC NÚT ĐĂNG NHẬP / ĐĂNG KÝ (AUTH) */
+
 .auth {
   display: flex;
   align-items: center;
@@ -333,7 +329,7 @@ textarea {
 }
 
 
-/* 7. PHÂN ĐOẠN KHỐI (SECTION HEADERS) */
+
 .section {
   padding: 26px 0;
 }
@@ -363,7 +359,7 @@ textarea {
 }
 
 
-/* 8. CẤU TRÚC ĐỊNH DẠNG THANH CHÂN TRANG FOOTER NỀN TỐI */
+
 .site-footer {
   background: #06243d;
   color: #e6f6f6;
@@ -455,7 +451,7 @@ body:not(.admin-dashboard-body) > main.success-screen-container.container {
   object-fit: contain;
 }
 
-/* Thanh bản quyền cuối cùng */
+
 .footer-bottom {
   text-align: center;
   padding-top: 30px;

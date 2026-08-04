@@ -1,9 +1,6 @@
-// file: js/room-types.js
 
-// Lấy đúng đối tượng kết nối được khởi tạo từ file js/supabase.js của bạn
 const db = window.gostaySupabase;
 
-// Khai báo các phần tử DOM đồng nhất tuyệt đối với ID trong HTML
 const roomTypeForm = document.getElementById('roomTypeForm');
 const idInput = document.getElementById('id');
 const nameInput = document.getElementById('name');
@@ -27,7 +24,6 @@ function cleanCatalogText(value) {
         .trim();
 }
 
-// Hàm chặn lỗi an toàn nếu file cấu hình chưa kịp chạy hoặc lỗi tên file
 function checkConnection() {
     if (!window.gostaySupabase) {
         console.error("LỖI KẾT NỐI: Không tìm thấy hệ thống Supabase. Hãy chắc chắn bạn đã đổi tên file cấu hình thành 'js/supabase.js'!");
@@ -37,9 +33,6 @@ function checkConnection() {
     return true;
 }
 
-// ==========================================
-// 1. READ: Tải danh sách từ cơ sở dữ liệu
-// ==========================================
 async function fetchRoomTypes() {
     if (!checkConnection()) return;
 
@@ -136,9 +129,6 @@ function renderRoomTypes(data) {
     });
 }
 
-// ==========================================
-// 2. CREATE & UPDATE: Tạo mới và Lưu cập nhật
-// ==========================================
 function initializeRoomTypes() {
 roomTypeForm.addEventListener('submit', async (e) => {
     e.preventDefault();
@@ -154,7 +144,6 @@ roomTypeForm.addEventListener('submit', async (e) => {
         base_price: parseInt(basePriceInput.value)
     };
 
-    // Kiểm tra ràng buộc dữ liệu đầu vào > 0
     if (roomTypeData.capacity <= 0 || roomTypeData.area_m2 <= 0 || roomTypeData.base_price <= 0) {
         alert('Yêu cầu nhập sức chứa, diện tích và giá trị lớn hơn 0!');
         return;
@@ -162,7 +151,6 @@ roomTypeForm.addEventListener('submit', async (e) => {
 
     try {
         if (!id) {
-            // Thêm mới dữ liệu
             const { error } = await window.gostaySupabase
                 .from('room_types')
                 .insert([roomTypeData]);
@@ -170,7 +158,6 @@ roomTypeForm.addEventListener('submit', async (e) => {
             if (error) throw error;
             alert('Thêm loại phòng thành công!');
         } else {
-            // Cập nhật dữ liệu cũ theo ID
             const { error } = await window.gostaySupabase
                 .from('room_types')
                 .update(roomTypeData)
@@ -188,16 +175,12 @@ roomTypeForm.addEventListener('submit', async (e) => {
     }
 });
 
-// Kích hoạt sự kiện submit khi nhấn nút Cập Nhật độc lập
 if (btnUpdate) {
     btnUpdate.addEventListener('click', () => {
         roomTypeForm.requestSubmit();
     });
 }
 
-// ==========================================
-// 3. EDIT & DELETE: Chọn để sửa và Thực thi xóa
-// ==========================================
 window.editRoomType = function(id) {
     const item = listRoomTypes.find(room => room.id === id);
     if (!item) return;
@@ -271,14 +254,11 @@ async function deleteRoomType(item, button) {
     }
 }
 
-// ==========================================
-// 4. SEARCH & RESET: Lọc trực tiếp & Làm sạch Form
-// ==========================================
 if (searchInput) {
     searchInput.addEventListener('input', (e) => {
         const keyword = e.target.value.toLowerCase().trim();
-        const filtered = listRoomTypes.filter(item => 
-            item.name.toLowerCase().includes(keyword) || 
+        const filtered = listRoomTypes.filter(item =>
+            item.name.toLowerCase().includes(keyword) ||
             (item.description && item.description.toLowerCase().includes(keyword))
         );
         renderRoomTypes(filtered);
@@ -297,7 +277,6 @@ roomTypeForm.addEventListener('reset', () => {
 });
 }
 
-// Chỉ khởi tạo CRUD sau khi session và quyền Admin đã được xác minh.
 document.addEventListener('DOMContentLoaded', async () => {
     try {
         const adminContext = await window.gostayAdminReady;

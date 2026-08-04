@@ -1,8 +1,6 @@
 (function () {
   'use strict';
 
-  // The browser only knows the application API. Database credentials and the
-  // Supabase Data API are deliberately kept behind the Edge Function.
   const API_URL = 'https://wpecaxsuadawaxadxqhj.supabase.co/functions/v1/api';
   const SESSION_KEY = 'gostay.api.session';
   const listeners = new Set();

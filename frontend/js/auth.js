@@ -122,8 +122,6 @@
       window.history.replaceState({}, document.title, window.location.pathname);
     }
 
-    // Kiểm tra phiên hiện tại ở chế độ nền, không hiển thị trạng thái tạm thời
-    // trong form đăng nhập.
     submitButton.disabled = true;
 
     try {

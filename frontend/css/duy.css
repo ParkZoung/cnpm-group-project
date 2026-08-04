@@ -1,15 +1,13 @@
-/* ==========================================================================
-   STYLE SẢN PHẨM HOÀN THIỆN - HỆ THỐNG ĐẶT PHÒNG GOSTAY
-   ========================================================================== */
 
-/* Trạng thái Menu đang được chọn */
-/* Khối header tiêu đề trang con */
+
+
+
 .page-main-wrap {
   padding-top: 10px;
   padding-bottom: 48px;
 }
 
-/* Release polish: booking and account surfaces */
+
 .checkout-form-panel,
 .billing-summary-card,
 .history-table-container,
@@ -55,7 +53,7 @@
   font-size: 14px;
 }
 
-/* Kiến trúc Layout chia 2 Cột phẳng */
+
 .cart-split-layout {
   display: flex;
   gap: 30px;
@@ -70,7 +68,7 @@
   top: 30px;
 }
 
-/* Thẻ phòng sang trọng nằm trong Giỏ hàng */
+
 .cart-bundle-item {
   display: flex;
   background: #ffffff;
@@ -125,7 +123,7 @@
   color: #1f8f8f;
 }
 
-/* Khu vực hiển thị giá tiền của phòng */
+
 .cart-item-price-container {
   text-align: right;
   min-width: 170px;
@@ -166,7 +164,7 @@
   text-decoration: underline;
 }
 
-/* Widget Tóm tắt hóa đơn thanh toán bên phải */
+
 .billing-summary-card {
   background: #ffffff;
   border: 1px solid #e2e8f0;
@@ -265,7 +263,7 @@
   background: #108e9e;
 }
 
-/* Nút Submit riêng cho form trang booking */
+
 .btn-checkout-action-submit {
   display: block;
   width: 100%;
@@ -285,7 +283,7 @@
   background: #108e9e;
 }
 
-/* Khối panel form nhập liệu (booking.html) */
+
 .checkout-form-panel {
   background: #ffffff;
   border: 1px solid #e2e8f0;
@@ -330,7 +328,7 @@
   border-color: #12a6b8;
 }
 
-/* Các phương thức thanh toán dạng danh sách thẻ */
+
 .payment-group-list {
   display: flex;
   flex-direction: column;
@@ -366,7 +364,7 @@
   line-height: 1.5;
 }
 
-/* Giao diện trang đặt phòng thành công */
+
 .success-screen-container {
   display: flex;
   justify-content: center;
@@ -472,7 +470,7 @@
   background: #108e9e;
 }
 
-/* Khung bảng hiển thị Lịch sử đặt phòng */
+
 .history-table-container {
   background: #ffffff;
   border: 1px solid #e2e8f0;
@@ -523,7 +521,7 @@
   color: var(--teal);
 }
 
-/* Các nhãn Trạng thái Đơn hàng (Badges) */
+
 .status-pill {
   display: inline-block;
   padding: 6px 14px;
@@ -545,9 +543,7 @@
   color: #9b2c2c;
 }
 
-/* ==========================================================================
-   XỬ LÝ RESPONSIVE (MÀN HÌNH DI ĐỘNG & TABLET)
-   ========================================================================== */
+
 @media (max-width: 900px) {
   .cart-split-layout {
     flex-direction: column;
@@ -590,11 +586,9 @@
     text-align: center;
   }
 }
-/* ==========================================================================
-   SỬA LỖI TRANG BOOKING SUCCESS ĐÈ LÊN FOOTER
-   ========================================================================== */
 
-/* Ép thẻ main của trang success quay về hiển thị khối chuẩn và tạo khoảng cách */
+
+
 main.success-screen-container {
   width: 100%;
   min-height: auto;
@@ -602,18 +596,18 @@ main.success-screen-container {
   padding-bottom: 48px;
 }
 
-/* Định dạng lại khối bo góc màu trắng không cho phép nó thả trôi tự do */
+
 main.success-screen-container .success-card-panel {
   position: relative !important;
   top: unset !important;
   left: unset !important;
   transform: unset !important;
-  /* Căn giữa khối màu trắng ra giữa màn hình */
-  margin: 0 auto 40px auto !important; 
+
+  margin: 0 auto 40px auto !important;
   box-shadow: 0 10px 30px rgba(11, 53, 88, 0.05) !important;
 }
 
-/* Đảm bảo thanh footer tự động nhận diện và đứng xếp hàng phía sau */
+
 .site-footer {
   clear: both !important;
   position: relative !important;

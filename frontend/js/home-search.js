@@ -24,7 +24,6 @@ document.addEventListener('DOMContentLoaded', function () {
   });
 
   document.addEventListener('click', function (event) {
-    // Keep the panel open even when a calendar click redraws its own button.
     if (!event.composedPath().includes(searchBox)) closePanels();
   });
 

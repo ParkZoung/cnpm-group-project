@@ -11,7 +11,7 @@
     <link rel="stylesheet" href="css/base.css">
     <link rel="stylesheet" href="css/bach.css">
     <style>
-      /* Bố cục Grid 3 cột cho form */
+
       .new-grid-form {
           display: grid;
           grid-template-columns: repeat(3, 1fr);
@@ -35,7 +35,7 @@
           color: var(--navy, #0b3558);
       }
 
-      .form-group input, 
+      .form-group input,
       .form-group textarea,
       .table-filter-controls select,
       .table-filter-controls input {
@@ -47,7 +47,7 @@
           transition: all 0.2s ease;
       }
 
-      .form-group input:focus, 
+      .form-group input:focus,
       .form-group textarea:focus,
       .table-filter-controls select:focus,
       .table-filter-controls input:focus {
@@ -66,7 +66,7 @@
           margin-top: 10px;
       }
 
-      /* Bộ lọc bảng danh sách */
+
       .section-header-row.stack-header {
           display: flex;
           justify-content: space-between;
@@ -78,8 +78,8 @@
           gap: 12px;
       }
 
-      /* Nút bấm đồng bộ với biến màu base.css & bach.css */
-      .btn-primary-admin.spec-blue, 
+
+      .btn-primary-admin.spec-blue,
       .btn-action.edit.spec-blue {
           background-color: var(--teal, #12a6b8);
           color: #ffffff;
@@ -92,7 +92,7 @@
           transition: all 0.2s ease;
       }
 
-      .btn-primary-admin.spec-blue:hover, 
+      .btn-primary-admin.spec-blue:hover,
       .btn-action.edit.spec-blue:hover {
           background-color: #0f8e9e;
       }
@@ -161,11 +161,11 @@
 
 
 
-    <!-- Main -->
+
 
     <div class="admin-main-content">
 
-        <!-- Top -->
+
 
         <header class="admin-topbar">
             <div class="topbar-left">
@@ -197,19 +197,19 @@
 
 
 
-        <!-- Content -->
 
-<!-- Content -->
+
+
         <main class="admin-page-container">
 
-            <!-- Form Thêm loại phòng theo thiết kế mới -->
+
             <section class="admin-card-section">
                 <div class="section-header-row">
                     <h2>Thêm loại phòng</h2>
                 </div>
 
                 <form id="roomTypeForm" class="new-grid-form">
-                    <!-- Hàng 1 -->
+
                     <div class="form-group" hidden>
                         <label for="id">ID</label>
                         <input type="text" id="id" placeholder="Tự động tạo" readonly>
@@ -225,7 +225,7 @@
                         <input type="number" id="capacity" placeholder="Ví dụ: 2" min="1" required>
                     </div>
 
-                    <!-- Hàng 2 -->
+
                     <div class="form-group">
                         <label for="bed_type">Loại giường</label>
                         <input type="text" id="bed_type" placeholder="Ví dụ: 1 giường King">
@@ -241,13 +241,13 @@
                         <input type="number" id="base_price" placeholder="Ví dụ: 850000" min="1" required>
                     </div>
 
-                    <!-- Hàng 3: Mô tả (Rộng hết 3 cột) -->
+
                     <div class="form-group full-width">
                         <label for="description">Mô tả</label>
                         <textarea id="description" rows="3" placeholder="Mô tả ngắn về loại phòng"></textarea>
                     </div>
 
-                    <!-- Hàng 4: Cụm nút bấm -->
+
                     <div class="form-actions full-width">
                         <button type="submit" id="btnSubmit" class="btn-primary-admin spec-blue">Thêm loại phòng</button>
                         <button type="button" id="btnUpdate" class="btn-action edit spec-blue" style="display: none;">Cập nhật</button>
@@ -256,11 +256,11 @@
                 </form>
             </section>
 
-            <!-- Danh sách loại phòng cải tiến -->
+
             <section class="admin-card-section">
                 <div class="section-header-row stack-header">
                     <h2>Danh sách loại phòng</h2>
-                    
+
                     <div class="table-filter-controls">
                         <input type="text" id="search" placeholder="Tìm theo tên, mô tả hoặc lo...">
                         <select id="sortOrder">
@@ -296,7 +296,7 @@
             </section>
         </main>
 
-        <!-- Footer -->
+
 
         <footer class="admin-footer">
 
@@ -311,16 +311,16 @@
 
     </div>
 
-    <!-- Supabase -->
+
 
 
     <script src="js/supabase-client.js"></script>
 
-    <!-- Auth -->
+
 
     <script src="js/admin-auth.js"></script>
 
-    <!-- CRUD -->
+
 
     <script src="js/admin-room-types.js"></script>
 

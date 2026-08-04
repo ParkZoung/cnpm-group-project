@@ -1,24 +1,4 @@
-/* ==========================================================
-   GoStay Admin - js/admin-rooms.js
-   Người phụ trách: Bách
-   Bảng CHÍNH (Create/Update/Delete): rooms
-   Bảng liên quan (chỉ Read để đổ dropdown): branches, room_types
 
-   Schema rooms (đã xác nhận, KHÔNG suy đoán):
-     id bigint (tự sinh)
-     branch_id bigint, bắt buộc -> branches.id
-     room_type_id bigint, bắt buộc -> room_types.id
-     room_number varchar, bắt buộc
-     name varchar, bắt buộc
-     price_per_night bigint > 0
-     description text
-     status: available | maintenance | inactive
-     created_at, updated_at (tự sinh)
-
-   Lưu ý: bảng rooms KHÔNG có cột "capacity/sức chứa" nên form
-   không có trường này (dù tài liệu phân công có nhắc tới, nhưng
-   đó là cột của room_types, không phải rooms).
-   ========================================================== */
 
 const ROOM_STATUS_LABELS = {
   available: { label: "Đang hoạt động", cssClass: "status-success" },
@@ -59,7 +39,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   document.getElementById("room-sort").addEventListener("change", sortRooms);
 });
 
-/* ---------- ĐỌC DỮ LIỆU THAM CHIẾU (branches, room_types) ---------- */
+
 
 async function loadRoomReferences() {
   console.log("[branches] Đang tải danh sách chi nhánh cho dropdown...");
@@ -162,7 +142,7 @@ function getRoomTypeName(roomTypeId) {
   return roomType ? roomType.name : "";
 }
 
-/* ---------- READ: loadRooms / renderRooms ---------- */
+
 
 function getRoomFiltersState() {
   return {
@@ -300,7 +280,7 @@ function renderRooms(rows) {
   });
 }
 
-/* ---------- SEARCH / FILTER / SORT (đều nạp lại qua Supabase) ---------- */
+
 
 function searchRooms() {
   loadRooms(getRoomFiltersState());
@@ -314,7 +294,7 @@ function sortRooms() {
   loadRooms(getRoomFiltersState());
 }
 
-/* ---------- XEM CHI TIẾT ---------- */
+
 
 function viewRoomDetail(row) {
   const statusInfo = ROOM_STATUS_LABELS[row.status] || { label: row.status };
@@ -331,7 +311,7 @@ function viewRoomDetail(row) {
   );
 }
 
-/* ---------- FORM: CREATE / UPDATE ---------- */
+
 
 function readRoomForm() {
   return {
@@ -595,7 +575,7 @@ function resetRoomForm() {
   });
 }
 
-/* ---------- TIỆN ÍCH ---------- */
+
 
 function showRoomMessage(text, isError) {
   const el = document.getElementById("room-message");
