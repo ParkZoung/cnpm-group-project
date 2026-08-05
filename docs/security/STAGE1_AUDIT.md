@@ -1,4 +1,4 @@
-# Stage 1 Security Audit — tài liệu lịch sử
+# Kiểm tra bảo mật giai đoạn 1 — tài liệu lịch sử
 
 > **Trạng thái: Archived.** Báo cáo này phản ánh repository trước khi Supabase
 > Auth, RLS, RPC và cơ chế chống booking đồng thời được triển khai. Nhiều phát

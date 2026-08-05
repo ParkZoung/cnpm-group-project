@@ -1,57 +1,79 @@
-# GoStay domain terminology
+# Thuật ngữ nghiệp vụ chuẩn của GoStay
 
-Code, SQL and API payloads use the canonical English values below. Vietnamese
-labels are presentation text only and must not introduce additional values.
+Các giá trị tiếng Anh bên dưới là giá trị chuẩn dùng trong JavaScript, API và
+SQL. Giao diện có thể dịch sang tiếng Việt, nhưng không được tự tạo thêm trạng
+thái hoặc dùng nhãn hiển thị làm giá trị gửi tới backend.
 
-## Roles
+## Role tài khoản
 
-| Value | Meaning |
+| Giá trị | Ý nghĩa |
 |---|---|
-| `customer` | Customer who searches, books and manages their own bookings. |
-| `staff` | Active staff member operating in a selected branch session. |
-| `admin` | Active administrator managing catalog, bookings and access. |
+| `customer` | Khách hàng tìm phòng, đặt phòng và quản lý booking của chính mình. |
+| `staff` | Nhân viên đang hoạt động tại chi nhánh được chọn trong phiên làm việc. |
+| `admin` | Quản trị viên quản lý catalog, booking và quyền truy cập. |
 
-## Profile status
+## Trạng thái profile
 
-- `active`: account may use capabilities allowed by its role.
-- `inactive`: account is not currently active.
-- `blocked`: access is administratively blocked.
+| Giá trị | Ý nghĩa |
+|---|---|
+| `active` | Tài khoản được sử dụng các chức năng phù hợp với role. |
+| `inactive` | Tài khoản hiện không hoạt động. |
+| `blocked` | Tài khoản bị quản trị viên chặn truy cập. |
 
-## Booking status
+## Trạng thái booking
 
-- `pending`: booking awaits confirmation.
-- `confirmed`: booking is confirmed and holds inventory.
-- `checked_in`: guest has checked in.
-- `completed`: stay has checked out/completed.
-- `cancelled`: booking was cancelled.
+| Giá trị | Ý nghĩa |
+|---|---|
+| `pending` | Booking đang chờ xác nhận. |
+| `confirmed` | Booking đã được xác nhận và giữ chỗ. |
+| `checked_in` | Khách đã nhận phòng. |
+| `completed` | Khách đã trả phòng và hoàn tất kỳ lưu trú. |
+| `cancelled` | Booking đã bị hủy. |
 
-Inventory is held by `pending`, `confirmed` and `checked_in`. Transitions are
-enforced by PostgreSQL RPCs; frontend labels do not define transition rules.
+Các trạng thái `pending`, `confirmed` và `checked_in` giữ tồn kho phòng. Quy tắc
+chuyển trạng thái do PostgreSQL RPC thực thi; nhãn trên frontend không quyết định
+luồng nghiệp vụ.
 
-## Payment status and option
+## Trạng thái và hình thức thanh toán
 
-- Payment status: `unpaid`, `pending`, `partially_paid`, `paid`, `failed`,
-  `refunded`.
-- Payment option: `deposit` or `full`.
+### `payment_status`
 
-The database calculates authoritative amounts. A customer payment claim is not
-payment approval; Staff must review it before paid amounts are credited.
+| Giá trị | Ý nghĩa |
+|---|---|
+| `unpaid` | Chưa ghi nhận thanh toán. |
+| `pending` | Đang chờ xử lý hoặc xác minh thanh toán. |
+| `partially_paid` | Đã thanh toán một phần. |
+| `paid` | Đã thanh toán đủ. |
+| `failed` | Thanh toán thất bại. |
+| `refunded` | Khoản tiền đã được hoàn lại. |
 
-## Online check-in status
+### `payment_option`
 
-- `not_started`: online check-in exists but no payment has been claimed.
-- `payment_claimed`: customer reports that a transfer was made.
-- `approved`: Staff approved payment and a check-in token may be used.
-- `rejected`: Staff rejected the claim with a reason.
-- `consumed`: the one-time check-in token has been used.
-- `expired`: the online check-in credential is no longer valid.
+| Giá trị | Ý nghĩa |
+|---|---|
+| `deposit` | Thanh toán tiền đặt cọc. |
+| `full` | Thanh toán toàn bộ. |
 
-## Naming rules
+Database là nguồn quyết định số tiền cuối cùng. Việc customer khai báo đã chuyển
+khoản không đồng nghĩa giao dịch đã được duyệt; Staff phải xác minh trước khi hệ
+thống ghi nhận số tiền đã thanh toán.
 
-- Use **booking** for the reservation aggregate and `booking_status` for its
-  lifecycle.
-- Use **payment transaction** for recorded money movement and `payment_status`
-  for the aggregate payment state.
-- Use **online check-in** for the VietQR/payment-claim workflow.
-- `window.gostaySupabase` means the API compatibility facade, never a direct
-  browser-to-database connection.
+## Trạng thái online check-in
+
+| Giá trị | Ý nghĩa |
+|---|---|
+| `not_started` | Online check-in đã được tạo nhưng chưa khai báo thanh toán. |
+| `payment_claimed` | Customer khai báo đã chuyển khoản. |
+| `approved` | Staff đã duyệt thanh toán; token check-in có thể được sử dụng. |
+| `rejected` | Staff từ chối yêu cầu và cung cấp lý do. |
+| `consumed` | Token check-in dùng một lần đã được sử dụng. |
+| `expired` | Thông tin online check-in đã hết hiệu lực. |
+
+## Quy tắc đặt tên
+
+- Dùng **booking** cho đơn đặt phòng và `booking_status` cho vòng đời booking.
+- Dùng **payment transaction** cho một giao dịch tiền và `payment_status` cho
+  trạng thái thanh toán tổng hợp của booking.
+- Dùng **online check-in** cho luồng VietQR, khai báo thanh toán và cấp token.
+- `window.gostaySupabase` luôn có nghĩa là API compatibility facade, không phải
+  kết nối trực tiếp từ trình duyệt tới database.

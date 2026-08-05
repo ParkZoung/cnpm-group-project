@@ -1,63 +1,81 @@
-# GoStay project structure
+# Cấu trúc dự án GoStay
 
-## Repository boundary
+## Phạm vi các thư mục
 
-```text
-frontend/          Browser application
-backend/supabase/  Edge Functions, database migrations and deployment config
-tests/             End-to-end and runtime security tests
-docs/              Product, architecture, database and testing documentation
-```
+| Thư mục | Trách nhiệm |
+|---|---|
+| `frontend/` | Giao diện chạy trên trình duyệt: HTML, CSS và JavaScript. |
+| `backend/supabase/` | Edge Functions, migrations và cấu hình triển khai Supabase. |
+| `tests/` | Kiểm thử end-to-end, contract và runtime security. |
+| `docs/` | Tài liệu sản phẩm, kiến trúc, database, bảo mật và kiểm thử. |
 
-Moving the Supabase project under `backend/` is an organizational change only.
-It does not rename the Supabase platform, environment variables, npm packages,
-deployed function names or production URLs.
+Việc đặt dự án Supabase trong `backend/` chỉ nhằm tổ chức repository. Thay đổi này
+không đổi tên nền tảng Supabase, biến môi trường, package npm, Edge Function đã
+triển khai hoặc URL production.
 
-## Request flow
-
-```text
-HTML -> page controller -> frontend service/API client -> Edge Function API
-     -> controller -> repository/RPC -> PostgreSQL
-```
-
-The legacy `window.gostaySupabase` facade is retained while pages are migrated
-incrementally. Network transport now lives in `frontend/js/core/api-client.js`,
-and public runtime configuration lives in `frontend/js/config/environment.js`.
-Booking creation and cancellation are the first migrated slice and use
-`frontend/js/services/booking-api.js`. Catalog, profile and admin screens remain
-on the compatibility facade until they can be moved and tested separately.
-
-Despite its legacy name, `window.gostaySupabase` is **not** a Supabase database
-client in the browser. It contains no database credential and is an application
-API compatibility facade over `frontend/js/core/api-client.js`. Calls are sent
-to the `api` Edge Function, then authorized by JWT verification, RLS and reviewed
-RPCs. Frontend role guards improve UX but are not an authorization boundary.
-
-Canonical roles and lifecycle statuses are documented in `DOMAIN_TERMS.md`.
-
-## Current application flow
+## Luồng request
 
 ```text
-Search -> search_available_rooms RPC -> room detail -> local cart
-       -> booking-api -> create_booking RPC -> booking history
-       -> booking-api -> cancel_own_booking RPC
+HTML
+  -> controller của trang
+  -> service / API client phía frontend
+  -> Edge Function api
+  -> controller phía backend
+  -> repository / RPC
+  -> PostgreSQL
 ```
 
-Admin mutations continue to use reviewed admin RPCs. RLS and RPC authorization
-remain unchanged and are verified by `npm run test:security`.
+`frontend/js/core/api-client.js` chịu trách nhiệm gửi request. Cấu hình public
+theo môi trường nằm trong `frontend/js/config/environment.js`. Luồng tạo và hủy
+booking đã dùng `frontend/js/services/booking-api.js`; các màn hình catalog,
+profile và admin vẫn dùng compatibility facade trong thời gian được tách dần.
 
-## Migration rules
+### Vai trò của `window.gostaySupabase`
 
-- Keep HTML routes stable while MVC modules are introduced.
-- Preserve the existing API response contract during backend extraction.
-- Do not move authorization out of RLS or security-definer RPCs.
-- Do not run historical migrations against production until schema drift and
-  migration history have been reconciled.
-- Refactor one customer/admin feature at a time and run E2E tests after each.
+`window.gostaySupabase` được giữ lại để các trang cũ tiếp tục hoạt động trong quá
+trình chuyển đổi. Dù có tên như vậy, đối tượng này:
 
-## Deferred naming cleanup
+- không phải Supabase database client chạy trong trình duyệt;
+- không chứa database credential hoặc service-role key;
+- chỉ là compatibility facade gọi `frontend/js/core/api-client.js`;
+- không kết nối trực tiếp tới PostgreSQL.
 
-The files `admin-products.html` and `admin-categories.html` currently implement
-room and branch management. Rename them to `admin-rooms.html` and
-`admin-branches.html`, and split CSS by feature, only after the MVP/demo is
-stable. Renaming now would change public routes, navigation links and E2E paths.
+Request được gửi tới Edge Function `api`, sau đó được xác thực bằng JWT và kiểm
+soát quyền bằng RLS cùng các RPC đã review. Kiểm tra role trên frontend chỉ hỗ trợ
+trải nghiệm người dùng, không phải ranh giới bảo mật.
+
+Role và trạng thái nghiệp vụ chuẩn được mô tả tại
+[`DOMAIN_TERMS.md`](DOMAIN_TERMS.md).
+
+## Luồng booking hiện tại
+
+```text
+Tìm phòng
+  -> RPC search_available_rooms
+  -> xem chi tiết phòng
+  -> giỏ hàng local
+  -> booking-api
+  -> RPC create_booking
+  -> lịch sử booking
+  -> booking-api
+  -> RPC cancel_own_booking
+```
+
+Các mutation của Admin tiếp tục đi qua RPC dành riêng cho Admin. Cơ chế phân
+quyền RLS/RPC không thay đổi và được kiểm tra bằng `npm run test:security`.
+
+## Quy tắc khi thay đổi cấu trúc
+
+- Giữ nguyên các HTML route công khai trong thời gian tách module MVC.
+- Duy trì API response contract hiện tại khi tách backend.
+- Không chuyển trách nhiệm phân quyền ra khỏi RLS hoặc `SECURITY DEFINER` RPC.
+- Không chạy lại migration lịch sử trên production trước khi xử lý schema drift
+  và migration history.
+- Chỉ refactor từng feature customer/admin và chạy lại E2E sau mỗi đợt.
+
+## Đổi tên được hoãn lại
+
+`admin-products.html` và `admin-categories.html` hiện lần lượt phục vụ quản lý
+phòng và chi nhánh. Chỉ đổi thành `admin-rooms.html`, `admin-branches.html` và
+tách CSS theo feature sau khi bản MVP/demo ổn định. Đổi tên ở thời điểm hiện tại
+sẽ ảnh hưởng route công khai, navigation link và đường dẫn E2E.
