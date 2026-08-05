@@ -191,8 +191,7 @@
         const row = document.createElement('tr');
         const room = roomsById.get(String(booking.room_id));
         const roomName = room
-          ? 'Phòng ' + (room.room_number || room.id) +
-            (room.name ? ' — ' + room.name : '')
+          ? String(room.name || 'Thông tin phòng').replace(/\s+\d+\s*$/, '').trim()
           : 'Không xác định';
         const status = bookingStatus(booking.booking_status);
 

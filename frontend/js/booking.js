@@ -284,9 +284,8 @@
   function renderCartSummary(elements, cart) {
     const display = cart.display;
     const lines = [
-      'Phòng ' + display.room_number,
+      String(display.room_type_name).replace(/\s+\d+\s*$/, '').trim(),
       display.branch_name,
-      display.room_type_name,
       'Nhận phòng: ' + formatDate(cart.check_in_date),
       'Trả phòng: ' + formatDate(cart.check_out_date),
       'Số khách: ' + cart.number_of_guests
@@ -307,10 +306,9 @@
   function renderBookingSuccess(elements, booking) {
     const room = booking.room;
     const roomDescription = room
-      ? 'Phòng ' + room.room_number
-        + (room.room_type ? ' — ' + room.room_type.name : '')
+      ? (room.room_type ? room.room_type.name : 'Thông tin phòng')
         + (room.branch ? ' tại ' + room.branch.name : '')
-      : 'Phòng #' + booking.room_id;
+      : 'Thông tin phòng';
 
     elements.code.textContent = booking.booking_code;
     elements.details.innerHTML = '';

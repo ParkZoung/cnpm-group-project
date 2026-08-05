@@ -45,13 +45,10 @@
           <input type="hidden" id="room-id">
 
           <div class="admin-filter-bar" style="flex-wrap: wrap;">
-            <div style="flex: 1 1 160px;">
-              <label style="display:block; font-size:12px; font-weight:600; color:#475569; margin-bottom:4px;">Số phòng *</label>
-              <input type="text" id="room-number" placeholder="VD: 101" class="admin-search-input" required>
-            </div>
+            <input type="hidden" id="room-number">
             <div style="flex: 1 1 220px;">
               <label style="display:block; font-size:12px; font-weight:600; color:#475569; margin-bottom:4px;">Tên phòng *</label>
-              <input type="text" id="room-name" placeholder="VD: Deluxe Sea View 101" class="admin-search-input" required>
+              <input type="text" id="room-name" placeholder="VD: Deluxe Sea View" class="admin-search-input" required>
             </div>
             <div style="flex: 1 1 200px;">
               <label style="display:block; font-size:12px; font-weight:600; color:#475569; margin-bottom:4px;">Chi nhánh *</label>
@@ -104,7 +101,7 @@
         </div>
 
         <div class="admin-filter-bar">
-          <input type="text" id="room-search" placeholder="Tìm theo mã, tên phòng..." class="admin-search-input">
+          <input type="text" id="room-search" placeholder="Tìm theo tên phòng..." class="admin-search-input">
           <select id="room-filter-branch" class="admin-select-filter">
             <option value="">Tất cả chi nhánh</option>
           </select>
@@ -126,7 +123,6 @@
           <table class="admin-table room-admin-table">
             <thead>
               <tr>
-                <th>Mã phòng</th>
                 <th>Tên phòng</th>
                 <th>Hạng phòng</th>
                 <th>Chi nhánh</th>

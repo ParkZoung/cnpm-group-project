@@ -1,5 +1,6 @@
 (function () {
   'use strict';
+  const WORKING_BRANCH_KEY = 'gostay_staff_working_branch';
   const state = { bookings: [], branches: [], activeBranch: null, filter: 'today', search: '' };
   const $ = id => document.getElementById(id);
   const money = value => Number(value || 0).toLocaleString('vi-VN') + 'đ';
@@ -16,6 +17,7 @@
     $('staffName').textContent = context.profile.full_name || 'Staff';
     bind();
     await loadBranches();
+    await restoreWorkingBranch();
   }, { once:true });
 
   function bind() {
@@ -55,7 +57,10 @@
       }
     });
     $('staffLogout').addEventListener('click', async event => {
-      event.preventDefault(); await window.gostaySupabase.auth.signOut(); window.location.replace('login.html');
+      event.preventDefault();
+      window.sessionStorage.removeItem(WORKING_BRANCH_KEY);
+      await window.gostaySupabase.auth.signOut();
+      window.location.replace('login.html');
     });
   }
 
@@ -88,10 +93,21 @@
       return;
     }
     state.activeBranch = state.branches.find(branch => Number(branch.id) === branchId) || null;
+    window.sessionStorage.setItem(WORKING_BRANCH_KEY, String(branchId));
     $('branchName').textContent = state.activeBranch ? state.activeBranch.name : 'Chi nhánh đã chọn';
     $('branchGate').hidden = true;
     $('staffWorkspace').hidden = false;
     await load();
+  }
+
+  async function restoreWorkingBranch() {
+    const savedBranchId = Number(window.sessionStorage.getItem(WORKING_BRANCH_KEY));
+    if (!Number.isSafeInteger(savedBranchId) || !state.branches.some(branch => Number(branch.id) === savedBranchId)) {
+      window.sessionStorage.removeItem(WORKING_BRANCH_KEY);
+      return;
+    }
+    $('workingBranch').value = String(savedBranchId);
+    await selectWorkingBranch();
   }
 
   function showBranchGate() {
@@ -153,7 +169,8 @@
       if (['confirmed','checked_in'].includes(b.booking_status) && balance > 0) actions.push(`<button data-action="collect" data-id="${b.id}">Thu ${money(balance)}</button>`);
       if (b.booking_status === 'checked_in' && balance === 0) actions.push(`<button data-action="checkout" data-id="${b.id}">Check-out</button>`);
       if (b.booking_status === 'cancelled' && Number(b.paid_amount)>0 && b.payment_status!=='refunded') actions.push(`<button data-action="refund" data-id="${b.id}">Hoàn tiền</button>`);
-      return `<tr><td><strong>${escapeHtml(b.booking_code)}</strong></td><td>${escapeHtml(b.guest_name)}<small>${escapeHtml(b.guest_phone)}</small></td><td>${escapeHtml(b.room ? b.room.room_number : '—')}</td><td>${date(b.check_in_date)}</td><td>${date(b.check_out_date)}</td><td>${escapeHtml(statusLabel(b.booking_status))}</td><td>${escapeHtml(paymentLabel(b.payment_status))}<small>${money(b.paid_amount)} / ${money(b.total_amount)}</small></td><td>${money(balance)}</td><td class="staff-actions">${actions.join(' ') || '—'}</td></tr>`;
+      const roomName = b.room ? String(b.room.name || 'Thông tin phòng').replace(/\s+\d+\s*$/, '').trim() : '—';
+      return `<tr><td><strong>${escapeHtml(b.booking_code)}</strong></td><td>${escapeHtml(b.guest_name)}<small>${escapeHtml(b.guest_phone)}</small></td><td>${escapeHtml(roomName)}</td><td>${date(b.check_in_date)}</td><td>${date(b.check_out_date)}</td><td>${escapeHtml(statusLabel(b.booking_status))}</td><td>${escapeHtml(paymentLabel(b.payment_status))}<small>${money(b.paid_amount)} / ${money(b.total_amount)}</small></td><td>${money(balance)}</td><td class="staff-actions">${actions.join(' ') || '—'}</td></tr>`;
     }).join('');
   }
 

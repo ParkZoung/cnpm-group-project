@@ -33,7 +33,7 @@
     : '—';
   const findRoom = id => state.rooms.find(room => String(room.id) === String(id));
   const roomLabel = room => room
-    ? 'Phòng ' + (room.room_number || room.id) + (room.name ? ' — ' + room.name : '')
+    ? String(room.name || 'Thông tin phòng').replace(/\s+\d+\s*$/, '').trim()
     : 'Không xác định';
   const bookingCode = booking => booking.booking_code || '—';
   const bookingStatusLabel = value => ({
