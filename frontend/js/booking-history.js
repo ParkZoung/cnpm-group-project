@@ -172,9 +172,7 @@
     elements.success.hidden = true;
 
     try {
-      const { data, error } = await window.gostaySupabase.rpc('cancel_own_booking', {
-        p_booking_id: bookingId
-      });
+      const { data, error } = await window.GoStayBookingApi.cancel(bookingId);
 
       if (error) {
         throw error;

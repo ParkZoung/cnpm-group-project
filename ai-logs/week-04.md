@@ -47,3 +47,6 @@
   frontend và cập nhật CI/tài liệu.
 - Kiểm soát: không thay đổi hoặc deploy database production; giữ nguyên endpoint,
   response contract và facade `window.gostaySupabase` để hạn chế regression.
+- Kiểm tra sau refactor: syntax, Core Booking E2E, Admin E2E và Runtime Security;
+  giới hạn trang database debug cho development, chuẩn hóa version migration,
+  và chuyển riêng create/cancel booking sang service API mới mà không đổi RLS/RPC.

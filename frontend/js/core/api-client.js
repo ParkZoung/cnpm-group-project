@@ -1,6 +1,8 @@
 (function () {
   'use strict';
 
+  let accessTokenProvider = function () { return null; };
+
   async function request(path, body, accessToken) {
     const headers = { 'Content-Type': 'application/json' };
     if (accessToken) headers.Authorization = 'Bearer ' + accessToken;
@@ -28,5 +30,18 @@
     return payload;
   }
 
-  window.GoStayApiClient = Object.freeze({ request: request });
+  function setAccessTokenProvider(provider) {
+    if (typeof provider !== 'function') throw new TypeError('Access token provider must be a function.');
+    accessTokenProvider = provider;
+  }
+
+  function authenticatedRequest(path, body) {
+    return request(path, body, accessTokenProvider());
+  }
+
+  window.GoStayApiClient = Object.freeze({
+    request: request,
+    authenticatedRequest: authenticatedRequest,
+    setAccessTokenProvider: setAccessTokenProvider
+  });
 }());

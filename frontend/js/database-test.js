@@ -2,6 +2,13 @@ async function testDatabaseConnection() {
     const statusElement = document.getElementById("connection-status");
     const resultElement = document.getElementById("database-result");
 
+    const developmentHosts = new Set(["localhost", "127.0.0.1", "::1"]);
+    if (!developmentHosts.has(window.location.hostname)) {
+        statusElement.textContent = "Trang kiểm tra chỉ khả dụng trong môi trường development.";
+        resultElement.textContent = "";
+        return;
+    }
+
     statusElement.textContent = "Đang kết nối với Supabase...";
 
     try {

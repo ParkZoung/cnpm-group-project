@@ -44,6 +44,11 @@
     return window.GoStayApiClient.request(path, body, accessToken);
   }
 
+  window.GoStayApiClient.setAccessTokenProvider(function () {
+    const session = readSession();
+    return session && session.access_token ? session.access_token : null;
+  });
+
   function QueryBuilder(table) {
     this.payload = {
       table: table,

@@ -15,9 +15,10 @@ npm run backend:serve:recommendations
 npm run backend:stop
 ```
 
-`npm run backend:db:push` changes the linked database. Review migrations and the
-target project before running it. Production migrations are not applied as part
-of the repository restructuring.
+There is intentionally no `backend:db:push` npm script. Before any production
+push, reconcile the remote schema and migration history, run
+`npm run check:migrations`, review the generated diff, and obtain a separate
+deployment approval. Production migrations are not part of this refactor.
 
 ## Structure
 

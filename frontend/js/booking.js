@@ -104,7 +104,7 @@
       setCheckoutSubmitting(elements, true);
 
       try {
-        const { data, error } = await window.gostaySupabase.rpc('create_booking', payload);
+        const { data, error } = await window.GoStayBookingApi.create(payload);
 
         if (error) {
           throw error;
