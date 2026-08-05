@@ -68,7 +68,18 @@
     </div>
   </main>
 
-  <div id="staffDetailModal" class="staff-modal" hidden><div class="staff-modal-card"><button id="closeStaffDetail" type="button" aria-label="Đóng">×</button><h2>Chi tiết thanh toán</h2><div id="staffDetailContent"></div></div></div>
+  <div id="staffDetailModal" class="staff-modal" role="dialog" aria-modal="true" aria-labelledby="staffDetailTitle" hidden>
+    <div class="staff-modal-card">
+      <button id="closeStaffDetail" class="staff-modal-close" type="button" aria-label="Đóng cửa sổ">
+        <span aria-hidden="true">×</span>
+      </button>
+      <header class="staff-modal-heading">
+        <span class="staff-modal-icon" aria-hidden="true">₫</span>
+        <div><span class="eyebrow">GIAO DỊCH</span><h2 id="staffDetailTitle">Chi tiết thanh toán</h2></div>
+      </header>
+      <div id="staffDetailContent"></div>
+    </div>
+  </div>
   <script src="js/config/environment.js"></script><script src="js/core/api-client.js"></script><script src="js/supabase-client.js"></script><script src="js/staff-auth.js"></script><script src="https://cdn.jsdelivr.net/npm/html5-qrcode@2.3.8/html5-qrcode.min.js"></script><script src="js/staff-dashboard.js?v=20260805-3"></script>
 </body>
 </html>

@@ -75,7 +75,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       const initial = name.trim().charAt(0).toUpperCase() || "?";
       const date = profile.created_at ? new Date(profile.created_at).toLocaleDateString("vi-VN") : "—";
       return `<tr>
-        <td><div class="users-person"><span class="users-avatar">${escapeHtml(initial)}</span><div><strong>${escapeHtml(name)}</strong><small>#${escapeHtml(profile.id.slice(0, 8))}</small></div></div></td>
+        <td><div class="users-person"><span class="users-avatar">${escapeHtml(initial)}</span><div><strong>${escapeHtml(name)}</strong><small>${escapeHtml(profile.email || "—")}</small><small>#${escapeHtml(profile.id.slice(0, 8))}</small></div></div></td>
         <td>${escapeHtml(profile.phone || "—")}</td>
         <td><span class="users-pill role-${escapeHtml(profile.role)}">${profile.role === "admin" ? "Quản trị viên" : profile.role === "staff" ? "Nhân viên" : "Khách hàng"}</span>${profile.branch ? `<small>${escapeHtml(profile.branch.name)}</small>` : ""}</td>
         <td><span class="users-pill status-${escapeHtml(profile.status)}">${escapeHtml(statusLabel(profile.status))}</span></td>
@@ -90,24 +90,24 @@ document.addEventListener("DOMContentLoaded", async () => {
     const role = $("selectRoleFilter").value;
     const status = $("selectStatusFilter").value;
     render(state.profiles.filter((profile) => {
-      const matchesText = !term || `${profile.full_name || ""} ${profile.phone || ""}`.toLocaleLowerCase("vi").includes(term);
+      const matchesText = !term || `${profile.full_name || ""} ${profile.email || ""} ${profile.phone || ""}`.toLocaleLowerCase("vi").includes(term);
       return matchesText && (!role || profile.role === role) && (!status || profile.status === status);
     }));
   }
 
   async function loadProfiles() {
     tableBody.innerHTML = '<tr><td colspan="6" class="users-empty">Đang tải dữ liệu...</td></tr>';
-    const { data, error } = await db
-      .from("profiles")
-      .select("id, full_name, phone, role, status, branch_id, created_at, branch:branches!profiles_branch_id_fkey(id,name)")
-      .order("created_at", { ascending: false });
+    const { data, error } = await db.rpc("admin_list_profiles_with_email");
 
     if (error) {
       tableBody.innerHTML = '<tr><td colspan="6" class="users-empty">Không thể tải danh sách hồ sơ.</td></tr>';
       throw error;
     }
 
-    state.profiles = data || [];
+    state.profiles = (data || []).map((profile) => ({
+      ...profile,
+      branch: profile.branch_id ? { id: profile.branch_id, name: profile.branch_name } : null
+    }));
     applyFilters();
   }
 
@@ -121,7 +121,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     form.reset();
     $("profileId").value = profile.id;
     $("modalTitle").textContent = "Cập nhật quyền hồ sơ";
-    $("profileEmail").value = "Không khả dụng từ public.profiles";
+    $("profileEmail").value = profile.email || "Không có email Auth";
     $("profileFullName").value = profile.full_name || "";
     $("profilePhone").value = profile.phone || "";
     $("profileRole").value = profile.role || "customer";

@@ -11,6 +11,7 @@ const RPCS = new Set([
   "staff_lookup_checkin_token", "staff_consume_checkin_token",
   "staff_collect_balance", "staff_check_in", "staff_check_out",
   "staff_record_refund", "staff_select_working_branch", "admin_assign_profile_access",
+  "admin_list_profiles_with_email",
 ]);
 const PUBLIC_RPCS = new Set(["search_available_rooms"]);
 
