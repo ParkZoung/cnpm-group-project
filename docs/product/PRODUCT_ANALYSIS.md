@@ -143,7 +143,7 @@ Các tính năng **không** đưa vào MVP đầu tiên:
 | **Bản đồ nâng cao (map integration)** | API bản đồ, geocoding, marker — tốn thời gian; MVP có thể chỉ cần text địa điểm |
 | **Chatbot AI đầy đủ** | Cần context dài, xử lý nhiều intent — khó kiểm soát chất lượng cho nhóm mới |
 | **Dynamic pricing (giá động theo AI)** | Thuật toán + dữ liệu lịch sử — vượt năng lực và thời gian dự án học |
-| **Check-in bằng QR** | Cần mobile, quét mã, đồng bộ trạng thái — thêm luồng vận hành |
+| **Check-in bằng QR nâng cao trên mobile** | Bản web hiện có online check-in token trong extension; ứng dụng mobile/quét camera riêng vẫn ngoài phạm vi |
 | **Đa ngôn ngữ (Multi-language)** | i18n toàn site — ưu tiên tiếng Việt trước cho MVP |
 
 Các mục trên có thể ghi vào backlog **sau khi** MVP chạy ổn và được giảng viên đồng ý mở rộng.

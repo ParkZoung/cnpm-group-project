@@ -27,6 +27,14 @@ Booking creation and cancellation are the first migrated slice and use
 `frontend/js/services/booking-api.js`. Catalog, profile and admin screens remain
 on the compatibility facade until they can be moved and tested separately.
 
+Despite its legacy name, `window.gostaySupabase` is **not** a Supabase database
+client in the browser. It contains no database credential and is an application
+API compatibility facade over `frontend/js/core/api-client.js`. Calls are sent
+to the `api` Edge Function, then authorized by JWT verification, RLS and reviewed
+RPCs. Frontend role guards improve UX but are not an authorization boundary.
+
+Canonical roles and lifecycle statuses are documented in `DOMAIN_TERMS.md`.
+
 ## Current application flow
 
 ```text

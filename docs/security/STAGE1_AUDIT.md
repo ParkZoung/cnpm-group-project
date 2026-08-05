@@ -1,3 +1,10 @@
+# Stage 1 Security Audit — tài liệu lịch sử
+
+> **Trạng thái: Archived.** Báo cáo này phản ánh repository trước khi Supabase
+> Auth, RLS, RPC và cơ chế chống booking đồng thời được triển khai. Nhiều phát
+> hiện bên dưới không còn mô tả code hiện tại. Không dùng tài liệu này làm kết
+> luận bảo mật hiện hành; xem `CURRENT_SECURITY_STATUS.md`.
+
 Kết luận audit
 Giai đoạn 1 hiện chưa an toàn để triển khai production.
 Các rủi ro nghiêm trọng nhất:
