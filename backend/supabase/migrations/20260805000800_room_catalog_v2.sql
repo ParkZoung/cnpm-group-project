@@ -211,6 +211,12 @@ $function$;
 
 ALTER TABLE public.bookings DROP CONSTRAINT IF EXISTS bookings_no_holding_overlap;
 
+-- Pooled inventory allows different guests to reserve the same room class, but
+-- an identical active stay from the same account is always a duplicate submit.
+CREATE UNIQUE INDEX IF NOT EXISTS bookings_customer_active_stay_unique
+  ON public.bookings (user_id, room_id, check_in_date, check_out_date)
+  WHERE booking_status IN ('pending', 'confirmed', 'checked_in');
+
 CREATE OR REPLACE FUNCTION public.create_booking(
   p_room_id bigint, p_check_in_date date, p_check_out_date date,
   p_number_of_guests integer, p_guest_name text, p_guest_email text,

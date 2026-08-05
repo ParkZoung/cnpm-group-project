@@ -10,6 +10,9 @@ const branchSessionMigration = readFileSync(join(
   'backend', 'supabase', 'migrations', '20260805000300_staff_branch_sessions_and_immediate_online_checkin.sql'
 ), 'utf8');
 const staffDashboard = readFileSync(join('frontend', 'js', 'staff-dashboard.js'), 'utf8');
+const catalogMigration = readFileSync(join(
+  'backend', 'supabase', 'migrations', '20260805000800_room_catalog_v2.sql'
+), 'utf8');
 
 describe('staff/payment migration contract', () => {
   test('lets active staff select a working branch instead of assigning one permanently', () => {
@@ -64,5 +67,11 @@ describe('staff/payment migration contract', () => {
     assert.match(staffDashboard, /today >= booking\.check_out_date/);
     assert.match(staffDashboard, /canConfirmArrival \? '' : ' disabled'/);
     assert.match(staffDashboard, /if \(!canConfirmArrival\) return/);
+  });
+
+  test('prevents duplicate concurrent bookings without disabling pooled inventory', () => {
+    assert.match(catalogMigration, /bookings_customer_active_stay_unique/);
+    assert.match(catalogMigration, /user_id, room_id, check_in_date, check_out_date/);
+    assert.match(catalogMigration, /booking_status IN \('pending', 'confirmed', 'checked_in'\)/);
   });
 });
