@@ -28,6 +28,12 @@
     $('changeBranch').addEventListener('click', showBranchGate);
     $('lookupCheckinToken').addEventListener('click', () => lookupToken($('manualCheckinToken').value));
     $('closeStaffDetail').addEventListener('click', () => { $('staffDetailModal').hidden = true; });
+    $('staffDetailModal').addEventListener('click', event => {
+      if (event.target === $('staffDetailModal')) $('staffDetailModal').hidden = true;
+    });
+    document.addEventListener('keydown', event => {
+      if (event.key === 'Escape' && !$('staffDetailModal').hidden) $('staffDetailModal').hidden = true;
+    });
     $('staffBookingsBody').addEventListener('click', async event => {
       const button = event.target.closest('[data-action]');
       if (!button || button.disabled) return;
@@ -185,10 +191,27 @@
       .select('id,transaction_type,amount,status,provider_reference,created_at')
       .eq('booking_id', bookingId).order('created_at', { ascending:false });
     if (result.error) { notify(result.error.message); return; }
-    const labels = { online_payment:'Online mô phỏng', staff_collection:'Thu tại quầy', refund:'Hoàn tiền' };
-    $('staffDetailContent').innerHTML = `<p><strong>${escapeHtml(booking.booking_code)}</strong> — ${escapeHtml(booking.guest_name)}</p><p>Đã trả: ${money(booking.paid_amount)} · Còn lại: ${money(Number(booking.total_amount)-Number(booking.paid_amount))}</p>`
-      + ((result.data || []).map(item => `<div class="transaction-row"><span>${escapeHtml(labels[item.transaction_type] || item.transaction_type)}</span><strong>${money(item.amount)}</strong><small>${escapeHtml(item.status)} · ${new Date(item.created_at).toLocaleString('vi-VN')}</small></div>`).join('') || '<p>Chưa có giao dịch.</p>');
+    const labels = { online_payment:'Thanh toán online', staff_collection:'Thu tại quầy', refund:'Hoàn tiền' };
+    const statuses = { succeeded:'Thành công', pending:'Đang xử lý', failed:'Thất bại' };
+    const balance = Math.max(0, Number(booking.total_amount) - Number(booking.paid_amount));
+    const transactions = (result.data || []).map(item => {
+      const timestamp = new Date(item.created_at);
+      const statusClass = ['succeeded','pending','failed'].includes(item.status) ? item.status : 'pending';
+      return `<article class="transaction-row">
+        <div class="transaction-type"><span class="transaction-mark" aria-hidden="true"></span><div><strong>${escapeHtml(labels[item.transaction_type] || item.transaction_type)}</strong><small>${escapeHtml(item.provider_reference || 'Giao dịch GoStay')}</small></div></div>
+        <strong class="transaction-amount">${money(item.amount)}</strong>
+        <div class="transaction-meta"><span class="transaction-status ${statusClass}">${escapeHtml(statuses[item.status] || item.status)}</span><time datetime="${escapeHtml(item.created_at)}">${timestamp.toLocaleDateString('vi-VN')}<small>${timestamp.toLocaleTimeString('vi-VN', { hour:'2-digit', minute:'2-digit' })}</small></time></div>
+      </article>`;
+    }).join('');
+    $('staffDetailContent').innerHTML = `<section class="payment-booking-summary">
+        <div class="payment-booking-id"><span>MÃ BOOKING</span><strong>${escapeHtml(booking.booking_code)}</strong><small>${escapeHtml(booking.guest_name)}</small></div>
+        <div class="payment-total paid"><span>ĐÃ THANH TOÁN</span><strong>${money(booking.paid_amount)}</strong></div>
+        <div class="payment-total balance"><span>CÒN LẠI</span><strong>${money(balance)}</strong></div>
+      </section>
+      <div class="transaction-list-heading"><span>LỊCH SỬ GIAO DỊCH</span><small>${result.data.length} giao dịch</small></div>
+      <section class="transaction-list">${transactions || '<div class="transaction-empty"><span>₫</span><strong>Chưa có giao dịch</strong><small>Các khoản thanh toán sẽ xuất hiện tại đây.</small></div>'}</section>`;
     $('staffDetailModal').hidden = false;
+    $('closeStaffDetail').focus();
   }
 
   function normalizeToken(value) {
