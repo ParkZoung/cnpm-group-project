@@ -87,40 +87,21 @@
               <label style="display:block; font-size:12px; font-weight:600; color:#475569; margin-bottom:4px;">Mô tả</label>
               <input type="text" id="room-description" placeholder="Mô tả thêm (không bắt buộc)" class="admin-search-input">
             </div>
-            <fieldset class="room-amenities-fieldset room-image-fieldset">
-              <legend>Ảnh đại diện phòng</legend>
-              <div class="room-image-editor">
-                <div class="room-image-preview-wrap">
-                  <img id="room-image-preview" alt="Xem trước ảnh phòng" hidden>
-                  <div id="room-image-placeholder" class="room-image-placeholder">
-                    <span class="room-image-placeholder-icon" aria-hidden="true">
-                      <svg viewBox="0 0 24 24" fill="none"><path d="M4 16.5 8.5 12l3 3 2-2 6.5 6.5M15.5 8.5h.01M5 3.75h14A1.25 1.25 0 0 1 20.25 5v14A1.25 1.25 0 0 1 19 20.25H5A1.25 1.25 0 0 1 3.75 19V5A1.25 1.25 0 0 1 5 3.75Z" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
-                    </span>
-                    <strong>Chưa có ảnh đại diện</strong>
-                    <span>Ảnh đẹp giúp khách dễ hình dung về phòng hơn.</span>
-                  </div>
-                </div>
-                <div class="room-image-controls">
-                  <span class="room-image-control-icon" aria-hidden="true">↑</span>
-                  <div class="room-image-control-copy">
-                    <strong>Tải ảnh phòng lên</strong>
-                    <span>Chọn ảnh rõ nét, ưu tiên khung ngang tỷ lệ 4:3.</span>
-                  </div>
-                  <div class="room-image-actions">
-                    <label for="room-image-file" class="room-image-upload-button">Chọn ảnh</label>
-                    <button id="room-image-remove" type="button" class="room-image-remove-button" hidden>Xóa ảnh</button>
-                  </div>
-                  <input id="room-image-file" type="file" accept="image/jpeg,image/png,image/webp" hidden>
-                  <small>JPG, PNG hoặc WebP · Tối đa 5 MB · Ảnh mới sẽ thay ảnh hiện tại</small>
-                </div>
-              </div>
-            </fieldset>
             <fieldset class="room-amenities-fieldset">
               <legend>Tiện nghi phòng</legend>
               <p id="room-amenities-help">Chọn các tiện nghi có trong phòng.</p>
               <div id="room-amenities-options" class="room-amenities-options" aria-describedby="room-amenities-help">
                 <span class="room-amenities-placeholder">Đang tải danh sách tiện nghi...</span>
               </div>
+            </fieldset>
+            <fieldset class="room-images-fieldset">
+              <legend>Ảnh phòng</legend>
+              <p>Chọn tối đa 5 ảnh JPG, PNG hoặc WebP mỗi lần; mỗi ảnh không quá 5 MB. Ảnh đầu tiên sẽ là ảnh đại diện.</p>
+              <label class="room-image-picker" for="room-images">Chọn ảnh từ máy</label>
+              <input type="file" id="room-images" accept="image/jpeg,image/png,image/webp" multiple>
+              <div id="room-image-feedback" class="room-image-feedback" aria-live="polite"></div>
+              <div id="room-image-preview" class="room-image-grid"></div>
+              <div id="room-existing-images" class="room-image-grid"></div>
             </fieldset>
           </div>
 

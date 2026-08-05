@@ -61,7 +61,7 @@
 
       <section class="staff-card booking-card">
         <div class="card-heading"><div><span class="section-number">02</span><h2>Danh sách booking</h2></div><p>Tra cứu nhanh và xử lý trạng thái lưu trú.</p></div>
-        <div class="staff-toolbar booking-toolbar"><input id="staffSearch" type="search" placeholder="Tìm mã booking, tên, SĐT, email"><select id="staffFilter"><option value="today">Nhận phòng hôm nay</option><option value="payment_claimed">Chờ duyệt chuyển khoản</option><option value="upcoming">Sắp nhận phòng</option><option value="staying">Đang lưu trú</option><option value="balance">Còn phải thu</option><option value="all">Tất cả</option></select><button id="reloadStaffBookings">Tải lại</button></div>
+        <div class="staff-toolbar booking-toolbar"><input id="staffSearch" type="search" placeholder="Tìm mã booking, tên, SĐT, email"><select id="staffFilter"><option value="action_required">Cần xử lý</option><option value="awaiting_arrival">Chờ nhận phòng</option><option value="staying">Đang lưu trú</option><option value="finished">Đã hoàn tất</option><option value="all">Tất cả</option></select><button id="reloadStaffBookings">Tải lại</button></div>
         <p id="staffNotice" class="notice" aria-live="polite"></p>
         <div class="staff-table-wrap"><table><thead><tr><th>Mã</th><th>Khách</th><th>Phòng</th><th>Nhận</th><th>Trả</th><th>Lưu trú</th><th>Thanh toán</th><th>Còn lại</th><th>Thao tác</th></tr></thead><tbody id="staffBookingsBody"><tr><td colspan="9">Đang tải...</td></tr></tbody></table></div>
       </section>

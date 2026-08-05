@@ -1,7 +1,7 @@
 (function () {
   'use strict';
   const WORKING_BRANCH_KEY = 'gostay_staff_working_branch';
-  const state = { bookings: [], branches: [], activeBranch: null, filter: 'today', search: '' };
+  const state = { bookings: [], branches: [], activeBranch: null, filter: 'action_required', search: '' };
   const $ = id => document.getElementById(id);
   const money = value => Number(value || 0).toLocaleString('vi-VN') + 'đ';
   const date = value => value ? String(value).slice(0, 10).split('-').reverse().join('/') : '—';
@@ -144,16 +144,17 @@
   }
 
   function visible() {
-    const today = new Date().toISOString().slice(0,10);
     const term = state.search.trim().toLocaleLowerCase('vi');
     return state.bookings.filter(b => {
       const text = [b.booking_code,b.guest_name,b.guest_phone,b.guest_email].join(' ').toLocaleLowerCase('vi');
+      const needsAction = b.booking_status === 'pending' ||
+        (b.online_checkin && b.online_checkin.status === 'payment_claimed') ||
+        (['confirmed','checked_in'].includes(b.booking_status) && Number(b.paid_amount) < Number(b.total_amount));
       const category = state.filter === 'all' ||
-        (state.filter === 'today' && b.check_in_date === today) ||
-        (state.filter === 'payment_claimed' && b.online_checkin && b.online_checkin.status === 'payment_claimed') ||
-        (state.filter === 'upcoming' && b.booking_status === 'confirmed' && b.check_in_date > today) ||
+        (state.filter === 'action_required' && needsAction) ||
+        (state.filter === 'awaiting_arrival' && b.booking_status === 'confirmed') ||
         (state.filter === 'staying' && b.booking_status === 'checked_in') ||
-        (state.filter === 'balance' && Number(b.paid_amount) < Number(b.total_amount) && !['cancelled','completed'].includes(b.booking_status));
+        (state.filter === 'finished' && ['completed','cancelled'].includes(b.booking_status));
       return category && (!term || text.includes(term));
     });
   }
