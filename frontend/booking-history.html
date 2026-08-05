@@ -7,6 +7,7 @@
   <title>GoStay - Lịch sử đặt phòng</title>
   <link rel="stylesheet" href="css/base.css">
   <link rel="stylesheet" href="css/duy.css">
+  <style>.users-modal[hidden]{display:none}.users-modal{position:fixed;z-index:1000;inset:0;display:grid;place-items:center;padding:20px}.users-modal-backdrop{position:absolute;inset:0;background:#0f172acc}.users-modal-card{position:relative;width:min(620px,100%);max-height:90vh;overflow:auto;padding:28px;border-radius:16px;background:#fff}.users-icon-btn{position:absolute;right:15px;top:12px;border:0;background:none;font-size:28px;cursor:pointer}.checkin-options{display:flex;gap:10px;margin:18px 0}.checkin-options button,.checkin-action{padding:11px 16px;border:1px solid #0f766e;border-radius:8px;background:#fff;color:#0f766e;font-weight:700;cursor:pointer}.checkin-options button.selected,.checkin-action{color:#fff;background:#0f766e}.vietqr-image{display:block;width:min(360px,100%);margin:16px auto}.checkin-code{font:700 20px monospace;text-align:center;letter-spacing:.08em}</style>
 </head>
 <body>
   <header class="site-header">
@@ -25,6 +26,14 @@
         <a class="btn btn-outline" href="login.html">Đăng nhập</a>
         <a class="btn btn-primary" href="register.html">Đăng ký</a>
       </div>
+    </div>
+    <div id="online-checkin-modal" class="users-modal" hidden>
+      <div class="users-modal-backdrop" data-close-checkin></div>
+      <section class="users-modal-card" role="dialog" aria-modal="true" aria-labelledby="online-checkin-title">
+        <button id="close-online-checkin" type="button" class="users-icon-btn" aria-label="Đóng">×</button>
+        <h2 id="online-checkin-title">Check-in online</h2>
+        <div id="online-checkin-content"></div>
+      </section>
     </div>
   </header>
 
@@ -101,6 +110,7 @@
   <script src="js/supabase-client.js"></script>
   <script src="js/services/booking-api.js"></script>
   <script src="js/header-auth.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.4/build/qrcode.min.js"></script>
   <script src="js/booking-history.js"></script>
 </body>
 </html>

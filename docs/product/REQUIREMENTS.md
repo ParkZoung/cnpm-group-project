@@ -14,6 +14,7 @@ GoStay là website đặt phòng dành cho một chuỗi khách sạn nhỏ. Kh�
 ## 2. User Roles
 
 - **Customer**: Người dùng đặt phòng, tìm kiếm phòng, xem chi tiết và quản lý lịch sử booking.
+- **Staff**: Nhân viên một chi nhánh, tiếp nhận khách, thu số dư và hoàn tất trả phòng.
 - **Admin**: Người quản lý hệ thống GoStay, thêm/sửa/xóa phòng và cập nhật trạng thái, giá cả, thông tin phòng.
 
 ---
@@ -219,5 +220,5 @@ GoStay là website đặt phòng dành cho một chuỗi khách sạn nhỏ. Kh�
 - Product Overview: Website đặt phòng cho chuỗi khách sạn nhỏ.
 - User roles: Customer, Admin.
 - MVP Scope: đăng ký/đăng nhập, tìm/filter, chi tiết phòng, booking, lịch sử, quản lý phòng, AI gợi ý.
-- Out of scope: thanh toán online thật, voucher, loyalty, QR check-in, chatbot, bản đồ, nhiều KS độc lập.
+- Out of scope: cổng thanh toán tự động có webhook, voucher, loyalty, chatbot, bản đồ và nhiều khách sạn độc lập. VietQR đối soát thủ công và QR check-in thuộc phạm vi hiện tại.
 - User stories: 11 stories, trong đó US11 là AI gợi ý phòng.

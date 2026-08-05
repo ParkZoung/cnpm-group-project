@@ -5,11 +5,13 @@ CREATE TABLE public.profiles (
   id uuid NOT NULL,
   full_name character varying,
   phone character varying,
-  role character varying NOT NULL DEFAULT 'customer'::character varying CHECK (role::text = ANY (ARRAY['customer'::character varying, 'admin'::character varying]::text[])),
+  role character varying NOT NULL DEFAULT 'customer'::character varying CHECK (role::text = ANY (ARRAY['customer'::character varying, 'staff'::character varying, 'admin'::character varying]::text[])),
+  branch_id bigint CHECK (branch_id IS NULL),
   status character varying NOT NULL DEFAULT 'active'::character varying CHECK (status::text = ANY (ARRAY['active'::character varying, 'inactive'::character varying, 'blocked'::character varying]::text[])),
   created_at timestamp with time zone NOT NULL DEFAULT now(),
   CONSTRAINT profiles_pkey PRIMARY KEY (id),
-  CONSTRAINT profiles_id_fkey FOREIGN KEY (id) REFERENCES auth.users(id)
+  CONSTRAINT profiles_id_fkey FOREIGN KEY (id) REFERENCES auth.users(id),
+  CONSTRAINT profiles_branch_id_fkey FOREIGN KEY (branch_id) REFERENCES public.branches(id)
 );
 CREATE TABLE public.branches (
   id bigint GENERATED ALWAYS AS IDENTITY NOT NULL,
@@ -68,7 +70,14 @@ CREATE TABLE public.bookings (
   total_amount bigint NOT NULL CHECK (total_amount >= 0),
   booking_status character varying NOT NULL DEFAULT 'pending'::character varying CHECK (booking_status::text = ANY (ARRAY['pending'::character varying, 'confirmed'::character varying, 'checked_in'::character varying, 'completed'::character varying, 'cancelled'::character varying]::text[])),
   payment_method character varying NOT NULL DEFAULT 'pay_at_hotel'::character varying CHECK (payment_method::text = ANY (ARRAY['pay_at_hotel'::character varying, 'online'::character varying, 'bank_transfer'::character varying]::text[])),
-  payment_status character varying NOT NULL DEFAULT 'unpaid'::character varying CHECK (payment_status::text = ANY (ARRAY['unpaid'::character varying, 'pending'::character varying, 'paid'::character varying, 'failed'::character varying, 'refunded'::character varying]::text[])),
+  payment_status character varying NOT NULL DEFAULT 'unpaid'::character varying CHECK (payment_status::text = ANY (ARRAY['unpaid'::character varying, 'pending'::character varying, 'partially_paid'::character varying, 'paid'::character varying, 'failed'::character varying, 'refunded'::character varying]::text[])),
+  payment_option character varying CHECK (payment_option IS NULL OR payment_option IN ('full', 'deposit')),
+  upfront_amount bigint NOT NULL DEFAULT 0 CHECK (upfront_amount >= 0),
+  paid_amount bigint NOT NULL DEFAULT 0 CHECK (paid_amount >= 0 AND paid_amount <= total_amount),
+  checked_in_at timestamp with time zone,
+  checked_in_by uuid,
+  checked_out_at timestamp with time zone,
+  checked_out_by uuid,
   created_at timestamp with time zone NOT NULL DEFAULT now(),
   updated_at timestamp with time zone NOT NULL DEFAULT now(),
   cancelled_at timestamp with time zone,
@@ -76,7 +85,50 @@ CREATE TABLE public.bookings (
   CONSTRAINT bookings_pkey PRIMARY KEY (id),
   CONSTRAINT bookings_user_id_fkey FOREIGN KEY (user_id) REFERENCES public.profiles(id),
   CONSTRAINT bookings_room_id_fkey FOREIGN KEY (room_id) REFERENCES public.rooms(id),
-  CONSTRAINT bookings_promotion_id_fkey FOREIGN KEY (promotion_id) REFERENCES public.promotions(id)
+  CONSTRAINT bookings_promotion_id_fkey FOREIGN KEY (promotion_id) REFERENCES public.promotions(id),
+  CONSTRAINT bookings_checked_in_by_fkey FOREIGN KEY (checked_in_by) REFERENCES public.profiles(id),
+  CONSTRAINT bookings_checked_out_by_fkey FOREIGN KEY (checked_out_by) REFERENCES public.profiles(id)
+);
+CREATE TABLE public.staff_work_sessions (
+  staff_id uuid NOT NULL,
+  branch_id bigint NOT NULL,
+  selected_at timestamp with time zone NOT NULL DEFAULT statement_timestamp(),
+  CONSTRAINT staff_work_sessions_pkey PRIMARY KEY (staff_id),
+  CONSTRAINT staff_work_sessions_staff_id_fkey FOREIGN KEY (staff_id) REFERENCES public.profiles(id),
+  CONSTRAINT staff_work_sessions_branch_id_fkey FOREIGN KEY (branch_id) REFERENCES public.branches(id)
+);
+CREATE TABLE public.payment_transactions (
+  id uuid NOT NULL DEFAULT gen_random_uuid(),
+  booking_id uuid NOT NULL,
+  transaction_type character varying NOT NULL CHECK (transaction_type IN ('online_payment', 'staff_collection', 'refund')),
+  amount bigint NOT NULL CHECK (amount > 0),
+  status character varying NOT NULL CHECK (status IN ('pending', 'succeeded', 'failed')),
+  performed_by uuid,
+  provider_reference text,
+  created_at timestamp with time zone NOT NULL DEFAULT now(),
+  CONSTRAINT payment_transactions_pkey PRIMARY KEY (id),
+  CONSTRAINT payment_transactions_booking_id_fkey FOREIGN KEY (booking_id) REFERENCES public.bookings(id),
+  CONSTRAINT payment_transactions_performed_by_fkey FOREIGN KEY (performed_by) REFERENCES public.profiles(id)
+);
+CREATE TABLE public.online_checkins (
+  id uuid NOT NULL DEFAULT gen_random_uuid(),
+  booking_id uuid NOT NULL UNIQUE,
+  status character varying NOT NULL DEFAULT 'not_started' CHECK (status IN ('not_started','payment_claimed','approved','rejected','consumed','expired')),
+  payment_option character varying CHECK (payment_option IN ('full','deposit')),
+  requested_amount bigint CHECK (requested_amount > 0),
+  rejection_reason text,
+  payment_claimed_at timestamp with time zone,
+  reviewed_at timestamp with time zone,
+  reviewed_by uuid,
+  consumed_at timestamp with time zone,
+  consumed_by uuid,
+  expires_at timestamp with time zone NOT NULL,
+  created_at timestamp with time zone NOT NULL DEFAULT now(),
+  updated_at timestamp with time zone NOT NULL DEFAULT now(),
+  CONSTRAINT online_checkins_pkey PRIMARY KEY (id),
+  CONSTRAINT online_checkins_booking_id_fkey FOREIGN KEY (booking_id) REFERENCES public.bookings(id),
+  CONSTRAINT online_checkins_reviewed_by_fkey FOREIGN KEY (reviewed_by) REFERENCES public.profiles(id),
+  CONSTRAINT online_checkins_consumed_by_fkey FOREIGN KEY (consumed_by) REFERENCES public.profiles(id)
 );
 CREATE TABLE public.promotions (
   id bigint GENERATED ALWAYS AS IDENTITY NOT NULL,

@@ -11,6 +11,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   const message = $("pageMessage");
   const state = {
     profiles: [],
+    branches: [],
     isUpdating: false,
     isRedirecting: false
   };
@@ -76,7 +77,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       return `<tr>
         <td><div class="users-person"><span class="users-avatar">${escapeHtml(initial)}</span><div><strong>${escapeHtml(name)}</strong><small>#${escapeHtml(profile.id.slice(0, 8))}</small></div></div></td>
         <td>${escapeHtml(profile.phone || "—")}</td>
-        <td><span class="users-pill role-${escapeHtml(profile.role)}">${profile.role === "admin" ? "Quản trị viên" : "Khách hàng"}</span></td>
+        <td><span class="users-pill role-${escapeHtml(profile.role)}">${profile.role === "admin" ? "Quản trị viên" : profile.role === "staff" ? "Nhân viên" : "Khách hàng"}</span>${profile.branch ? `<small>${escapeHtml(profile.branch.name)}</small>` : ""}</td>
         <td><span class="users-pill status-${escapeHtml(profile.status)}">${escapeHtml(statusLabel(profile.status))}</span></td>
         <td>${date}</td>
         <td><div class="users-actions"><button class="users-action" type="button" data-action="edit" data-id="${escapeHtml(profile.id)}"${state.isUpdating ? " disabled" : ""}>Sửa quyền</button></div></td>
@@ -98,7 +99,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     tableBody.innerHTML = '<tr><td colspan="6" class="users-empty">Đang tải dữ liệu...</td></tr>';
     const { data, error } = await db
       .from("profiles")
-      .select("id, full_name, phone, role, status, created_at")
+      .select("id, full_name, phone, role, status, branch_id, created_at, branch:branches!profiles_branch_id_fkey(id,name)")
       .order("created_at", { ascending: false });
 
     if (error) {
@@ -223,6 +224,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
 
     const newRole = $("profileRole").value;
+    const newBranchId = null;
     const newStatus = $("profileStatus").value;
     const roleChanged = newRole !== profile.role;
     const statusChanged = newStatus !== profile.status;
@@ -246,9 +248,10 @@ document.addEventListener("DOMContentLoaded", async () => {
     try {
       try {
         if (roleChanged) {
-          const { error } = await db.rpc("admin_set_profile_role", {
+          const { error } = await db.rpc("admin_assign_profile_access", {
             target_user_id: id,
-            new_role: newRole
+            new_role: newRole,
+            new_branch_id: newBranchId
           });
           if (error) throw error;
           completedChanges.push("vai trò");
@@ -314,7 +317,6 @@ document.addEventListener("DOMContentLoaded", async () => {
   });
   $("selectRoleFilter").addEventListener("change", applyFilters);
   $("selectStatusFilter").addEventListener("change", applyFilters);
-
   try {
     await loadProfiles();
   } catch (error) {

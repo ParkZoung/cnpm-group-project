@@ -1,0 +1,44 @@
+.staff-sidebar nav button {
+  width: 100%;
+  padding: 12px;
+  border: 0;
+  border-radius: 8px;
+  color: #eaffff;
+  background: rgba(255,255,255,.12);
+  text-align: left;
+  cursor: pointer;
+}
+
+.branch-gate {
+  min-height: calc(100vh - 130px);
+  display: grid;
+  place-items: center;
+}
+
+.branch-gate[hidden], #staffWorkspace[hidden] { display: none; }
+
+.branch-gate > div {
+  width: min(560px, 100%);
+  padding: 42px;
+  border: 1px solid #d8e5e7;
+  border-radius: 24px;
+  background: linear-gradient(145deg, #fff, #effafa);
+  box-shadow: 0 24px 60px rgba(7,59,76,.12);
+}
+
+.branch-gate select, .branch-gate button {
+  width: 100%;
+  margin-top: 14px;
+  padding: 14px 16px;
+  border: 1px solid #a9c9cc;
+  border-radius: 10px;
+  font: inherit;
+}
+
+.branch-gate button {
+  border: 0;
+  color: #fff;
+  background: #08777d;
+  font-weight: 800;
+  cursor: pointer;
+}

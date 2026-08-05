@@ -5,7 +5,7 @@ import { validateQuery } from "../validators/query-validator.js";
 
 const TABLES = new Set([
   "profiles", "branches", "room_types", "rooms", "room_images", "bookings",
-  "amenities", "room_amenities",
+  "amenities", "room_amenities", "online_checkins", "payment_transactions",
 ]);
 
 export async function handleQuery(body, req) {

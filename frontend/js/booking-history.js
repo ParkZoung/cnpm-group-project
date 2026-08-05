@@ -3,6 +3,7 @@
 
   const CANCELLABLE_STATUSES = new Set(['pending', 'confirmed']);
   const UUID_PATTERN = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
+  let currentBookings = [];
 
   document.addEventListener('DOMContentLoaded', initializeBookingHistory, { once: true });
 
@@ -56,6 +57,8 @@
           check_out_date,
           number_of_guests,
           total_amount,
+          paid_amount,
+          payment_option,
           booking_status,
           payment_status,
           created_at,
@@ -73,6 +76,12 @@
       }
 
       const bookings = Array.isArray(data) ? data : [];
+      const checkinResult = await window.gostaySupabase.from('online_checkins')
+        .select('id,booking_id,status,payment_option,requested_amount,rejection_reason,expires_at');
+      if (checkinResult.error) throw checkinResult.error;
+      const byBooking = new Map((checkinResult.data || []).map(item => [item.booking_id, item]));
+      bookings.forEach(booking => { booking.online_checkin = byBooking.get(booking.id) || null; });
+      currentBookings = bookings;
       renderBookingHistory(elements, bookings);
     } catch (error) {
       showHistoryError(elements, friendlyHistoryError(error, 'Không thể tải lịch sử đặt phòng.'));
@@ -110,7 +119,8 @@
     appendCell(row, booking.number_of_guests);
     appendCell(row, formatMoney(booking.total_amount), 'table-price');
     appendCell(row, bookingStatusLabel(booking.booking_status));
-    appendCell(row, paymentStatusLabel(booking.payment_status));
+    appendCell(row, paymentStatusLabel(booking.payment_status) + ' ('
+      + formatMoney(booking.paid_amount) + ' / ' + formatMoney(booking.total_amount) + ')');
 
     const actionCell = document.createElement('td');
 
@@ -123,7 +133,20 @@
       cancelButton.dataset.bookingId = booking.id;
       cancelButton.textContent = 'Hủy đặt phòng';
       actionCell.appendChild(cancelButton);
-    } else {
+    }
+    if (booking.booking_status === 'confirmed' && UUID_PATTERN.test(String(booking.id || ''))) {
+      const checkinButton = document.createElement('button');
+      checkinButton.type = 'button';
+      checkinButton.className = 'btn-remove-cart';
+      checkinButton.dataset.action = 'online-checkin';
+      checkinButton.dataset.bookingId = booking.id;
+      const windowOpen = isOnlineCheckinOpen(booking);
+      checkinButton.textContent = booking.online_checkin && booking.online_checkin.status === 'approved'
+        ? 'QR check-in' : 'Check-in online';
+      checkinButton.disabled = !windowOpen && !(booking.online_checkin && booking.online_checkin.status === 'approved');
+      actionCell.appendChild(checkinButton);
+    }
+    if (!actionCell.childNodes.length) {
       actionCell.textContent = '—';
     }
 
@@ -139,15 +162,67 @@
     elements.body.dataset.historyBound = 'true';
 
     elements.body.addEventListener('click', function (event) {
-      const button = event.target.closest('[data-action="cancel-booking"]');
+      const button = event.target.closest('[data-action]');
 
       if (!button || !elements.body.contains(button)) {
         return;
       }
 
-      cancelBooking(elements, button);
+      if (button.dataset.action === 'cancel-booking') cancelBooking(elements, button);
+      if (button.dataset.action === 'online-checkin') openOnlineCheckin(elements, button.dataset.bookingId);
+    });
+    document.getElementById('close-online-checkin').addEventListener('click', closeOnlineCheckin);
+    document.querySelector('[data-close-checkin]').addEventListener('click', closeOnlineCheckin);
+  }
+
+  async function openOnlineCheckin(elements, bookingId) {
+    const booking = currentBookings.find(item => item.id === bookingId);
+    if (!booking) return;
+    const modal = document.getElementById('online-checkin-modal');
+    const content = document.getElementById('online-checkin-content');
+    modal.hidden = false;
+    if (booking.online_checkin && booking.online_checkin.status === 'approved') {
+      if (new Date(booking.online_checkin.expires_at) <= new Date()) {
+        content.innerHTML = '<p>QR check-in đã hết hạn. Vui lòng liên hệ khách sạn.</p>';
+        return;
+      }
+      content.innerHTML = '<p>Check-in online đã được duyệt. Đưa QR này cho staff khi đến khách sạn.</p><canvas id="guest-checkin-qr"></canvas><p>Mã dự phòng:</p><p class="checkin-code">' + booking.online_checkin.id + '</p><p>QR hết hạn: ' + new Date(booking.online_checkin.expires_at).toLocaleString('vi-VN') + '. Vui lòng mang giấy tờ tùy thân.</p>';
+      if (window.QRCode) window.QRCode.toCanvas(document.getElementById('guest-checkin-qr'), 'gostay:checkin:' + booking.online_checkin.id, { width:280 });
+      return;
+    }
+    if (booking.online_checkin && booking.online_checkin.status === 'payment_claimed') {
+      content.innerHTML = '<p>Bạn đã báo chuyển khoản. Staff đang đối chiếu giao dịch trước khi cấp QR check-in.</p>';
+      return;
+    }
+    content.innerHTML = (booking.online_checkin && booking.online_checkin.status === 'rejected' ? '<p>Giao dịch chưa được xác nhận: ' + escapeText(booking.online_checkin.rejection_reason || 'Vui lòng kiểm tra và thử lại.') + '</p>' : '') + '<p>Chọn số tiền thanh toán để bắt đầu check-in online.</p><div class="checkin-options"><button data-option="full" class="selected">Thanh toán toàn bộ</button>'
+      + (Number(booking.number_of_nights || daysBetween(booking.check_in_date, booking.check_out_date)) > 1 ? '<button data-option="deposit">Cọc 1 đêm + thuế</button>' : '')
+      + '</div><button id="start-online-checkin" class="checkin-action">Tạo VietQR</button><div id="vietqr-result"></div>';
+    let option = 'full';
+    content.querySelectorAll('[data-option]').forEach(button => button.addEventListener('click', () => {
+      option = button.dataset.option; content.querySelectorAll('[data-option]').forEach(node => node.classList.toggle('selected', node === button));
+    }));
+    document.getElementById('start-online-checkin').addEventListener('click', async () => {
+      try {
+        const started = await window.GoStayBookingApi.startOnlineCheckin(booking.id, option);
+        if (started.error) throw started.error;
+        const qr = await window.GoStayApiClient.authenticatedRequest('/vietqr', { booking_id: booking.id });
+        if (qr.error) throw qr.error;
+        document.getElementById('vietqr-result').innerHTML = '<img class="vietqr-image" src="' + qr.data.qr_url + '" alt="VietQR thanh toán"><p>Chuyển <strong>' + formatMoney(qr.data.amount) + '</strong> với nội dung <strong>' + qr.data.booking_code + '</strong>.</p><button id="claim-payment" class="checkin-action">Tôi đã thanh toán</button>';
+        document.getElementById('claim-payment').addEventListener('click', async () => {
+          const claimed = await window.GoStayBookingApi.claimOnlinePayment(booking.id);
+          if (claimed.error) { showHistoryError(elements, claimed.error.message); return; }
+          content.innerHTML = '<p>Đã gửi thông báo. Staff sẽ đối chiếu tiền và cấp QR check-in.</p>';
+          await loadBookingHistory(elements);
+        });
+      } catch (error) { document.getElementById('vietqr-result').textContent = error.message || 'Không thể tạo VietQR.'; }
     });
   }
+
+  function closeOnlineCheckin() { document.getElementById('online-checkin-modal').hidden = true; }
+  function daysBetween(start,end) { return Math.round((new Date(end)-new Date(start))/86400000); }
+  function previousDate(value) { const d=new Date(value+'T00:00:00'); d.setDate(d.getDate()-1); return d.toISOString().slice(0,10); }
+  function isOnlineCheckinOpen(booking) { const today=new Date(); const local=new Date(today.getTime()-today.getTimezoneOffset()*60000).toISOString().slice(0,10); return booking.booking_status === 'confirmed' && local<booking.check_out_date; }
+  function escapeText(value) { const span=document.createElement('span'); span.textContent=String(value); return span.innerHTML; }
 
   async function cancelBooking(elements, button) {
     const bookingId = button.dataset.bookingId;
@@ -280,11 +355,10 @@
     const room = booking.room;
 
     if (!room) {
-      return 'Phòng #' + booking.room_id;
+      return 'Thông tin phòng';
     }
 
-    return 'Phòng ' + room.room_number
-      + (room.room_type ? ' — ' + room.room_type.name : '')
+    return (room.room_type ? room.room_type.name : 'Thông tin phòng')
       + (room.branch ? ' tại ' + room.branch.name : '');
   }
 
@@ -313,6 +387,7 @@
     return {
       unpaid: 'Chưa thanh toán',
       pending: 'Đang xử lý',
+      partially_paid: 'Đã đặt cọc',
       paid: 'Đã thanh toán',
       failed: 'Thất bại',
       refunded: 'Đã hoàn tiền'
