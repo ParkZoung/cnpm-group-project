@@ -85,6 +85,15 @@
                 <span class="room-amenities-placeholder">Đang tải danh sách tiện nghi...</span>
               </div>
             </fieldset>
+            <fieldset class="room-images-fieldset">
+              <legend>Ảnh phòng</legend>
+              <p>Chọn tối đa 5 ảnh JPG, PNG hoặc WebP mỗi lần; mỗi ảnh không quá 5 MB. Ảnh đầu tiên sẽ là ảnh đại diện.</p>
+              <label class="room-image-picker" for="room-images">Chọn ảnh từ máy</label>
+              <input type="file" id="room-images" accept="image/jpeg,image/png,image/webp" multiple>
+              <div id="room-image-feedback" class="room-image-feedback" aria-live="polite"></div>
+              <div id="room-image-preview" class="room-image-grid"></div>
+              <div id="room-existing-images" class="room-image-grid"></div>
+            </fieldset>
           </div>
 
           <div style="margin-top: 14px; display:flex; gap:10px; align-items:center;">
