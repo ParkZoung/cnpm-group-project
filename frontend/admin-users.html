@@ -73,7 +73,7 @@
         <div class="users-toolbar">
           <label class="users-search">
             <span>⌕</span>
-            <input id="inputSearch" type="search" placeholder="Tìm theo họ tên hoặc số điện thoại..." autocomplete="off">
+            <input id="inputSearch" type="search" placeholder="Tìm theo họ tên, email hoặc số điện thoại..." autocomplete="off">
           </label>
           <select id="selectRoleFilter" aria-label="Lọc theo vai trò">
             <option value="">Tất cả vai trò</option>
@@ -115,7 +115,7 @@
         <div id="accountFields" class="users-form-grid">
           <label>Email <input id="profileEmail" type="text" readonly></label>
         </div>
-        <p id="accountHint" class="users-form-hint">Admin frontend không tạo Auth user. Email không được lưu trong <code>public.profiles</code> nên không thể truy xuất từ màn hình này.</p>
+        <p id="accountHint" class="users-form-hint">Email đăng nhập được đọc an toàn từ Supabase Auth và chỉ hiển thị cho quản trị viên.</p>
         <div class="users-form-grid">
           <label>Họ và tên <input id="profileFullName" type="text" maxlength="120" readonly></label>
           <label>Số điện thoại <input id="profilePhone" type="tel" maxlength="20" readonly></label>
