@@ -7,7 +7,8 @@
   <title>GoStay - Lịch sử đặt phòng</title>
   <link rel="stylesheet" href="css/base.css">
   <link rel="stylesheet" href="css/duy.css">
-  <style>.users-modal[hidden]{display:none}.users-modal{position:fixed;z-index:1000;inset:0;display:grid;place-items:center;padding:20px}.users-modal-backdrop{position:absolute;inset:0;background:#0f172acc}.users-modal-card{position:relative;width:min(620px,100%);max-height:90vh;overflow:auto;padding:28px;border-radius:16px;background:#fff}.users-icon-btn{position:absolute;right:15px;top:12px;border:0;background:none;font-size:28px;cursor:pointer}.checkin-options{display:flex;gap:10px;margin:18px 0}.checkin-options button,.checkin-action{padding:11px 16px;border:1px solid #0f766e;border-radius:8px;background:#fff;color:#0f766e;font-weight:700;cursor:pointer}.checkin-options button.selected,.checkin-action{color:#fff;background:#0f766e}.vietqr-image{display:block;width:min(360px,100%);margin:16px auto}.checkin-qr{display:flex;justify-content:center;min-height:280px;margin:16px auto}.checkin-qr img,.checkin-qr canvas{display:block}.checkin-qr-error{min-height:0;color:#b91c1c;text-align:center}.checkin-code{font:700 20px monospace;text-align:center;letter-spacing:.08em}</style>
+  <link rel="stylesheet" href="css/customer-luxury.css">
+  <style>.users-modal[hidden]{display:none}.users-modal{position:fixed;z-index:1000;inset:0;display:grid;place-items:center;padding:20px}.users-modal-backdrop{position:absolute;inset:0;background:rgba(7,30,48,.72);backdrop-filter:blur(6px)}.users-modal-card{position:relative;width:min(820px,100%);max-height:92vh;overflow:auto;padding:34px;border:1px solid rgba(255,255,255,.7);border-radius:24px;background:#fff;box-shadow:0 30px 80px rgba(7,30,48,.3)}.users-icon-btn{position:absolute;right:18px;top:16px;display:grid;width:38px;height:38px;place-items:center;border:1px solid #dce8e8;border-radius:50%;background:#f7faf9;font-size:24px;cursor:pointer}.checkin-options{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin:22px 0}.checkin-options button,.checkin-action{min-height:48px;padding:11px 18px;border:1px solid #0f766e;border-radius:12px;background:#fff;color:#0f766e;font-weight:750;cursor:pointer;transition:.2s ease}.checkin-options button:hover,.checkin-options button.selected,.checkin-action{color:#fff;background:#0f766e;box-shadow:0 8px 20px rgba(15,118,110,.18)}.vietqr-image{display:block;width:min(340px,100%);margin:20px auto 12px;border:10px solid #fff;border-radius:18px;box-shadow:0 10px 35px rgba(7,30,48,.12)}.vietqr-result{text-align:center}.vietqr-loading{padding:34px;color:#64748b;text-align:center}.checkin-qr{display:flex;justify-content:center;min-height:280px;margin:16px auto}.checkin-qr img,.checkin-qr canvas{display:block}.checkin-qr-error{min-height:0;color:#b91c1c;text-align:center}.checkin-code{font:700 20px monospace;text-align:center;letter-spacing:.08em}@media(max-width:560px){.users-modal-card{padding:26px 18px;border-radius:18px}.checkin-options{grid-template-columns:1fr}}</style>
 </head>
 <body>
   <header class="site-header">
@@ -27,6 +28,8 @@
         <a class="btn btn-primary" href="register.html">Đăng ký</a>
       </div>
     </div>
+  </header>
+
     <div id="online-checkin-modal" class="users-modal" hidden>
       <div class="users-modal-backdrop" data-close-checkin></div>
       <section class="users-modal-card" role="dialog" aria-modal="true" aria-labelledby="online-checkin-title">
@@ -35,8 +38,6 @@
         <div id="online-checkin-content"></div>
       </section>
     </div>
-  </header>
-
   <main class="container page-main-wrap">
     <div class="page-header-block">
       <h2 class="page-main-title">Lịch sử giao dịch đặt phòng</h2>

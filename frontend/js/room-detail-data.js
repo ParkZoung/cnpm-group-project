@@ -221,13 +221,16 @@
     elements.roomTypeDescription.textContent =
       cleanDisplayText(room.room_type.description) || 'Thông tin hạng phòng đang được cập nhật.';
 
+    const displayAmenities = buildDisplayAmenities(room);
     elements.amenitiesList.replaceChildren();
-    (room.amenities || []).forEach(function (amenity) {
+    displayAmenities.forEach(function (amenity) {
       const item = document.createElement('li');
       item.textContent = '✓ ' + amenity.name;
       elements.amenitiesList.appendChild(item);
+      item.textContent = amenity.name;
+      item.dataset.icon = amenityIcon(amenity.name);
     });
-    elements.amenities.hidden = !room.amenities || room.amenities.length === 0;
+    elements.amenities.hidden = false;
 
     elements.price.textContent = formatRoomPrice(room.price_per_night);
     elements.loading.hidden = true;
@@ -281,6 +284,59 @@
 
   function formatRoomPrice(price) {
     return Number(price || 0).toLocaleString('vi-VN') + ' VNĐ / đêm';
+  }
+
+  function buildDisplayAmenities(room) {
+    const catalog = new Map();
+    (room.amenities || []).forEach(function (amenity) {
+      catalog.set(String(amenity.name).toLocaleLowerCase('vi'), amenity);
+    });
+
+    const common = [
+      { name: 'Wi-Fi tốc độ cao' },
+      { name: 'Điều hòa không khí' },
+      { name: 'TV màn hình phẳng' },
+      { name: 'Phòng tắm riêng' }
+    ];
+    const typeName = String(room.room_type && room.room_type.name || '').toLowerCase();
+    const className = String(room.room_class && room.room_class.name || '').toLowerCase();
+    const tailored = [];
+
+    if (typeName.includes('family')) {
+      tailored.push({ name: 'Không gian gia đình' }, { name: 'Khu vực sinh hoạt' });
+    } else if (typeName.includes('suite')) {
+      tailored.push({ name: 'Khu tiếp khách riêng' }, { name: 'Bàn làm việc' });
+    } else {
+      tailored.push({ name: 'Tủ quần áo' }, { name: 'Bàn làm việc' });
+    }
+
+    if (['deluxe', 'premium', 'luxury'].some(function (name) { return className.includes(name); })) {
+      tailored.push({ name: 'Minibar trong phòng' }, { name: 'Áo choàng & dép đi trong phòng' });
+    }
+
+    common.concat(tailored).forEach(function (amenity) {
+      const key = amenity.name.toLocaleLowerCase('vi');
+      if (!catalog.has(key)) catalog.set(key, amenity);
+    });
+    return Array.from(catalog.values()).slice(0, 8);
+  }
+
+  function amenityIcon(name) {
+    const value = String(name || '').toLocaleLowerCase('vi');
+    if (value.includes('wi-fi') || value.includes('wifi')) return '📶';
+    if (value.includes('điều hòa')) return '❄️';
+    if (value.includes('tv') || value.includes('tivi')) return '📺';
+    if (value.includes('tắm')) return '🚿';
+    if (value.includes('tiếp khách') || value.includes('sinh hoạt')) return '🛋️';
+    if (value.includes('làm việc')) return '💼';
+    if (value.includes('gia đình')) return '👪';
+    if (value.includes('minibar')) return '🥤';
+    if (value.includes('tủ quần áo')) return '👔';
+    if (value.includes('áo choàng') || value.includes('dép')) return '🩴';
+    if (value.includes('đỗ xe')) return '🅿️';
+    if (value.includes('két')) return '🔐';
+    if (value.includes('ăn sáng') || value.includes('nhà hàng')) return '🍽️';
+    return '✨';
   }
 
   function cleanDisplayText(value) {

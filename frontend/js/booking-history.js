@@ -123,7 +123,15 @@
     appendCell(row, paymentStatusLabel(booking.payment_status) + ' ('
       + formatMoney(booking.paid_amount) + ' / ' + formatMoney(booking.total_amount) + ')');
 
+    const historyLabels = ['Mã đặt phòng', 'Phòng & chi nhánh', 'Thời gian lưu trú', 'Số khách', 'Tổng chi phí', 'Trạng thái', 'Thanh toán'];
+    Array.from(row.cells).forEach(function (cell, index) {
+      cell.dataset.label = historyLabels[index];
+      cell.classList.add('history-cell-' + (index + 1));
+    });
+
     const actionCell = document.createElement('td');
+    actionCell.className = 'history-actions';
+    actionCell.dataset.label = 'Thao tác';
 
     if (CANCELLABLE_STATUSES.has(booking.booking_status)
       && UUID_PATTERN.test(String(booking.id || ''))) {
@@ -181,6 +189,7 @@
     if (!booking) return;
     const modal = document.getElementById('online-checkin-modal');
     const content = document.getElementById('online-checkin-content');
+    content.classList.remove('qr-ready');
     modal.hidden = false;
     if (booking.online_checkin && booking.online_checkin.status === 'approved') {
       if (new Date(booking.online_checkin.expires_at) <= new Date()) {
@@ -208,6 +217,7 @@
         if (started.error) throw started.error;
         const qr = await window.GoStayApiClient.authenticatedRequest('/vietqr', { booking_id: booking.id });
         if (qr.error) throw qr.error;
+        content.classList.add('qr-ready');
         document.getElementById('vietqr-result').innerHTML = '<img class="vietqr-image" src="' + qr.data.qr_url + '" alt="VietQR thanh toán"><p>Chuyển <strong>' + formatMoney(qr.data.amount) + '</strong> với nội dung <strong>' + qr.data.booking_code + '</strong>.</p><button id="claim-payment" class="checkin-action">Tôi đã thanh toán</button>';
         document.getElementById('claim-payment').addEventListener('click', async () => {
           const claimed = await window.GoStayBookingApi.claimOnlinePayment(booking.id);
@@ -217,6 +227,13 @@
         });
       } catch (error) { document.getElementById('vietqr-result').textContent = error.message || 'Không thể tạo VietQR.'; }
     });
+
+    // Generate the QR immediately after the guest explicitly chooses an option.
+    const startButton = document.getElementById('start-online-checkin');
+    content.querySelectorAll('[data-option]').forEach(button => button.addEventListener('click', () => {
+      document.getElementById('vietqr-result').innerHTML = '<p class="vietqr-loading">&#272;ang c&#7853;p nh&#7853;t m&#227; VietQR...</p>';
+      startButton.click();
+    }));
   }
 
   function closeOnlineCheckin() { document.getElementById('online-checkin-modal').hidden = true; }

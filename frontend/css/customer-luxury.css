@@ -1,0 +1,142 @@
+/* Shared GoStay luxury language for all customer-facing inner pages. */
+:root { --luxury-ink:#102f3b; --luxury-deep:#092f39; --luxury-teal:#0c5557; --luxury-gold:#b89152; --luxury-gold-light:#ead7ac; --luxury-paper:#f7f9f8; --luxury-line:#dbe5e2; }
+body:not(.admin-dashboard-body) { color:var(--luxury-ink); background:linear-gradient(180deg,#f4f8f7 0,#fbfcfb 420px,#f7f9f8 100%); }
+body:not(.admin-dashboard-body),body:not(.admin-dashboard-body) button,body:not(.admin-dashboard-body) input,body:not(.admin-dashboard-body) select,body:not(.admin-dashboard-body) textarea { font-family:'Be Vietnam Pro','Segoe UI',Arial,sans-serif; }
+
+body:not(.admin-dashboard-body) .site-header { position:relative; z-index:200; border-bottom:1px solid rgba(16,47,59,.08); background:rgba(255,255,255,.95); box-shadow:0 8px 30px rgba(9,47,57,.035); backdrop-filter:blur(16px); }
+body:not(.admin-dashboard-body) .main-nav a { position:relative; color:#52676e; font-size:13px; }
+body:not(.admin-dashboard-body) .main-nav a::after { content:""; position:absolute; right:50%; bottom:-10px; left:50%; height:1px; background:var(--luxury-gold); transition:.2s ease; }
+body:not(.admin-dashboard-body) .main-nav a:hover,body:not(.admin-dashboard-body) .main-nav a.active-nav { color:var(--luxury-ink); }
+body:not(.admin-dashboard-body) .main-nav a:hover::after,body:not(.admin-dashboard-body) .main-nav a.active-nav::after { right:8px; left:8px; }
+body:not(.admin-dashboard-body) .auth .btn { min-height:42px; border-radius:2px; }
+body:not(.admin-dashboard-body) .auth .btn-primary { border-color:var(--luxury-teal); background:var(--luxury-teal); }
+body:not(.admin-dashboard-body) .auth .btn-outline { border-color:#ccd9d6; color:var(--luxury-ink); }
+
+.page-header-block,.search-page-header { margin-top:48px; }
+.page-main-title,.rooms-page-title,.search-title,.offers .section-header h1 { color:var(--luxury-ink)!important; font-size:clamp(31px,3vw,43px)!important; font-weight:650!important; letter-spacing:-.045em!important; }
+.page-header-block::before,.rooms-page-title::before,.search-title::before,.offers .section-header h1::before { content:"GOSTAY COLLECTION"; display:block; margin-bottom:9px; color:var(--luxury-gold); font-size:9px; font-weight:800; letter-spacing:.2em; }
+.page-main-desc { color:#708087; line-height:1.65; }
+
+/* Search, filters and room catalog */
+.search-page-container { max-width:1280px; }
+.filter-sidebar { border:1px solid var(--luxury-line)!important; border-radius:3px!important; background:#fff!important; box-shadow:0 14px 36px rgba(9,47,57,.06)!important; }
+.filter-sidebar h2 { padding-bottom:15px; border-bottom:1px solid var(--luxury-line); font-size:17px!important; }
+.filter-group label { color:#60747a; }
+.filter-group input,.filter-group select,.room-variant-select { min-height:46px; border-color:#d3dfdc!important; border-radius:2px!important; background:#fcfdfd!important; }
+.filter-group input:focus,.filter-group select:focus,.room-variant-select:focus { border-color:var(--luxury-gold)!important; box-shadow:0 0 0 3px rgba(184,145,82,.1)!important; }
+.btn-apply-filter,.btn-view-detail,.btn-book-now { border-radius:2px!important; background:var(--luxury-teal)!important; box-shadow:none!important; letter-spacing:.02em; }
+.room-search-card { overflow:hidden; border:0!important; border-radius:3px!important; background:#fff; box-shadow:0 12px 34px rgba(9,47,57,.08)!important; transition:transform .25s,box-shadow .25s; }
+.room-search-card:hover { transform:translateY(-5px); box-shadow:0 20px 44px rgba(9,47,57,.13)!important; }
+.room-search-card img { transition:transform .5s ease; }
+.room-search-card:hover img { transform:scale(1.035); }
+.room-search-body h3 { color:var(--luxury-ink)!important; font-size:19px!important; }
+.room-search-body .room-price { color:var(--luxury-teal)!important; }
+
+/* Room detail */
+.detail-main,.booking-widget { border-radius:3px!important; box-shadow:0 18px 48px rgba(9,47,57,.08)!important; }
+.detail-header-info h1 { color:var(--luxury-ink); font-weight:650; letter-spacing:-.04em; }
+.detail-meta-row p { border:1px solid #dce8e5; border-radius:2px!important; background:#f4f8f7!important; }
+.room-spec,.detail-description,.detail-highlights article,.detail-amenities,.detail-policies p { border-radius:3px!important; }
+.room-spec { border-color:var(--luxury-line); background:#fff; }
+.detail-highlights article>span { border-radius:2px; color:#9d763b; background:#f3ead9; }
+.amenities-list li::before { border-radius:2px!important; background:#f3ead9!important; }
+.detail-policies p { border-left-color:var(--luxury-gold)!important; }
+.widget-price { color:var(--luxury-teal)!important; }
+.booking-form input { border-radius:2px!important; }
+
+/* Cart, checkout, history and success */
+.cart-bundle-item,.checkout-form-panel,.billing-summary-card,.success-card-panel,.history-grid-table tbody tr { border-radius:3px!important; border-color:var(--luxury-line)!important; box-shadow:0 15px 40px rgba(9,47,57,.07)!important; }
+.cart-bundle-item:hover,.history-grid-table tbody tr:hover { box-shadow:0 22px 48px rgba(9,47,57,.11)!important; }
+.checkout-panel-heading>span,.success-check-icon { border-radius:2px!important; background:var(--luxury-teal)!important; }
+.checkout-field input,.checkout-field textarea { border-radius:2px!important; }
+.checkout-field input:focus,.checkout-field textarea:focus { border-color:var(--luxury-gold)!important; box-shadow:0 0 0 3px rgba(184,145,82,.1)!important; }
+.btn-checkout-action,.btn-checkout-action-submit,.btn-home-redirect { border-radius:2px!important; background:var(--luxury-teal)!important; box-shadow:none!important; }
+.booking-benefits,.reception-payment-note { border-color:#d5e3df; background:#f2f7f5; }
+.booking-id-highlight { border-color:var(--luxury-gold); border-radius:2px; background:#faf6ed; }
+.history-grid-table .history-cell-1 { background:linear-gradient(135deg,#f2f7f5,#faf8f2)!important; }
+.history-grid-table .btn-remove-cart { border-radius:2px!important; }
+.history-grid-table .history-actions { min-width:0; max-width:100%; }
+.history-grid-table .history-actions .btn-remove-cart { box-sizing:border-box; max-width:100%; white-space:normal!important; }
+.history-grid-table .history-actions [data-action="online-checkin"] { border-color:var(--luxury-teal)!important; color:#fff!important; background:var(--luxury-teal)!important; }
+.history-grid-table .history-actions [data-action="online-checkin"]:hover { color:var(--luxury-teal)!important; background:#fff!important; }
+.history-grid-table .history-actions [data-action="cancel-booking"] { border-color:#d8aaa4!important; color:#a9473e!important; background:#fff!important; }
+.history-grid-table .history-actions:not(:has(button)) { align-items:center!important; justify-content:center!important; color:#89999d; }
+
+/* Simple luxury booking history */
+@media(min-width:1101px){
+  .history-grid-table tbody { grid-template-columns:1fr!important; gap:14px!important; }
+  .history-grid-table tbody tr { grid-template-columns:minmax(185px,.8fr) minmax(250px,1.4fr) repeat(5,minmax(115px,.65fr)) minmax(170px,.9fr)!important; align-items:center; padding:0 22px!important; }
+  .history-grid-table .history-cell-1 { grid-column:auto!important; align-self:stretch; margin:0 8px 0 -22px!important; padding:22px!important; border-right:1px solid var(--luxury-line); background:#f6f8f6!important; }
+  .history-grid-table .history-cell-2 { grid-column:auto!important; font-size:14px!important; }
+  .history-grid-table td { min-height:94px; padding:18px 12px!important; border:0!important; }
+  .history-grid-table td::before { margin-bottom:6px!important; }
+  .history-grid-table .history-cell-3,.history-grid-table .history-cell-4,.history-grid-table .history-cell-5,.history-grid-table .history-cell-6,.history-grid-table .history-cell-7 { border-left:1px solid #edf1ef!important; }
+  .history-grid-table .history-cell-5 { font-size:14px!important; }
+  .history-grid-table .history-actions { grid-column:auto!important; flex-direction:column!important; align-items:stretch!important; gap:7px!important; padding-left:14px!important; border-left:1px solid #edf1ef!important; }
+  .history-grid-table .history-actions .btn-remove-cart { width:100%!important; margin:0!important; padding:8px 10px!important; font-size:11px!important; text-align:center; }
+}
+
+/* Check-in modal must remain viewport-bound and compact. */
+.users-modal { position:fixed!important; z-index:5000!important; inset:0!important; width:100vw!important; height:100dvh!important; padding:24px!important; overflow:auto!important; }
+.users-modal-card { width:min(650px,100%)!important; max-height:calc(100dvh - 48px)!important; margin:auto!important; padding:32px!important; border-radius:4px!important; overflow:auto!important; }
+.users-modal-card h2 { margin:0 48px 8px 0; color:var(--luxury-ink); font-size:25px; letter-spacing:-.03em; }
+.users-icon-btn { border-radius:2px!important; }
+.checkin-qr { min-height:0!important; margin:12px auto!important; }
+.checkin-qr img,.checkin-qr canvas { width:min(280px,70vw)!important; height:auto!important; }
+.checkin-code { overflow-wrap:anywhere; font-size:15px!important; }
+
+@media(max-width:1400px) and (min-width:1101px){
+  .history-grid-table tbody tr { grid-template-columns:170px minmax(220px,1.4fr) repeat(4,minmax(100px,.65fr)) minmax(160px,.9fr)!important; }
+  .history-grid-table .history-cell-4 { display:none!important; }
+}
+
+@media(min-width:761px) and (max-width:1100px){
+  .history-table-container { width:100%; overflow:visible!important; }
+  .history-grid-table tbody { grid-template-columns:1fr!important; }
+  .history-grid-table tbody tr { width:100%; grid-template-columns:repeat(2,minmax(0,1fr))!important; }
+  .history-grid-table .history-actions { grid-column:1/-1!important; display:flex!important; flex-direction:row!important; align-items:stretch!important; gap:10px!important; width:100%; padding-top:14px!important; }
+  .history-grid-table .history-actions::before { display:none!important; }
+  .history-grid-table .history-actions .btn-remove-cart { flex:1 1 0; width:auto!important; min-width:0; margin:0!important; padding:10px 12px!important; text-align:center; }
+}
+
+@media(max-width:760px){
+  .history-grid-table .history-actions { flex-wrap:wrap; width:100%; }
+  .history-grid-table .history-actions .btn-remove-cart { flex:1 1 150px; width:auto!important; margin:0!important; text-align:center; }
+}
+
+@media(min-width:1101px){
+  .history-grid-table .history-actions { padding-right:14px!important; }
+  .history-grid-table .history-actions .btn-remove-cart { width:calc(100% - 10px)!important; max-width:calc(100% - 10px)!important; align-self:flex-start; }
+}
+
+/* Account pages */
+.auth-page-container { position:relative; isolation:isolate; min-height:calc(100vh - 82px); background:linear-gradient(90deg,rgba(5,29,39,.78),rgba(5,29,39,.42)),url("https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?auto=format&fit=crop&w=1900&q=85") center/cover fixed!important; }
+.auth-page-container::before { content:"GOSTAY \00B7  PRIVATE RETREATS"; position:absolute; left:clamp(28px,7vw,110px); top:50%; z-index:-1; max-width:430px; color:rgba(255,255,255,.78); font-size:11px; font-weight:700; letter-spacing:.22em; }
+.auth-card { border:1px solid rgba(234,215,172,.65)!important; border-radius:3px!important; background:rgba(255,255,255,.97)!important; box-shadow:0 28px 70px rgba(3,24,32,.28)!important; }
+.auth-card h2 { color:var(--luxury-ink)!important; font-size:30px!important; letter-spacing:-.04em; }
+.auth-form input { border-radius:2px!important; border-color:#d5dfdc!important; }
+.auth-form input:focus { border-color:var(--luxury-gold)!important; box-shadow:0 0 0 3px rgba(184,145,82,.11)!important; }
+.btn-auth-submit { border-radius:2px!important; background:var(--luxury-teal)!important; box-shadow:none!important; }
+.btn-google-login { border-radius:2px!important; }
+.auth-footer-text a { color:var(--luxury-teal)!important; }
+
+/* Offers */
+.offers { padding-top:70px!important; }
+.offers .section-header { align-items:end; margin-bottom:28px; }
+.offers .recommend-card { height:340px; border-radius:3px; box-shadow:0 16px 40px rgba(9,47,57,.1); }
+.offers .recommend-card::after { background:linear-gradient(180deg,transparent 20%,rgba(5,29,39,.88)); }
+.offers .recommend-content { top:auto; bottom:26px; }
+.offers .recommend-content h3 { font-size:22px; }
+.offers .btn-cta { border-radius:2px; background:var(--luxury-gold); color:#17313a; }
+
+body:not(.admin-dashboard-body) .site-footer { border-top:3px solid var(--luxury-gold); background:var(--luxury-deep); }
+
+@media(max-width:900px){
+  .auth-page-container::before { display:none; }
+  .offers .recommend-card { height:290px; }
+}
+@media(max-width:600px){
+  .page-header-block,.search-page-header { margin-top:32px; }
+  .offers { padding-top:42px!important; }
+  .auth-page-container { padding:30px 16px; background-attachment:scroll!important; }
+}

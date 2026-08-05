@@ -8,6 +8,8 @@
   <link rel="stylesheet" href="css/base.css">
   <link rel="stylesheet" href="css/home.css">
   <link rel="stylesheet" href="css/dung.css">
+  <link rel="stylesheet" href="css/customer-luxury.css">
+  <link rel="stylesheet" href="css/home-luxury.css">
 </head>
 <body class="home-page">
   <header class="site-header">
@@ -17,7 +19,7 @@
       </a>
 
       <nav class="main-nav">
-        <a href="index.html">Trang chủ</a>
+        <a href="index.html" class="active-nav">Trang chủ</a>
         <a href="search.html">Đặt phòng</a>
         <a href="booking-history.html">Lịch sử đặt phòng</a>
       </nav>
@@ -34,9 +36,12 @@
       <div class="hero-inner container">
         <div class="hero-content">
           <div class="eyebrow">CHÀO MỪNG ĐẾN VỚI GOSTAY</div>
-          <h1>GoStay – Kỳ nghỉ sang trọng, đặt phòng dễ dàng</h1>
+          <h1><span class="hero-brand-word">GoStay</span><span class="hero-title-copy">Kỳ nghỉ sang trọng, đặt phòng dễ dàng</span></h1>
           <p>Tìm kiếm phòng, xem thông tin rõ ràng và đặt phòng nhanh tại hệ thống chi nhánh GoStay.</p>
-
+          <div class="hero-actions">
+            <a class="hero-primary-action" href="search.html">Khám phá phòng nghỉ</a>
+            <a class="hero-secondary-action" href="#gostay-destinations">Xem điểm đến <span aria-hidden="true">↓</span></a>
+          </div>
         </div>
 
 
@@ -147,9 +152,9 @@
       </div>
     </section>
 
-    <section class="section container">
+    <section class="section container luxury-section" id="gostay-destinations">
       <div class="section-header">
-        <h2>Chi nhánh GoStay nổi bật</h2>
+        <div><span class="section-kicker">BỘ SƯU TẬP ĐIỂM ĐẾN</span><h2>Những dấu ấn GoStay nổi bật</h2><p>Mỗi điểm đến là một câu chuyện, được chọn lọc cho hành trình đáng nhớ của bạn.</p></div>
 
       </div>
 
@@ -180,9 +185,20 @@
       </div>
     </section>
 
-    <section class="section container">
+    <section class="signature-experience container" aria-label="Trải nghiệm đặc trưng GoStay">
+      <div class="signature-image"><span>THE GOSTAY SIGNATURE</span></div>
+      <div class="signature-content">
+        <span class="section-kicker">NGHỈ DƯỠNG THEO CÁCH RIÊNG</span>
+        <h2>Tinh tế trong từng khoảnh khắc</h2>
+        <p>Từ không gian được chăm chút đến quy trình đặt phòng liền mạch, GoStay mang lại sự thoải mái nhẹ nhàng trước, trong và sau mỗi chuyến đi.</p>
+        <ul><li>Không gian nghỉ dưỡng được tuyển chọn</li><li>Tiện nghi phù hợp từng hạng phòng</li><li>Check-in online nhanh chóng và an toàn</li></ul>
+        <a href="search.html">Tìm kỳ nghỉ của bạn <span aria-hidden="true">→</span></a>
+      </div>
+    </section>
+
+    <section class="section container luxury-section featured-luxury">
       <div class="section-header">
-        <h2>Phòng nổi bật</h2>
+        <div><span class="section-kicker">PHÒNG & SUITE</span><h2>Không gian được yêu thích</h2><p>Những lựa chọn nổi bật cho một kỳ nghỉ trọn vẹn.</p></div>
         <a class="more" href="search.html">Xem tất cả &gt;</a>
       </div>
 

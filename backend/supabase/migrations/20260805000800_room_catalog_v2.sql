@@ -31,9 +31,20 @@ ALTER TABLE public.rooms
   ADD COLUMN IF NOT EXISTS room_class_id bigint REFERENCES public.room_classes(id) ON DELETE RESTRICT,
   ADD COLUMN IF NOT EXISTS inventory_count integer NOT NULL DEFAULT 1 CHECK (inventory_count > 0);
 
-ALTER TABLE public.rooms
-  ADD CONSTRAINT rooms_branch_type_class_key
-  UNIQUE (branch_id, room_type_id, room_class_id);
+DO $$
+BEGIN
+  IF NOT EXISTS (
+    SELECT 1
+    FROM pg_catalog.pg_constraint
+    WHERE conrelid = 'public.rooms'::regclass
+      AND conname = 'rooms_branch_type_class_key'
+  ) THEN
+    ALTER TABLE public.rooms
+      ADD CONSTRAINT rooms_branch_type_class_key
+      UNIQUE (branch_id, room_type_id, room_class_id);
+  END IF;
+END;
+$$;
 
 -- Kept nullable only as a compatibility field for the current frontend/API contract.
 -- Catalog v2 never writes a physical room number.
