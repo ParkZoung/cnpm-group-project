@@ -52,4 +52,17 @@ describe('staff/payment migration contract', () => {
     assert.match(staffDashboard, /raw\.slice\(prefix\.length\)/);
     assert.doesNotMatch(staffDashboard, /raw\.slice\(16\)/);
   });
+
+  test('shows the guest-facing room number instead of the internal room id', () => {
+    assert.match(staffDashboard, /roomDisplayName\(booking && booking\.room, row\.room_id\)/);
+    assert.match(staffDashboard, /room\.room_number/);
+    assert.doesNotMatch(staffDashboard, /Phòng #\$\{escapeHtml\(row\.room_id\)\}/);
+  });
+
+  test('disables arrival confirmation outside the booked stay dates', () => {
+    assert.match(staffDashboard, /today < booking\.check_in_date/);
+    assert.match(staffDashboard, /today >= booking\.check_out_date/);
+    assert.match(staffDashboard, /canConfirmArrival \? '' : ' disabled'/);
+    assert.match(staffDashboard, /if \(!canConfirmArrival\) return/);
+  });
 });
