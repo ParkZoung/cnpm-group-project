@@ -193,12 +193,13 @@
 
   function normalizeToken(value) {
     const raw = String(value || '').trim();
-    return raw.toLowerCase().startsWith('gostay:checkin:') ? raw.slice(16) : raw;
+    const prefix = 'gostay:checkin:';
+    return raw.toLowerCase().startsWith(prefix) ? raw.slice(prefix.length) : raw;
   }
 
   async function lookupToken(value) {
     const token = normalizeToken(value);
-    if (!/^[0-9a-f-]{36}$/i.test(token)) { $('scanResult').textContent='Mã QR không hợp lệ.'; return; }
+    if (!/^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(token)) { $('scanResult').textContent='Mã QR không hợp lệ.'; return; }
     const result = await window.gostaySupabase.rpc('staff_lookup_checkin_token', { p_token:token });
     const row = Array.isArray(result.data) ? result.data[0] : result.data;
     if (result.error || !row) { $('scanResult').textContent='Không tìm thấy credential hợp lệ cho chi nhánh này.'; return; }

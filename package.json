@@ -19,5 +19,8 @@
   "devDependencies": {
     "@playwright/test": "^1.55.0",
     "supabase": "^2.111.0"
+  },
+  "dependencies": {
+    "qrcodejs": "^1.0.0"
   }
 }
