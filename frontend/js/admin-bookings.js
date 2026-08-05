@@ -403,7 +403,7 @@
 
   async function cancelBooking(id) {
     if (state.isUpdating) return;
-    if (!window.confirm('Bạn có muốn hủy đặt phòng này không?')) return;
+    if (!(await window.GoStayDialog.confirm('Bạn có muốn hủy đặt phòng này không?'))) return;
 
     setMutationLock(true);
 

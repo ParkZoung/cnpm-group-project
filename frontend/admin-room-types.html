@@ -202,6 +202,42 @@
 
         <main class="admin-page-container">
 
+            <section class="admin-card-section" style="border-left:4px solid #12a6b8;">
+                <div class="section-header-row"><h2>Cần chỉnh riêng theo chi nhánh?</h2></div>
+                <p>Trang này chỉ quản lý danh mục mẫu dùng chung. Để sửa tên phòng, loại, hạng, giá, số lượng và trạng thái riêng của từng chi nhánh, mở trang cấu hình theo chi nhánh.</p>
+                <a class="btn-primary-admin spec-blue" href="admin-products.html">Mở cấu hình phòng theo chi nhánh</a>
+            </section>
+
+            <section class="admin-card-section">
+                <div class="section-header-row"><h2>Quản lý hạng phòng</h2></div>
+                <form id="roomClassForm" class="new-grid-form">
+                    <input type="hidden" id="roomClassId">
+                    <div class="form-group">
+                        <label for="roomClassName">Tên hạng phòng *</label>
+                        <input id="roomClassName" type="text" placeholder="Ví dụ: Deluxe" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="roomClassSort">Thứ tự hiển thị</label>
+                        <input id="roomClassSort" type="number" min="0" value="0">
+                    </div>
+                    <div class="form-group">
+                        <label for="roomClassStatus">Trạng thái</label>
+                        <select id="roomClassStatus"><option value="active">Đang hoạt động</option><option value="inactive">Ngừng hoạt động</option></select>
+                    </div>
+                    <div class="form-group full-width">
+                        <label for="roomClassDescription">Mô tả</label>
+                        <textarea id="roomClassDescription" rows="2"></textarea>
+                    </div>
+                    <div class="form-actions full-width">
+                        <button class="btn-primary-admin spec-blue" type="submit">Lưu hạng phòng</button>
+                        <button class="btn-action delete spec-gray" type="reset">Làm mới</button>
+                    </div>
+                </form>
+                <div class="admin-table-wrapper">
+                    <table class="admin-table"><thead><tr><th>Tên hạng</th><th>Mô tả</th><th>Trạng thái</th><th>Thao tác</th></tr></thead><tbody id="roomClassTable"></tbody></table>
+                </div>
+            </section>
+
 
             <section class="admin-card-section">
                 <div class="section-header-row">
@@ -317,6 +353,7 @@
     <script src="js/config/environment.js"></script>
     <script src="js/core/api-client.js"></script>
     <script src="js/supabase-client.js"></script>
+    <script src="js/ui-dialog.js"></script>
 
 
 
@@ -325,6 +362,7 @@
 
 
     <script src="js/admin-room-types.js"></script>
+    <script src="js/admin-room-classes.js"></script>
 
 </body>
 

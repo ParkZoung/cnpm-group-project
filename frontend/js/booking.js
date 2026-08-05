@@ -184,9 +184,10 @@
           payment_status,
           room:rooms!bookings_room_id_fkey(
             id,
-            room_number,
+            name,
             branch:branches!rooms_branch_id_fkey(id, name),
-            room_type:room_types!rooms_room_type_id_fkey(id, name)
+            room_type:room_types!rooms_room_type_id_fkey(id, name),
+            room_class:room_classes!rooms_room_class_id_fkey(id, name)
           )
         `)
         .eq('id', bookingId)
@@ -234,7 +235,7 @@
         || Number(cart.number_of_guests) <= 0
         || !cart.display
         || typeof cart.display !== 'object'
-        || !cart.display.room_number
+        || !cart.display.room_name
         || !cart.display.branch_name
         || !cart.display.room_type_name
         || !Number.isFinite(Number(cart.display.estimated_price_per_night))
@@ -284,7 +285,8 @@
   function renderCartSummary(elements, cart) {
     const display = cart.display;
     const lines = [
-      String(display.room_type_name).replace(/\s+\d+\s*$/, '').trim(),
+      String(display.room_name).replace(/\s+\d+\s*$/, '').trim(),
+      'Hạng: ' + String(display.room_class_name || 'Standard'),
       display.branch_name,
       'Nhận phòng: ' + formatDate(cart.check_in_date),
       'Trả phòng: ' + formatDate(cart.check_out_date),
@@ -306,7 +308,8 @@
   function renderBookingSuccess(elements, booking) {
     const room = booking.room;
     const roomDescription = room
-      ? (room.room_type ? room.room_type.name : 'Thông tin phòng')
+      ? (room.name || (room.room_type ? room.room_type.name : 'Thông tin phòng'))
+        + (room.room_class ? ' · Hạng ' + room.room_class.name : '')
         + (room.branch ? ' tại ' + room.branch.name : '')
       : 'Thông tin phòng';
 

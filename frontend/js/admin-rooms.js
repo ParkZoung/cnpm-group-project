@@ -21,6 +21,7 @@ function displayRoomName(name, roomTypeName) {
 
 let cachedBranches = [];
 let cachedRoomTypes = [];
+let cachedRoomClasses = [];
 let cachedAmenities = [];
 let amenitiesLoaded = false;
 let amenitySelectionEditable = false;
@@ -78,6 +79,20 @@ async function loadRoomReferences() {
   } else {
     cachedRoomTypes = roomTypes;
     fillSelectOptions("room-type", roomTypes, "-- Chọn loại phòng --");
+    fillSelectOptions("room-filter-type", roomTypes, "Tất cả loại phòng");
+  }
+
+  const { data: roomClasses, error: roomClassError } = await window.gostaySupabase
+    .from("room_classes")
+    .select("id, name")
+    .eq("status", "active")
+    .order("sort_order", { ascending: true });
+  if (roomClassError) {
+    console.error("[room_classes] Lỗi khi tải:", roomClassError.message);
+  } else {
+    cachedRoomClasses = roomClasses || [];
+    fillSelectOptions("room-class", cachedRoomClasses, "-- Chọn hạng phòng --");
+    fillSelectOptions("room-filter-class", cachedRoomClasses, "Tất cả hạng phòng");
   }
 
   const { data: amenities, error: amenityError } = await window.gostaySupabase
@@ -159,6 +174,8 @@ function getRoomFiltersState() {
   return {
     keyword: document.getElementById("room-search").value.trim(),
     branchId: document.getElementById("room-filter-branch").value,
+    roomTypeId: document.getElementById("room-filter-type").value,
+    roomClassId: document.getElementById("room-filter-class").value,
     status: document.getElementById("room-filter-status").value,
     sort: document.getElementById("room-sort").value,
   };
@@ -170,19 +187,23 @@ async function loadRooms(filters = {}) {
   let query = window.gostaySupabase
     .from("rooms")
     .select(
-      "id, branch_id, room_type_id, room_number, name, price_per_night, description, status, created_at, updated_at, branches(name), room_types(name)"
+      "id, branch_id, room_type_id, room_class_id, inventory_count, name, price_per_night, description, status, created_at, updated_at, branches(name), room_types(name), room_classes(name)"
     );
 
   if (filters.branchId) {
     query = query.eq("branch_id", filters.branchId);
   }
+  if (filters.roomTypeId) {
+    query = query.eq("room_type_id", filters.roomTypeId);
+  }
+  if (filters.roomClassId) {
+    query = query.eq("room_class_id", filters.roomClassId);
+  }
   if (filters.status) {
     query = query.eq("status", filters.status);
   }
   if (filters.keyword) {
-    query = query.or(
-      `name.ilike.%${filters.keyword}%,room_number.ilike.%${filters.keyword}%`
-    );
+    query = query.ilike("name", `%${filters.keyword}%`);
   }
 
   if (filters.sort === "price-asc") {
@@ -190,7 +211,7 @@ async function loadRooms(filters = {}) {
   } else if (filters.sort === "price-desc") {
     query = query.order("price_per_night", { ascending: false });
   } else {
-    query = query.order("room_number", { ascending: true });
+    query = query.order("name", { ascending: true });
   }
 
   const { data, error } = await query;
@@ -212,7 +233,7 @@ function renderRooms(rows) {
   if (rows.length === 0) {
     const emptyRow = document.createElement("tr");
     const emptyCell = document.createElement("td");
-    emptyCell.colSpan = 6;
+    emptyCell.colSpan = 7;
     emptyCell.textContent = "Không tìm thấy phòng phù hợp.";
     emptyRow.appendChild(emptyCell);
     tbody.appendChild(emptyRow);
@@ -235,6 +256,9 @@ function renderRooms(rows) {
 
     const roomTypeCell = document.createElement("td");
     roomTypeCell.textContent = row.room_types ? cleanCatalogText(row.room_types.name) : "";
+
+    const roomClassCell = document.createElement("td");
+    roomClassCell.textContent = row.room_classes ? cleanCatalogText(row.room_classes.name) : "";
 
     const branchCell = document.createElement("td");
     branchCell.textContent = row.branches ? cleanCatalogText(row.branches.name) : "";
@@ -278,6 +302,7 @@ function renderRooms(rows) {
     tr.append(
       nameCell,
       roomTypeCell,
+      roomClassCell,
       branchCell,
       priceCell,
       statusCell,
@@ -304,16 +329,10 @@ function sortRooms() {
 
 
 function viewRoomDetail(row) {
-  const statusInfo = ROOM_STATUS_LABELS[row.status] || { label: row.status };
-  alert(
-    `Tên phòng: ${displayRoomName(row.name, row.room_types && row.room_types.name)}\n` +
-    `Chi nhánh: ${row.branches ? cleanCatalogText(row.branches.name) : ""}\n` +
-    `Loại phòng: ${row.room_types ? cleanCatalogText(row.room_types.name) : ""}\n` +
-    `Giá / đêm: ${formatPrice(row.price_per_night)}\n` +
-    `Mô tả: ${cleanCatalogText(row.description) || "(không có)"}\n` +
-    `Trạng thái: ${statusInfo.label}\n` +
-    `Tạo lúc: ${formatDateTime(row.created_at)}\n` +
-    `Cập nhật lúc: ${formatDateTime(row.updated_at)}`
+  const params = new URLSearchParams({ id: String(row.id) });
+  window.GoStayDialog.preview(
+    'room-detail.html?' + params.toString(),
+    'Xem trước: ' + displayRoomName(row.name, row.room_types && row.room_types.name)
   );
 }
 
@@ -321,10 +340,11 @@ function viewRoomDetail(row) {
 
 function readRoomForm() {
   return {
-    roomNumber: document.getElementById("room-number").value.trim() || `R${Date.now()}`,
     name: document.getElementById("room-name").value.trim(),
     branchId: document.getElementById("room-branch").value,
     roomTypeId: document.getElementById("room-type").value,
+    roomClassId: document.getElementById("room-class").value,
+    inventoryCount: Number(document.getElementById("room-inventory").value),
     price: Number(document.getElementById("room-price").value),
     description: document.getElementById("room-description").value.trim() || null,
     status: document.getElementById("room-status").value,
@@ -367,10 +387,11 @@ async function syncRoomAmenities(roomId, amenityIds) {
 }
 
 function validateRoomForm(form) {
-  if (!form.roomNumber) return "Vui lòng nhập số/mã phòng.";
   if (!form.name) return "Vui lòng nhập tên phòng.";
   if (!form.branchId) return "Vui lòng chọn chi nhánh.";
   if (!form.roomTypeId) return "Vui lòng chọn loại phòng.";
+  if (!form.roomClassId) return "Vui lòng chọn hạng phòng.";
+  if (!Number.isInteger(form.inventoryCount) || form.inventoryCount < 1) return "Số lượng phòng phải từ 1 trở lên.";
   if (!form.price || form.price <= 0) return "Giá / đêm phải lớn hơn 0.";
   return "";
 }
@@ -397,10 +418,12 @@ async function createRoom() {
   const { data: createdRoom, error } = await window.gostaySupabase
     .from("rooms")
     .insert({
-      room_number: form.roomNumber,
+      room_number: null,
       name: form.name,
       branch_id: form.branchId,
       room_type_id: form.roomTypeId,
+      room_class_id: form.roomClassId,
+      inventory_count: form.inventoryCount,
       price_per_night: form.price,
       description: form.description,
       status: form.status,
@@ -425,7 +448,7 @@ async function createRoom() {
     return;
   }
 
-  console.log("[rooms] Đã thêm phòng:", form.roomNumber);
+  console.log("[rooms] Đã thêm cấu hình phòng:", form.name);
   showRoomMessage("Đã thêm phòng thành công.", false);
   resetRoomForm();
   loadRooms(getRoomFiltersState());
@@ -434,10 +457,11 @@ async function createRoom() {
 async function startEditRoom(row) {
   clearPendingRoomImages();
   document.getElementById("room-id").value = row.id;
-  document.getElementById("room-number").value = row.room_number;
   document.getElementById("room-name").value = cleanCatalogText(row.name);
   document.getElementById("room-branch").value = row.branch_id;
   document.getElementById("room-type").value = row.room_type_id;
+  document.getElementById("room-class").value = row.room_class_id;
+  document.getElementById("room-inventory").value = row.inventory_count;
   document.getElementById("room-price").value = row.price_per_night;
   document.getElementById("room-description").value = cleanCatalogText(row.description);
   document.getElementById("room-status").value = row.status;
@@ -627,10 +651,12 @@ async function updateRoom(roomId) {
   const { error } = await window.gostaySupabase
     .from("rooms")
     .update({
-      room_number: form.roomNumber,
+      room_number: null,
       name: form.name,
       branch_id: form.branchId,
       room_type_id: form.roomTypeId,
+      room_class_id: form.roomClassId,
+      inventory_count: form.inventoryCount,
       price_per_night: form.price,
       description: form.description,
       status: form.status,
@@ -667,7 +693,7 @@ async function toggleRoomActiveStatus(row, button) {
     ? `Kích hoạt lại phòng "${displayRoomName(row.name, row.room_types && row.room_types.name)}"?\n\nPhòng sẽ có thể xuất hiện trong kết quả tìm kiếm cho những ngày còn trống.`
     : `Ngừng hoạt động phòng "${displayRoomName(row.name, row.room_types && row.room_types.name)}"?\n\nPhòng sẽ không còn xuất hiện trong tìm kiếm của khách hàng. Các đặt phòng hiện tại và lịch sử đặt phòng vẫn được giữ nguyên.`;
 
-  if (!confirm(confirmationMessage)) {
+  if (!(await window.GoStayDialog.confirm(confirmationMessage))) {
     return;
   }
 

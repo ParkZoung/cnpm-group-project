@@ -4,7 +4,7 @@ import { userClient } from "../repositories/supabase-repository.js";
 import { validateQuery } from "../validators/query-validator.js";
 
 const TABLES = new Set([
-  "profiles", "branches", "room_types", "rooms", "room_images", "bookings",
+  "profiles", "branches", "room_types", "room_classes", "rooms", "room_images", "bookings",
   "amenities", "room_amenities", "online_checkins", "payment_transactions",
 ]);
 

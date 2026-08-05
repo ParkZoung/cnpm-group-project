@@ -63,9 +63,10 @@
       check_out_date: checkOutInput.value,
       number_of_guests: Number(guestInput.value),
       display: {
-        room_number: String(room.room_number),
+        room_name: String(room.name),
         branch_name: String(room.branch.name),
         room_type_name: String(room.room_type.name),
+        room_class_name: String(room.room_class ? room.room_class.name : 'Standard'),
         estimated_price_per_night: Number(room.price_per_night)
       }
     };
@@ -171,9 +172,10 @@
       'display'
     ];
     const allowedDisplayKeys = [
-      'room_number',
+      'room_name',
       'branch_name',
       'room_type_name',
+      'room_class_name',
       'estimated_price_per_night'
     ];
 
