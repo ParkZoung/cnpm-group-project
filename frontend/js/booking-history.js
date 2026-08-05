@@ -64,9 +64,10 @@
           created_at,
           room:rooms!bookings_room_id_fkey(
             id,
-            room_number,
+            name,
             branch:branches!rooms_branch_id_fkey(id, name),
-            room_type:room_types!rooms_room_type_id_fkey(id, name)
+            room_type:room_types!rooms_room_type_id_fkey(id, name),
+            room_class:room_classes!rooms_room_class_id_fkey(id, name)
           )
         `)
         .order('created_at', { ascending: false });
@@ -248,7 +249,7 @@
       return;
     }
 
-    if (!window.confirm('Bạn có chắc muốn hủy đặt phòng này không?')) {
+    if (!(await window.GoStayDialog.confirm('Bạn có chắc muốn hủy đặt phòng này không?'))) {
       return;
     }
 
@@ -374,7 +375,8 @@
       return 'Thông tin phòng';
     }
 
-    return (room.room_type ? room.room_type.name : 'Thông tin phòng')
+    return (room.name || (room.room_type ? room.room_type.name : 'Thông tin phòng'))
+      + (room.room_class ? ' · Hạng ' + room.room_class.name : '')
       + (room.branch ? ' tại ' + room.branch.name : '');
   }
 

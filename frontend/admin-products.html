@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="icon" type="image/png" href="images/logo-gostay.png">
-  <title>GoStay Admin - Quản lý phòng</title>
+  <title>GoStay Admin - Cấu hình phòng theo chi nhánh</title>
   <link rel="stylesheet" href="css/base.css">
   <link rel="stylesheet" href="css/bach.css">
 </head>
@@ -28,7 +28,7 @@
 
   <div class="admin-main-content">
     <header class="admin-topbar">
-      <div class="topbar-left"><h1 class="topbar-title">Quản lý phòng</h1></div>
+      <div class="topbar-left"><h1 class="topbar-title">Cấu hình phòng theo chi nhánh</h1></div>
       <div class="topbar-right">
         <div class="topbar-search"><input type="text" placeholder="Tìm kiếm phòng..."></div>
         <div class="topbar-user"><span class="user-name">Admin</span></div>
@@ -45,7 +45,6 @@
           <input type="hidden" id="room-id">
 
           <div class="admin-filter-bar" style="flex-wrap: wrap;">
-            <input type="hidden" id="room-number">
             <div style="flex: 1 1 220px;">
               <label style="display:block; font-size:12px; font-weight:600; color:#475569; margin-bottom:4px;">Tên phòng *</label>
               <input type="text" id="room-name" placeholder="VD: Deluxe Sea View" class="admin-search-input" required>
@@ -55,6 +54,16 @@
               <select id="room-branch" class="admin-select-filter" style="width:100%;" required>
                 <option value="">-- Chọn chi nhánh --</option>
               </select>
+            </div>
+            <div style="flex: 1 1 200px;">
+              <label style="display:block; font-size:12px; font-weight:600; color:#475569; margin-bottom:4px;">Hạng phòng *</label>
+              <select id="room-class" class="admin-select-filter" style="width:100%;" required>
+                <option value="">-- Chọn hạng phòng --</option>
+              </select>
+            </div>
+            <div style="flex: 1 1 140px;">
+              <label style="display:block; font-size:12px; font-weight:600; color:#475569; margin-bottom:4px;">Số lượng *</label>
+              <input type="number" id="room-inventory" min="1" value="1" class="admin-search-input" required>
             </div>
             <div style="flex: 1 1 200px;">
               <label style="display:block; font-size:12px; font-weight:600; color:#475569; margin-bottom:4px;">Loại phòng *</label>
@@ -78,6 +87,34 @@
               <label style="display:block; font-size:12px; font-weight:600; color:#475569; margin-bottom:4px;">Mô tả</label>
               <input type="text" id="room-description" placeholder="Mô tả thêm (không bắt buộc)" class="admin-search-input">
             </div>
+            <fieldset class="room-amenities-fieldset room-image-fieldset">
+              <legend>Ảnh đại diện phòng</legend>
+              <div class="room-image-editor">
+                <div class="room-image-preview-wrap">
+                  <img id="room-image-preview" alt="Xem trước ảnh phòng" hidden>
+                  <div id="room-image-placeholder" class="room-image-placeholder">
+                    <span class="room-image-placeholder-icon" aria-hidden="true">
+                      <svg viewBox="0 0 24 24" fill="none"><path d="M4 16.5 8.5 12l3 3 2-2 6.5 6.5M15.5 8.5h.01M5 3.75h14A1.25 1.25 0 0 1 20.25 5v14A1.25 1.25 0 0 1 19 20.25H5A1.25 1.25 0 0 1 3.75 19V5A1.25 1.25 0 0 1 5 3.75Z" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                    </span>
+                    <strong>Chưa có ảnh đại diện</strong>
+                    <span>Ảnh đẹp giúp khách dễ hình dung về phòng hơn.</span>
+                  </div>
+                </div>
+                <div class="room-image-controls">
+                  <span class="room-image-control-icon" aria-hidden="true">↑</span>
+                  <div class="room-image-control-copy">
+                    <strong>Tải ảnh phòng lên</strong>
+                    <span>Chọn ảnh rõ nét, ưu tiên khung ngang tỷ lệ 4:3.</span>
+                  </div>
+                  <div class="room-image-actions">
+                    <label for="room-image-file" class="room-image-upload-button">Chọn ảnh</label>
+                    <button id="room-image-remove" type="button" class="room-image-remove-button" hidden>Xóa ảnh</button>
+                  </div>
+                  <input id="room-image-file" type="file" accept="image/jpeg,image/png,image/webp" hidden>
+                  <small>JPG, PNG hoặc WebP · Tối đa 5 MB · Ảnh mới sẽ thay ảnh hiện tại</small>
+                </div>
+              </div>
+            </fieldset>
             <fieldset class="room-amenities-fieldset">
               <legend>Tiện nghi phòng</legend>
               <p id="room-amenities-help">Chọn các tiện nghi có trong phòng.</p>
@@ -105,6 +142,12 @@
           <select id="room-filter-branch" class="admin-select-filter">
             <option value="">Tất cả chi nhánh</option>
           </select>
+          <select id="room-filter-type" class="admin-select-filter">
+            <option value="">Tất cả loại phòng</option>
+          </select>
+          <select id="room-filter-class" class="admin-select-filter">
+            <option value="">Tất cả hạng phòng</option>
+          </select>
           <select id="room-filter-status" class="admin-select-filter">
             <option value="">Tất cả trạng thái</option>
             <option value="available">Đang hoạt động</option>
@@ -124,6 +167,7 @@
             <thead>
               <tr>
                 <th>Tên phòng</th>
+                <th>Loại phòng</th>
                 <th>Hạng phòng</th>
                 <th>Chi nhánh</th>
                 <th>Giá / đêm</th>
@@ -145,6 +189,7 @@
   <script src="js/config/environment.js"></script>
   <script src="js/core/api-client.js"></script>
   <script src="js/supabase-client.js"></script>
+  <script src="js/ui-dialog.js"></script>
   <script src="js/admin-auth.js"></script>
   <script src="js/admin-rooms.js"></script>
 </body>

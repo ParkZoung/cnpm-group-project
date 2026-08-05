@@ -289,6 +289,9 @@ document.addEventListener('DOMContentLoaded', function () {
     card.dataset.roomId = String(room.id);
 
     const image = document.createElement('img');
+    image.loading = 'lazy';
+    image.decoding = 'async';
+    image.fetchPriority = 'low';
     image.src = room.first_image && room.first_image.image_url
       ? room.first_image.image_url
       : FALLBACK_ROOM_IMAGE;

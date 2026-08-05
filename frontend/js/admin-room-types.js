@@ -27,7 +27,7 @@ function cleanCatalogText(value) {
 function checkConnection() {
     if (!window.gostaySupabase) {
         console.error("LỖI KẾT NỐI: Không tìm thấy hệ thống Supabase. Hãy chắc chắn bạn đã đổi tên file cấu hình thành 'js/supabase.js'!");
-        alert("Lỗi hệ thống: Ứng dụng chưa kết nối được tới cơ sở dữ liệu.");
+        window.GoStayDialog.alert("Lỗi hệ thống: Ứng dụng chưa kết nối được tới cơ sở dữ liệu.");
         return false;
     }
     return true;
@@ -48,7 +48,7 @@ async function fetchRoomTypes() {
         renderRoomTypes(listRoomTypes);
     } catch (error) {
         console.error('Lỗi khi tải bảng room_types:', error.message);
-        alert('Không thể lấy dữ liệu loại phòng: ' + error.message);
+        window.GoStayDialog.alert('Không thể lấy dữ liệu loại phòng: ' + error.message);
     }
 }
 
@@ -145,7 +145,7 @@ roomTypeForm.addEventListener('submit', async (e) => {
     };
 
     if (roomTypeData.capacity <= 0 || roomTypeData.area_m2 <= 0 || roomTypeData.base_price <= 0) {
-        alert('Yêu cầu nhập sức chứa, diện tích và giá trị lớn hơn 0!');
+        window.GoStayDialog.alert('Yêu cầu nhập sức chứa, diện tích và giá trị lớn hơn 0!');
         return;
     }
 
@@ -156,7 +156,7 @@ roomTypeForm.addEventListener('submit', async (e) => {
                 .insert([roomTypeData]);
 
             if (error) throw error;
-            alert('Thêm loại phòng thành công!');
+            window.GoStayDialog.alert('Thêm loại phòng thành công!');
         } else {
             const { error } = await window.gostaySupabase
                 .from('room_types')
@@ -164,14 +164,14 @@ roomTypeForm.addEventListener('submit', async (e) => {
                 .eq('id', id);
 
             if (error) throw error;
-            alert('Cập nhật dữ liệu thành công!');
+            window.GoStayDialog.alert('Cập nhật dữ liệu thành công!');
         }
 
         resetForm();
         fetchRoomTypes();
     } catch (error) {
         console.error('Lỗi lưu trữ:', error.message);
-        alert('Thao tác không thành công: ' + error.message);
+        window.GoStayDialog.alert('Thao tác không thành công: ' + error.message);
     }
 });
 
@@ -212,7 +212,7 @@ async function deleteRoomType(item, button) {
         if (countError) throw countError;
 
         if (Number(count || 0) > 0) {
-            alert(
+            window.GoStayDialog.alert(
                 `Không thể xóa loại phòng "${item.name}" vì đang được ${count} phòng sử dụng. ` +
                 'Vui lòng chuyển các phòng sang loại khác trước.'
             );
@@ -220,10 +220,10 @@ async function deleteRoomType(item, button) {
         }
 
         button.textContent = 'Xóa';
-        if (!confirm(
+        if (!(await window.GoStayDialog.confirm(
             `Xóa loại phòng "${item.name}"?\n\n` +
             'Chỉ loại phòng không được phòng nào sử dụng mới có thể xóa.'
-        )) return;
+        ))) return;
 
         button.textContent = 'Đang xóa...';
         const { error: deleteError } = await window.gostaySupabase
@@ -233,18 +233,18 @@ async function deleteRoomType(item, button) {
 
         if (deleteError) throw deleteError;
 
-        alert(`Đã xóa loại phòng "${item.name}".`);
+        window.GoStayDialog.alert(`Đã xóa loại phòng "${item.name}".`);
         if (String(idInput.value) === String(item.id)) resetForm();
         await fetchRoomTypes();
     } catch (error) {
         console.error('Lỗi khi xóa loại phòng:', error);
         if (error && error.code === '23503') {
-            alert(
+            window.GoStayDialog.alert(
                 `Không thể xóa loại phòng "${item.name}" vì loại phòng vừa được gán cho một phòng. ` +
                 'Vui lòng chuyển phòng đó sang loại khác trước.'
             );
         } else {
-            alert('Không thể kiểm tra hoặc xóa loại phòng. Vui lòng thử lại.');
+            window.GoStayDialog.alert('Không thể kiểm tra hoặc xóa loại phòng. Vui lòng thử lại.');
         }
     } finally {
         if (button.isConnected) {

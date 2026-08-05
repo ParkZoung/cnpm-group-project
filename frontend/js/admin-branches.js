@@ -265,7 +265,7 @@
   }
 
   async function deleteBranch(branch, button) {
-    if (!window.confirm(`Bạn có chắc muốn xóa chi nhánh “${branch.name}”?\nThao tác này không thể hoàn tác.`)) return;
+    if (!(await window.GoStayDialog.confirm(`Bạn có chắc muốn xóa chi nhánh “${branch.name}”?\nThao tác này không thể hoàn tác.`))) return;
 
     button.disabled = true;
     try {

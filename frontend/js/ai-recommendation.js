@@ -200,6 +200,9 @@
     card.dataset.roomId = String(room.room_id);
 
     const image = document.createElement('img');
+    image.loading = 'lazy';
+    image.decoding = 'async';
+    image.fetchPriority = 'low';
     image.alt = room.image_alt_text || roomLabel(room) + ' tại ' + room.branch_name;
     image.addEventListener('error', function () {
       if (image.src !== FALLBACK_ROOM_IMAGE) image.src = FALLBACK_ROOM_IMAGE;

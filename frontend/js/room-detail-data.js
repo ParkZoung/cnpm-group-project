@@ -40,6 +40,7 @@
           id,
           branch_id,
           room_type_id,
+          room_class_id,
           room_number,
           name,
           price_per_night,
@@ -50,6 +51,9 @@
           ),
           room_type:room_types!rooms_room_type_id_fkey(
             id, name, description, capacity, bed_type, area_m2, base_price
+          ),
+          room_class:room_classes!rooms_room_class_id_fkey(
+            id, name, description, status
           )
         `)
         .eq('id', roomId.value)
@@ -201,7 +205,7 @@
       : roomLabel + ' tại ' + room.branch.name;
     elements.meta.innerHTML = '';
     appendTextItem(elements.meta, '📍 ' + room.branch.name + ', ' + room.branch.city);
-    appendTextItem(elements.meta, '🏨 ' + room.room_type.name);
+    appendTextItem(elements.meta, '🏨 ' + room.room_type.name + ' · ' + (room.room_class ? room.room_class.name : 'Standard'));
     appendTextItem(elements.meta, 'Trạng thái: Phòng đang hoạt động');
 
     elements.specs.innerHTML = '';

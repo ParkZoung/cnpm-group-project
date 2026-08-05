@@ -91,14 +91,17 @@
       .from('rooms')
       .select(`
         id,
+        name,
         room_number,
         price_per_night,
         status,
         branch:branches!rooms_branch_id_fkey!inner(id, name, city, status),
-        room_type:room_types!rooms_room_type_id_fkey!inner(id, name, capacity, bed_type)
+        room_type:room_types!rooms_room_type_id_fkey!inner(id, name, capacity, bed_type),
+        room_class:room_classes!rooms_room_class_id_fkey!inner(id, name, sort_order, status)
       `)
       .eq('status', 'available')
       .eq('branch.status', 'active')
+      .eq('room_class.status', 'active')
       .neq('branch.city', 'New York')
       .order('id', { ascending: false });
 
@@ -116,7 +119,7 @@
     }
 
     const rooms = (data || []).filter(function (room) {
-      return room && room.branch && room.room_type;
+      return room && room.branch && room.room_type && room.room_class;
     });
     await attachCatalogImages(rooms);
     if (requestId !== latestRequestId) return;
@@ -164,21 +167,27 @@
       return;
     }
 
-    rooms.forEach(function (room) {
-      elements.list.appendChild(createRoomCard({
+    const catalogOfferings = rooms.map(function (room) {
+      return {
         room_id: room.id,
-        room_number: room.room_number,
+        branch_id: room.branch.id,
+        room_type_id: room.room_type.id,
         price_per_night: room.price_per_night,
         branch_name: room.branch.name,
         branch_city: room.branch.city,
-        room_type_name: room.room_type.name,
+        room_type_name: room.room_type.name + ' - ' + room.room_class.name,
+        room_name: room.name,
         room_type_capacity: room.room_type.capacity,
         room_type_bed_type: room.room_type.bed_type,
         image_url: room.first_image && room.first_image.image_url,
         image_alt_text: room.first_image && room.first_image.alt_text
-      }, null));
+      };
     });
-    elements.count.textContent = 'Danh sách ' + rooms.length
+    const catalogGroups = groupRoomOfferings(catalogOfferings);
+    catalogGroups.forEach(function (group) {
+      elements.list.appendChild(createGroupedRoomCard(group, null));
+    });
+    elements.count.textContent = 'Danh sách ' + catalogGroups.length
       + ' phòng. Chọn ngày nhận, ngày trả và số khách để kiểm tra phòng trống.';
     elements.count.hidden = false;
   }
@@ -344,13 +353,76 @@
       return;
     }
 
-    rooms.forEach(function (room) {
-      elements.list.appendChild(createRoomCard(room, filters));
+    const groupedRooms = groupRoomOfferings(rooms);
+    groupedRooms.forEach(function (group) {
+      elements.list.appendChild(createGroupedRoomCard(group, filters));
     });
-    elements.count.textContent = 'Tìm thấy ' + rooms.length + ' phòng trống từ '
+    elements.count.textContent = 'Tìm thấy ' + groupedRooms.length + ' phòng, có '
+      + rooms.length + ' hạng còn trống từ '
       + formatDate(filters.checkIn) + ' đến ' + formatDate(filters.checkOut)
       + ' cho ' + filters.guests + ' khách.';
     elements.count.hidden = false;
+  }
+
+  function groupRoomOfferings(rooms) {
+    const groups = new Map();
+    rooms.forEach(function (room) {
+      const key = String(room.branch_id) + ':' + String(room.room_type_id);
+      if (!groups.has(key)) groups.set(key, []);
+      groups.get(key).push(room);
+    });
+    return Array.from(groups.values()).map(function (variants) {
+      variants.sort(function (a, b) {
+        return Number(a.price_per_night) - Number(b.price_per_night);
+      });
+      return variants;
+    });
+  }
+
+  function splitOfferingName(value) {
+    const parts = String(value || '').split(' - ');
+    return {
+      roomType: cleanRoomName(parts.shift() || ''),
+      roomClass: parts.join(' - ') || 'Standard'
+    };
+  }
+
+  function createGroupedRoomCard(variants, filters) {
+    const selectedRoom = variants[0];
+    const card = createRoomCard(selectedRoom, filters);
+    const body = card.querySelector('.room-search-body');
+    const title = body.querySelector('h3');
+    const price = body.querySelector('.room-price');
+    const detailLink = body.querySelector('.btn-view-detail');
+    title.textContent = splitOfferingName(
+      selectedRoom.room_name || selectedRoom.room_type_name
+    ).roomType;
+
+    const label = document.createElement('label');
+    label.className = 'room-variant-label';
+    label.appendChild(document.createTextNode('Chọn hạng phòng'));
+    const select = document.createElement('select');
+    select.className = 'room-variant-select';
+    variants.forEach(function (variant) {
+      const option = document.createElement('option');
+      option.value = String(variant.room_id);
+      option.textContent = splitOfferingName(variant.room_type_name).roomClass
+        + ' — ' + formatPrice(variant.price_per_night);
+      select.appendChild(option);
+    });
+    label.appendChild(select);
+    body.insertBefore(label, price);
+
+    select.addEventListener('change', function () {
+      const chosen = variants.find(function (variant) {
+        return String(variant.room_id) === select.value;
+      }) || variants[0];
+      price.textContent = formatPrice(chosen.price_per_night);
+      const params = new URLSearchParams(detailLink.href.split('?')[1] || '');
+      params.set('id', String(chosen.room_id));
+      detailLink.href = 'room-detail.html?' + params.toString();
+    });
+    return card;
   }
 
   function createRoomCard(room, filters) {
@@ -360,6 +432,9 @@
     const imageWrap = document.createElement('div');
     imageWrap.className = 'room-img-wrap';
     const image = document.createElement('img');
+    image.loading = 'lazy';
+    image.decoding = 'async';
+    image.fetchPriority = 'low';
     image.src = room.image_url || FALLBACK_ROOM_IMAGE;
     image.alt = room.image_alt_text || (cleanRoomName(room.room_type_name) + ' tại ' + room.branch_name);
     image.addEventListener('error', function () {
