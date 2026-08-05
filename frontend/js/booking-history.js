@@ -186,8 +186,8 @@
         content.innerHTML = '<p>QR check-in đã hết hạn. Vui lòng liên hệ khách sạn.</p>';
         return;
       }
-      content.innerHTML = '<p>Check-in online đã được duyệt. Đưa QR này cho staff khi đến khách sạn.</p><canvas id="guest-checkin-qr"></canvas><p>Mã dự phòng:</p><p class="checkin-code">' + booking.online_checkin.id + '</p><p>QR hết hạn: ' + new Date(booking.online_checkin.expires_at).toLocaleString('vi-VN') + '. Vui lòng mang giấy tờ tùy thân.</p>';
-      if (window.QRCode) window.QRCode.toCanvas(document.getElementById('guest-checkin-qr'), 'gostay:checkin:' + booking.online_checkin.id, { width:280 });
+      content.innerHTML = '<p>Check-in online đã được duyệt. Đưa QR này cho staff khi đến khách sạn.</p><div id="guest-checkin-qr" class="checkin-qr" role="img" aria-label="Mã QR check-in"></div><p>Mã dự phòng:</p><p class="checkin-code">' + booking.online_checkin.id + '</p><p>QR hết hạn: ' + new Date(booking.online_checkin.expires_at).toLocaleString('vi-VN') + '. Vui lòng mang giấy tờ tùy thân.</p>';
+      renderCheckinQr(document.getElementById('guest-checkin-qr'), booking.online_checkin.id);
       return;
     }
     if (booking.online_checkin && booking.online_checkin.status === 'payment_claimed') {
@@ -219,6 +219,22 @@
   }
 
   function closeOnlineCheckin() { document.getElementById('online-checkin-modal').hidden = true; }
+  function renderCheckinQr(container, token) {
+    try {
+      if (typeof window.QRCode !== 'function') throw new Error('QRCode library is unavailable.');
+      new window.QRCode(container, {
+        text: 'gostay:checkin:' + token,
+        width: 280,
+        height: 280,
+        correctLevel: window.QRCode.CorrectLevel.M
+      });
+    } catch (error) {
+      console.error('Unable to render check-in QR.', error);
+      container.classList.add('checkin-qr-error');
+      container.removeAttribute('role');
+      container.textContent = 'Không thể tạo mã QR. Vui lòng dùng mã dự phòng bên dưới.';
+    }
+  }
   function daysBetween(start,end) { return Math.round((new Date(end)-new Date(start))/86400000); }
   function previousDate(value) { const d=new Date(value+'T00:00:00'); d.setDate(d.getDate()-1); return d.toISOString().slice(0,10); }
   function isOnlineCheckinOpen(booking) { const today=new Date(); const local=new Date(today.getTime()-today.getTimezoneOffset()*60000).toISOString().slice(0,10); return booking.booking_status === 'confirmed' && local<booking.check_out_date; }

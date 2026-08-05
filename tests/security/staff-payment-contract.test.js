@@ -9,6 +9,7 @@ const migration = readFileSync(join(
 const branchSessionMigration = readFileSync(join(
   'backend', 'supabase', 'migrations', '20260805000300_staff_branch_sessions_and_immediate_online_checkin.sql'
 ), 'utf8');
+const staffDashboard = readFileSync(join('frontend', 'js', 'staff-dashboard.js'), 'utf8');
 
 describe('staff/payment migration contract', () => {
   test('lets active staff select a working branch instead of assigning one permanently', () => {
@@ -44,5 +45,11 @@ describe('staff/payment migration contract', () => {
   test('opens online check-in immediately after confirmation', () => {
     assert.match(branchSessionMigration, /b\.booking_status <> 'confirmed'/);
     assert.doesNotMatch(branchSessionMigration, /b\.check_in_date - 1/);
+  });
+
+  test('removes the complete QR prefix without truncating the UUID', () => {
+    assert.match(staffDashboard, /const prefix = 'gostay:checkin:'/);
+    assert.match(staffDashboard, /raw\.slice\(prefix\.length\)/);
+    assert.doesNotMatch(staffDashboard, /raw\.slice\(16\)/);
   });
 });
