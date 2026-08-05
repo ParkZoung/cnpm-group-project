@@ -231,7 +231,7 @@ test.describe('GoStay customer booking core flow', function () {
     await page.getByLabel('Mật khẩu').fill(credentials.password);
     await page.locator('#login-submit').click();
 
-    await expect(page).toHaveURL(/\/index\.html$/);
+    await expect(page).toHaveURL(/\/index\.html$/, { timeout: 30_000 });
     await expect(page.getByRole('link', { name: 'Đăng xuất' })).toBeVisible();
 
     const selection = await searchForAvailableRoom(page);

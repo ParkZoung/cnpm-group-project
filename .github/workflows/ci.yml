@@ -50,6 +50,9 @@ jobs:
 
           echo "Checked $count JavaScript files successfully."
 
+      - name: Check migration versions
+        run: npm run check:migrations
+
       - name: Check unresolved merge conflicts
         shell: bash
         run: |

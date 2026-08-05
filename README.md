@@ -75,8 +75,9 @@ npm run backend:start
 npm run backend:serve:api
 ```
 
-Không chạy `npm run backend:db:push` với production trước khi đối chiếu schema và
-lịch sử migration. Xem thêm [`backend/README.md`](backend/README.md) và
+Không chạy `supabase db push` với production trước khi đối chiếu schema và lịch
+sử migration; dự án cố ý không cung cấp npm script cho thao tác này. Xem thêm
+[`backend/README.md`](backend/README.md) và
 [`docs/architecture/PROJECT_STRUCTURE.md`](docs/architecture/PROJECT_STRUCTURE.md).
 
 ## Cấu hình kiểm thử

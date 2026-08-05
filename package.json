@@ -8,7 +8,7 @@
     "backend:stop": "supabase --workdir backend stop",
     "backend:serve:api": "supabase --workdir backend functions serve api",
     "backend:serve:recommendations": "supabase --workdir backend functions serve recommend-rooms",
-    "backend:db:push": "supabase --workdir backend db push",
+    "check:migrations": "node scripts/check-migrations.js",
     "check:syntax": "node scripts/check-js-syntax.js",
     "test:e2e": "node --env-file-if-exists=.env node_modules/@playwright/test/cli.js test tests/e2e/core-booking.spec.js",
     "test:e2e:three": "node --env-file-if-exists=.env node_modules/@playwright/test/cli.js test tests/e2e/core-booking.spec.js --repeat-each=3",
