@@ -41,7 +41,7 @@ jobs:
             echo "Checking: $file"
             node --check "$file"
             count=$((count + 1))
-          done < <(find frontend/js -type f -name '*.js' -print0)
+          done < <(find frontend/js backend/supabase/functions -type f -name '*.js' -print0)
 
           if [ "$count" -eq 0 ]; then
             echo "No JavaScript files were found."
@@ -55,7 +55,7 @@ jobs:
         run: |
           set -euo pipefail
 
-          if git grep -nE '^(<<<<<<<|=======|>>>>>>>)' -- frontend supabase docs; then
+          if git grep -nE '^(<<<<<<<|=======|>>>>>>>)' -- frontend backend docs; then
             echo "Unresolved Git merge conflict markers were found."
             exit 1
           fi

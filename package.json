@@ -4,6 +4,12 @@
   "private": true,
   "description": "End-to-end tests for the GoStay customer booking flow",
   "scripts": {
+    "backend:start": "supabase --workdir backend start",
+    "backend:stop": "supabase --workdir backend stop",
+    "backend:serve:api": "supabase --workdir backend functions serve api",
+    "backend:serve:recommendations": "supabase --workdir backend functions serve recommend-rooms",
+    "backend:db:push": "supabase --workdir backend db push",
+    "check:syntax": "node scripts/check-js-syntax.js",
     "test:e2e": "node --env-file-if-exists=.env node_modules/@playwright/test/cli.js test tests/e2e/core-booking.spec.js",
     "test:e2e:three": "node --env-file-if-exists=.env node_modules/@playwright/test/cli.js test tests/e2e/core-booking.spec.js --repeat-each=3",
     "test:e2e:admin": "node --env-file-if-exists=.env node_modules/@playwright/test/cli.js test tests/e2e/admin.spec.js --workers=1",

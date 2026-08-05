@@ -1,7 +1,6 @@
 (function () {
   'use strict';
 
-  const API_URL = 'https://wpecaxsuadawaxadxqhj.supabase.co/functions/v1/api';
   const SESSION_KEY = 'gostay.api.session';
   const listeners = new Set();
 
@@ -41,33 +40,8 @@
 
   async function request(path, body, authenticated) {
     const session = readSession();
-    const headers = { 'Content-Type': 'application/json' };
-    if (authenticated !== false && session && session.access_token) {
-      headers.Authorization = 'Bearer ' + session.access_token;
-    }
-
-    let response;
-    try {
-      response = await fetch(API_URL + path, {
-        method: 'POST',
-        headers: headers,
-        body: JSON.stringify(body || {})
-      });
-    } catch (_) {
-      return { data: null, error: { message: 'Network request failed' } };
-    }
-
-    let payload;
-    try {
-      payload = await response.json();
-    } catch (_) {
-      payload = { error: { message: 'Invalid API response' } };
-    }
-
-    if (!response.ok && !payload.error) {
-      payload.error = { message: 'API request failed (' + response.status + ')' };
-    }
-    return payload;
+    const accessToken = authenticated !== false && session ? session.access_token : null;
+    return window.GoStayApiClient.request(path, body, accessToken);
   }
 
   function QueryBuilder(table) {
