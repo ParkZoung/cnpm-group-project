@@ -18,7 +18,12 @@
 .hero-secondary-action span { display:inline-block; margin-left:8px; color:#d7b978; }
 .hero-secondary-action:hover span { color:#122e38; }
 
-.home-page .search-wrap { margin-top:-38px; }
+.home-page .search-wrap {
+  position: sticky;
+  top: 14px;
+  z-index: 190;
+  margin-top: -38px;
+}
 .home-page .search-box { padding:9px; border:1px solid rgba(215,185,120,.55); border-radius:4px; background:#fff; box-shadow:0 22px 55px rgba(5,29,40,.18); }
 .home-page .search-control+.search-control { border-left:1px solid #e4e9e7; }
 .home-page .search-trigger { height:66px; border-radius:2px; }
@@ -84,7 +89,7 @@
   .hero-title-copy { font-size:40px; }
   .hero-actions { align-items:stretch; flex-direction:column; gap:12px; }
   .hero-primary-action,.hero-secondary-action { width:100%; min-width:0; }
-  .home-page .search-wrap { margin-top:-45px; }
+  .home-page .search-wrap { position:relative; top:auto; margin-top:-45px; }
   .home-page .dest-grid { grid-template-columns:1fr; }
   .home-page .dest-card { height:260px; }
   .signature-content { padding:38px 25px; }
