@@ -4,7 +4,7 @@
   const FALLBACK_ROOM_IMAGE =
     'https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=400&q=80';
   let latestRequestId = 0;
-  let metadata = { branches: [] };
+  let metadata = { branches: [], roomTypes: [] };
 
   document.addEventListener('DOMContentLoaded', initializeAvailabilitySearch, { once: true });
 
@@ -43,6 +43,7 @@
       checkOut: document.getElementById('check-out-filter'),
       guests: document.getElementById('guests-filter'),
       branch: document.getElementById('branch-filter'),
+      roomType: document.getElementById('room-type-filter'),
       minPrice: document.getElementById('min-price-filter'),
       submit: document.querySelector('.btn-apply-filter'),
       validation: document.getElementById('availability-validation-error'),
@@ -77,6 +78,9 @@
         loadRoomCatalog(elements);
       }
     });
+    elements.roomType.addEventListener('change', function () {
+      if (!elements.checkIn.value && !elements.checkOut.value) loadRoomCatalog(elements);
+    });
   }
 
   async function loadRoomCatalog(elements) {
@@ -100,6 +104,8 @@
 
     const branchId = optionalPositiveInteger(elements.branch.value);
     if (branchId !== null) query = query.eq('branch_id', branchId);
+    const roomTypeId = optionalPositiveInteger(elements.roomType.value);
+    if (roomTypeId !== null) query = query.eq('room_type_id', roomTypeId);
 
     const { data, error } = await query;
     if (requestId !== latestRequestId) return;
@@ -178,17 +184,25 @@
   }
 
   async function loadFilterMetadata() {
-    const result = await window.gostaySupabase
-      .from('branches')
-      .select('id, name, city, address, status')
-      .eq('status', 'active')
-      .neq('city', 'New York')
-      .order('name', { ascending: true });
+    const results = await Promise.all([
+      window.gostaySupabase
+        .from('branches')
+        .select('id, name, city, address, status')
+        .eq('status', 'active')
+        .neq('city', 'New York')
+        .order('name', { ascending: true }),
+      window.gostaySupabase
+        .from('room_types')
+        .select('id, name')
+        .order('name', { ascending: true })
+    ]);
 
-    if (result.error) throw result.error;
+    if (results[0].error) throw results[0].error;
+    if (results[1].error) throw results[1].error;
 
     return {
-      branches: result.data || []
+      branches: results[0].data || [],
+      roomTypes: results[1].data || []
     };
   }
 
@@ -200,6 +214,9 @@
         branch.id,
         branchOptionLabel(branch, metadata.branches)
       ));
+    });
+    metadata.roomTypes.forEach(function (roomType) {
+      elements.roomType.appendChild(createOption(roomType.id, cleanRoomName(roomType.name)));
     });
     if (metadata.branches.some(function (branch) {
       return String(branch.id) === selectedBranch;
@@ -214,6 +231,7 @@
     elements.checkOut.value = params.get('check_out') || params.get('checkout') || '';
     elements.guests.value = deriveGuests(params);
     elements.branch.value = positiveIntegerParam(params.get('branch_id')) || '';
+    elements.roomType.value = positiveIntegerParam(params.get('room_type_id')) || '';
     elements.minPrice.value = nonNegativeIntegerParam(params.get('min_price')) || '';
     elements.checkOut.min = elements.checkIn.value || todayString();
   }
@@ -307,7 +325,7 @@
       checkOut: checkOut,
       guests: guests,
       branchId: optionalPositiveInteger(elements.branch.value),
-      roomTypeId: null,
+      roomTypeId: optionalPositiveInteger(elements.roomType.value),
       minPrice: minPrice,
       maxPrice: null
     };
@@ -343,7 +361,7 @@
     imageWrap.className = 'room-img-wrap';
     const image = document.createElement('img');
     image.src = room.image_url || FALLBACK_ROOM_IMAGE;
-    image.alt = room.image_alt_text || ('Phòng ' + room.room_number + ' tại ' + room.branch_name);
+    image.alt = room.image_alt_text || (cleanRoomName(room.room_type_name) + ' tại ' + room.branch_name);
     image.addEventListener('error', function () {
       if (image.src !== FALLBACK_ROOM_IMAGE) image.src = FALLBACK_ROOM_IMAGE;
     });
@@ -351,7 +369,7 @@
 
     const body = document.createElement('div');
     body.className = 'room-search-body';
-    appendElement(body, 'h3', 'Phòng ' + room.room_number + ' — ' + room.room_type_name);
+    appendElement(body, 'h3', cleanRoomName(room.room_type_name));
     appendElement(body, 'div', '📍 ' + room.branch_name + ', ' + room.branch_city, 'room-meta');
     appendElement(
       body,
@@ -514,6 +532,10 @@
 
   function formatPrice(value) {
     return Number(value || 0).toLocaleString('vi-VN') + ' VNĐ / đêm';
+  }
+
+  function cleanRoomName(value) {
+    return String(value || 'Thông tin phòng').replace(/\s+\d+\s*$/, '').trim();
   }
 
   function friendlyError(error) {

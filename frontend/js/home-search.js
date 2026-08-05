@@ -342,7 +342,7 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 
   function roomLabel(room) {
-    return room.name || ('Phòng ' + room.room_number);
+    return cleanDisplayText(room.name || room.room_type.name).replace(/\s+\d+\s*$/, '').trim();
   }
 
   function cleanDisplayText(value) {

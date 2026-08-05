@@ -13,6 +13,12 @@ function cleanCatalogText(value) {
     .trim();
 }
 
+function displayRoomName(name, roomTypeName) {
+  return cleanCatalogText(name || roomTypeName || "Thông tin phòng")
+    .replace(/\s+\d+\s*$/, "")
+    .trim();
+}
+
 let cachedBranches = [];
 let cachedRoomTypes = [];
 let cachedAmenities = [];
@@ -201,7 +207,7 @@ function renderRooms(rows) {
   if (rows.length === 0) {
     const emptyRow = document.createElement("tr");
     const emptyCell = document.createElement("td");
-    emptyCell.colSpan = 7;
+    emptyCell.colSpan = 6;
     emptyCell.textContent = "Không tìm thấy phòng phù hợp.";
     emptyRow.appendChild(emptyCell);
     tbody.appendChild(emptyRow);
@@ -217,12 +223,9 @@ function renderRooms(rows) {
     const tr = document.createElement("tr");
     tr.dataset.id = row.id;
 
-    const roomNumberCell = document.createElement("td");
-    roomNumberCell.textContent = row.room_number;
-
     const nameCell = document.createElement("td");
     const roomName = document.createElement("strong");
-    roomName.textContent = cleanCatalogText(row.name);
+    roomName.textContent = displayRoomName(row.name, row.room_types && row.room_types.name);
     nameCell.appendChild(roomName);
 
     const roomTypeCell = document.createElement("td");
@@ -268,7 +271,6 @@ function renderRooms(rows) {
     actionButtons.append(viewButton, editButton, toggleButton);
     actionCell.appendChild(actionButtons);
     tr.append(
-      roomNumberCell,
       nameCell,
       roomTypeCell,
       branchCell,
@@ -299,8 +301,7 @@ function sortRooms() {
 function viewRoomDetail(row) {
   const statusInfo = ROOM_STATUS_LABELS[row.status] || { label: row.status };
   alert(
-    `Mã phòng: ${row.room_number}\n` +
-    `Tên phòng: ${cleanCatalogText(row.name)}\n` +
+    `Tên phòng: ${displayRoomName(row.name, row.room_types && row.room_types.name)}\n` +
     `Chi nhánh: ${row.branches ? cleanCatalogText(row.branches.name) : ""}\n` +
     `Loại phòng: ${row.room_types ? cleanCatalogText(row.room_types.name) : ""}\n` +
     `Giá / đêm: ${formatPrice(row.price_per_night)}\n` +
@@ -315,7 +316,7 @@ function viewRoomDetail(row) {
 
 function readRoomForm() {
   return {
-    roomNumber: document.getElementById("room-number").value.trim(),
+    roomNumber: document.getElementById("room-number").value.trim() || `R${Date.now()}`,
     name: document.getElementById("room-name").value.trim(),
     branchId: document.getElementById("room-branch").value,
     roomTypeId: document.getElementById("room-type").value,
@@ -419,7 +420,7 @@ async function createRoom() {
   }
 
   console.log("[rooms] Đã thêm phòng:", form.roomNumber);
-  showRoomMessage("Đã thêm phòng " + form.roomNumber + " thành công.", false);
+  showRoomMessage("Đã thêm phòng thành công.", false);
   resetRoomForm();
   loadRooms(getRoomFiltersState());
 }
@@ -437,7 +438,7 @@ async function startEditRoom(row) {
 
   await loadRoomAmenitySelection(row.id);
 
-  document.getElementById("room-form-title").textContent = "Cập nhật phòng: " + row.room_number;
+  document.getElementById("room-form-title").textContent = "Cập nhật: " + displayRoomName(row.name, row.room_types && row.room_types.name);
   document.getElementById("room-submit-btn").textContent = "Cập nhật phòng";
 
   if (typeof document.getElementById("room-form").scrollIntoView === "function") {
@@ -512,7 +513,7 @@ async function updateRoom(roomId) {
   }
 
   console.log("[rooms] Đã cập nhật phòng:", roomId);
-  showRoomMessage("Đã cập nhật phòng " + form.roomNumber + " thành công.", false);
+  showRoomMessage("Đã cập nhật phòng thành công.", false);
   resetRoomForm();
   loadRooms(getRoomFiltersState());
 }
@@ -521,8 +522,8 @@ async function toggleRoomActiveStatus(row, button) {
   const isReactivating = row.status === "inactive";
   const nextStatus = isReactivating ? "available" : "inactive";
   const confirmationMessage = isReactivating
-    ? `Kích hoạt lại phòng "${row.name}" (${row.room_number})?\n\nPhòng sẽ có thể xuất hiện trong kết quả tìm kiếm cho những ngày còn trống.`
-    : `Ngừng hoạt động phòng "${row.name}" (${row.room_number})?\n\nPhòng sẽ không còn xuất hiện trong tìm kiếm của khách hàng. Các đặt phòng hiện tại và lịch sử đặt phòng vẫn được giữ nguyên.`;
+    ? `Kích hoạt lại phòng "${displayRoomName(row.name, row.room_types && row.room_types.name)}"?\n\nPhòng sẽ có thể xuất hiện trong kết quả tìm kiếm cho những ngày còn trống.`
+    : `Ngừng hoạt động phòng "${displayRoomName(row.name, row.room_types && row.room_types.name)}"?\n\nPhòng sẽ không còn xuất hiện trong tìm kiếm của khách hàng. Các đặt phòng hiện tại và lịch sử đặt phòng vẫn được giữ nguyên.`;
 
   if (!confirm(confirmationMessage)) {
     return;
@@ -546,8 +547,8 @@ async function toggleRoomActiveStatus(row, button) {
     );
     showRoomMessage(
       isReactivating
-        ? "Đã kích hoạt lại phòng " + row.room_number + "."
-        : "Đã ngừng hoạt động phòng " + row.room_number + ".",
+        ? "Đã kích hoạt lại phòng thành công."
+        : "Đã ngừng hoạt động phòng thành công.",
       false
     );
     await loadRooms(getRoomFiltersState());

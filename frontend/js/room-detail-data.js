@@ -147,13 +147,13 @@
     }
 
     if (!/^[1-9]\d*$/.test(rawId)) {
-      return { error: 'Mã phòng không hợp lệ. Vui lòng chọn lại phòng từ trang tìm kiếm.' };
+      return { error: 'Thông tin phòng không hợp lệ. Vui lòng chọn lại phòng từ trang tìm kiếm.' };
     }
 
     const roomId = Number(rawId);
 
     if (!Number.isSafeInteger(roomId)) {
-      return { error: 'Mã phòng không hợp lệ. Vui lòng chọn lại phòng từ trang tìm kiếm.' };
+      return { error: 'Thông tin phòng không hợp lệ. Vui lòng chọn lại phòng từ trang tìm kiếm.' };
     }
 
     return { value: roomId };
@@ -189,10 +189,10 @@
   }
 
   function renderRoomDetail(elements, room) {
-    const roomLabel = room.name || ('Phòng ' + room.room_number);
+    const roomLabel = cleanDisplayText(room.name || room.room_type.name).replace(/\s+\d+\s*$/, '').trim();
     document.title = roomLabel + ' - ' + room.branch.name + ' | GoStay';
 
-    elements.title.textContent = roomLabel + ' — Phòng ' + room.room_number;
+    elements.title.textContent = roomLabel;
     if (room.first_image && room.first_image.image_url) {
       elements.image.src = room.first_image.image_url;
     }

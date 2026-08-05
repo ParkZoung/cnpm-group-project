@@ -290,7 +290,9 @@
   }
 
   function roomLabel(room) {
-    return room.room_name || ('Phòng ' + room.room_number);
+    return String(room.room_name || room.room_type_name || 'Thông tin phòng')
+      .replace(/\s+\d+\s*$/, '')
+      .trim();
   }
 
   function valueOf(input) {
