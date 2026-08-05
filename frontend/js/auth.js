@@ -51,7 +51,7 @@
         : 'Tài khoản hiện không hoạt động.');
     }
 
-    if (data.role !== 'admin' && data.role !== 'customer') {
+    if (!['admin', 'staff', 'customer'].includes(data.role)) {
       throw new Error('Tài khoản có vai trò không hợp lệ.');
     }
 
@@ -80,7 +80,7 @@
   function redirectForProfile(profile, replace) {
     const destination = profile.role === 'admin'
       ? 'admin-dashboard.html'
-      : 'index.html';
+      : profile.role === 'staff' ? 'staff-dashboard.html' : 'index.html';
 
     window.location[replace ? 'replace' : 'assign'](destination);
   }

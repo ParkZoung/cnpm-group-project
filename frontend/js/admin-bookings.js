@@ -46,6 +46,7 @@
   const paymentStatusLabel = value => ({
     unpaid: 'Chưa thanh toán',
     pending: 'Đang xử lý',
+    partially_paid: 'Đã đặt cọc',
     paid: 'Đã thanh toán',
     failed: 'Thất bại',
     refunded: 'Đã hoàn tiền'
@@ -89,21 +90,17 @@
   function bookingTransitions(status) {
     return {
       pending: ['confirmed', 'cancelled'],
-      confirmed: ['checked_in', 'cancelled'],
-      checked_in: ['completed']
+      confirmed: ['cancelled']
     }[status] || [];
   }
 
   function paymentTransitions(bookingStatus, paymentStatus) {
     if (bookingStatus === 'cancelled') {
-      return paymentStatus === 'paid' ? ['refunded'] : [];
+      return ['paid', 'partially_paid'].includes(paymentStatus) ? ['refunded'] : [];
     }
 
-    return {
-      unpaid: ['pending', 'paid'],
-      pending: ['paid', 'failed'],
-      failed: ['pending', 'paid']
-    }[paymentStatus] || [];
+    return paymentStatus === 'partially_paid' && ['confirmed', 'checked_in'].includes(bookingStatus)
+      ? ['paid'] : [];
   }
 
   function visibleBookings() {
@@ -316,6 +313,12 @@
   }
 
   async function updateBookingStatus(id, newStatus) {
+    if (newStatus === 'checked_in') {
+      return db().rpc('staff_check_in', { p_booking_id: id });
+    }
+    if (newStatus === 'completed') {
+      return db().rpc('staff_check_out', { p_booking_id: id });
+    }
     return db().rpc('admin_update_booking_status', {
       p_booking_id: id,
       p_new_status: newStatus
@@ -323,6 +326,12 @@
   }
 
   async function updatePaymentStatus(id, newStatus) {
+    if (newStatus === 'paid') {
+      return db().rpc('staff_collect_balance', { p_booking_id: id });
+    }
+    if (newStatus === 'refunded') {
+      return db().rpc('staff_record_refund', { p_booking_id: id });
+    }
     return db().rpc('admin_update_payment_status', {
       p_booking_id: id,
       p_new_payment_status: newStatus

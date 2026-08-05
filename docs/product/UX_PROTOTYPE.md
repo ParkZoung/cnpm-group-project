@@ -342,7 +342,7 @@ WiFi, Điều hòa, TV, Bữa sáng, Ban công, Bồn tắm
 
 1. **Chỉ dùng dữ liệu mẫu** — chưa cần database và API hoàn chỉnh ở giai đoạn prototype.
 2. **Chưa làm backend quá sớm** — ưu tiên thống nhất màn hình và luồng trước khi code server.
-3. **Không có trong prototype MVP:** thanh toán online, voucher, tích điểm, QR check-in, chatbot, bản đồ tương tác.
+3. **Ngoài prototype ban đầu:** voucher, tích điểm, chatbot và bản đồ tương tác. Bản mở rộng hỗ trợ VietQR đối soát thủ công và QR check-in.
 4. **AI gợi ý phòng** có thể mock bằng rule đơn giản trước; tích hợp API LLM sau khi luồng booking ổn.
 5. Prototype phục vụ **học tập và demo** — giao diện gọn, dễ hiểu cho sinh viên năm nhất.
 

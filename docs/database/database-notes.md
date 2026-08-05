@@ -85,6 +85,25 @@ search form
   -> create_booking
   -> booking history
   -> cancel_own_booking
+
+Staff/payment lifecycle (migration `20260805000100`):
+
+```text
+customer creates booking
+  -> assigned branch staff confirms the booking
+  -> customer starts online check-in and scans a real VietQR
+  -> customer claims payment; staff verifies the transfer
+  -> staff approval issues a one-time check-in credential
+  -> assigned branch staff scans the credential when the guest arrives
+  -> staff collects any remaining balance
+  -> staff checks the guest out (booking becomes completed)
+```
+
+- `profiles.branch_id` is required only for the `staff` role.
+- `payment_transactions` is the audit trail for verified bank transfers, staff collections, and refunds.
+- `online_checkins` separates payment review and the one-time arrival credential from the booking lifecycle.
+- Monetary values are calculated and validated by database RPCs; browser-provided amounts are not accepted.
+- Staff booking access is restricted to rooms in the staff member's assigned branch.
 ```
 
 Administration:

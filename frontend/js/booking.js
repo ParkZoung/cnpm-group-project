@@ -105,23 +105,16 @@
 
       try {
         const { data, error } = await window.GoStayBookingApi.create(payload);
-
-        if (error) {
-          throw error;
-        }
-
-        const booking = normalizeCreateBookingResponse(data);
-
-        if (!booking) {
-          throw new Error('create_booking did not return a valid booking row.');
-        }
+        if (error) throw error;
+        const createdBooking = normalizeCreateBookingResponse(data);
+        if (!createdBooking) throw new Error('create_booking did not return a valid booking row.');
 
         elements.error.hidden = true;
         elements.success.textContent =
-          'Đã tạo đặt phòng ' + booking.booking_code + '. Tổng chính thức: ' + formatMoney(booking.total_amount) + '.';
+          'Đã tạo đặt phòng ' + createdBooking.booking_code + '. Vui lòng chờ khách sạn xác nhận.';
         elements.success.hidden = false;
         localStorage.removeItem(CART_KEY);
-        window.location.assign('bookingsuccess.html?id=' + encodeURIComponent(booking.booking_id));
+        window.location.assign('bookingsuccess.html?id=' + encodeURIComponent(createdBooking.booking_id));
       } catch (error) {
         showCheckoutError(elements, friendlyBookingError(error, 'Không thể đặt phòng. Vui lòng thử lại.'), false);
         setCheckoutSubmitting(elements, false);
@@ -184,6 +177,9 @@
           check_out_date,
           number_of_guests,
           total_amount,
+          paid_amount,
+          upfront_amount,
+          payment_option,
           booking_status,
           payment_status,
           room:rooms!bookings_room_id_fkey(
@@ -324,6 +320,9 @@
     appendDetail(elements.details, 'Số khách', booking.number_of_guests);
     appendDetail(elements.details, 'Trạng thái', bookingStatusLabel(booking.booking_status));
     appendDetail(elements.details, 'Thanh toán', paymentStatusLabel(booking.payment_status));
+    appendDetail(elements.details, 'Hình thức', booking.payment_option === 'deposit' ? 'Cọc 1 đêm' : booking.payment_option === 'full' ? 'Thanh toán toàn bộ' : 'Chưa chọn');
+    appendDetail(elements.details, 'Đã thanh toán', formatMoney(booking.paid_amount));
+    appendDetail(elements.details, 'Còn lại', formatMoney(Number(booking.total_amount) - Number(booking.paid_amount)));
     appendDetail(elements.details, 'Tổng tiền chính thức', formatMoney(booking.total_amount));
     elements.loading.hidden = true;
     elements.error.hidden = true;
@@ -470,6 +469,7 @@
     return {
       unpaid: 'Chưa thanh toán',
       pending: 'Đang xử lý',
+      partially_paid: 'Đã đặt cọc',
       paid: 'Đã thanh toán',
       failed: 'Thất bại',
       refunded: 'Đã hoàn tiền'
