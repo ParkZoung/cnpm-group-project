@@ -169,7 +169,7 @@
       if (['confirmed','checked_in'].includes(b.booking_status) && balance > 0) actions.push(`<button data-action="collect" data-id="${b.id}">Thu ${money(balance)}</button>`);
       if (b.booking_status === 'checked_in' && balance === 0) actions.push(`<button data-action="checkout" data-id="${b.id}">Check-out</button>`);
       if (b.booking_status === 'cancelled' && Number(b.paid_amount)>0 && b.payment_status!=='refunded') actions.push(`<button data-action="refund" data-id="${b.id}">Hoàn tiền</button>`);
-      const roomName = b.room ? String(b.room.name || 'Thông tin phòng').replace(/\s+\d+\s*$/, '').trim() : '—';
+      const roomName = roomDisplayName(b.room);
       return `<tr><td><strong>${escapeHtml(b.booking_code)}</strong></td><td>${escapeHtml(b.guest_name)}<small>${escapeHtml(b.guest_phone)}</small></td><td>${escapeHtml(roomName)}</td><td>${date(b.check_in_date)}</td><td>${date(b.check_out_date)}</td><td>${escapeHtml(statusLabel(b.booking_status))}</td><td>${escapeHtml(paymentLabel(b.payment_status))}<small>${money(b.paid_amount)} / ${money(b.total_amount)}</small></td><td>${money(balance)}</td><td class="staff-actions">${actions.join(' ') || '—'}</td></tr>`;
     }).join('');
   }
@@ -197,17 +197,57 @@
     return raw.toLowerCase().startsWith(prefix) ? raw.slice(prefix.length) : raw;
   }
 
+  function roomDisplayName(room, fallbackId) {
+    if (room && String(room.room_number || '').trim()) return 'Phòng ' + String(room.room_number).trim();
+    if (room && String(room.name || '').trim()) return String(room.name).trim();
+    return fallbackId ? 'Mã phòng nội bộ ' + fallbackId : '—';
+  }
+
+  function bangkokIsoDate() {
+    const parts = new Intl.DateTimeFormat('en-GB', {
+      timeZone: 'Asia/Bangkok', year: 'numeric', month: '2-digit', day: '2-digit'
+    }).formatToParts(new Date()).reduce((result, part) => {
+      result[part.type] = part.value; return result;
+    }, {});
+    return parts.year + '-' + parts.month + '-' + parts.day;
+  }
+
   async function lookupToken(value) {
     const token = normalizeToken(value);
     if (!/^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(token)) { $('scanResult').textContent='Mã QR không hợp lệ.'; return; }
     const result = await window.gostaySupabase.rpc('staff_lookup_checkin_token', { p_token:token });
     const row = Array.isArray(result.data) ? result.data[0] : result.data;
     if (result.error || !row) { $('scanResult').textContent='Không tìm thấy credential hợp lệ cho chi nhánh này.'; return; }
-    $('scanResult').innerHTML = `<p><strong>${escapeHtml(row.booking_code)}</strong> — ${escapeHtml(row.guest_name)} — Phòng #${escapeHtml(row.room_id)}</p><p>Trạng thái QR: ${escapeHtml(row.online_checkin_status)}</p><button id="consumeCheckinToken" class="checkin-action">Xác nhận khách đã đến</button>`;
+    const booking = state.bookings.find(item => item.id === row.booking_id);
+    const roomName = roomDisplayName(booking && booking.room, row.room_id);
+    const expiry = row.expires_at ? new Date(row.expires_at).toLocaleString('vi-VN') : 'Không xác định';
+    const today = bangkokIsoDate();
+    const beforeArrival = booking && today < booking.check_in_date;
+    const afterDeparture = booking && today >= booking.check_out_date;
+    const canConfirmArrival = Boolean(booking && !beforeArrival && !afterDeparture);
+    const eligibilityNote = beforeArrival
+      ? 'Có thể xác nhận khách đến từ ngày ' + date(booking.check_in_date) + '.'
+      : afterDeparture
+        ? 'Booking đã quá ngày trả phòng và không thể check-in.'
+        : canConfirmArrival
+          ? 'Đã đến ngày nhận phòng. Hãy xác nhận khi khách có mặt tại quầy.'
+          : 'Không tải được ngày nhận phòng. Vui lòng tải lại danh sách booking.';
+    $('scanResult').innerHTML = `<article class="qr-lookup-card">
+      <header class="qr-lookup-header"><div><span class="qr-lookup-kicker">THÔNG TIN CHECK-IN</span><strong>${escapeHtml(row.booking_code)}</strong></div><span class="qr-status-badge">QR đã duyệt</span></header>
+      <dl class="qr-lookup-details">
+        <div><dt>Khách hàng</dt><dd>${escapeHtml(row.guest_name)}</dd></div>
+        <div><dt>Phòng lưu trú</dt><dd>${escapeHtml(roomName)}</dd></div>
+        <div class="qr-lookup-wide"><dt>Hiệu lực đến</dt><dd>${escapeHtml(expiry)}</dd></div>
+      </dl>
+      <p class="qr-lookup-note"><span aria-hidden="true">i</span> ${escapeHtml(eligibilityNote)}</p>
+      <button id="consumeCheckinToken" class="checkin-action qr-confirm-action" type="button"${canConfirmArrival ? '' : ' disabled'}>${beforeArrival ? 'Chưa đến ngày nhận phòng' : afterDeparture ? 'Đã quá ngày nhận phòng' : 'Xác nhận khách đã đến'} <span aria-hidden="true">→</span></button>
+    </article>`;
+    if (!canConfirmArrival) return;
     $('consumeCheckinToken').addEventListener('click', async () => {
       const consumed = await window.gostaySupabase.rpc('staff_consume_checkin_token', { p_token:token });
       if (consumed.error) { $('scanResult').textContent=consumed.error.message; return; }
-      $('scanResult').textContent='Check-in thành công. QR đã được vô hiệu hóa.'; await load();
+      $('scanResult').innerHTML='<div class="qr-success-card"><span aria-hidden="true">✓</span><div><strong>Check-in thành công</strong><p>Khách đã chuyển sang trạng thái đang lưu trú. Mã QR này không thể sử dụng lại.</p></div></div>';
+      await load();
     });
   }
 

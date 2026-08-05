@@ -55,7 +55,7 @@
         <div class="card-heading"><div><span class="section-number">01</span><h2>Quét QR check-in</h2></div><p>Đưa mã QR của khách vào khung hình hoặc nhập mã thủ công.</p></div>
         <div class="scanner-layout">
           <div class="scanner-view"><div id="qr-reader"></div></div>
-          <div class="scanner-manual"><span class="eyebrow">NHẬP THỦ CÔNG</span><h3>Không quét được mã?</h3><p>Dán UUID hoặc toàn bộ nội dung QR để tra cứu booking.</p><div class="staff-toolbar"><input id="manualCheckinToken" placeholder="Nhập UUID hoặc nội dung QR"><button id="lookupCheckinToken">Kiểm tra mã</button></div><div id="scanResult"></div></div>
+          <div class="scanner-manual"><span class="eyebrow">NHẬP THỦ CÔNG</span><h3>Không quét được mã?</h3><p>Dán UUID hoặc toàn bộ nội dung QR để tra cứu booking.</p><div class="staff-toolbar"><input id="manualCheckinToken" placeholder="Nhập UUID hoặc nội dung QR"><button id="lookupCheckinToken">Kiểm tra mã</button></div><div id="scanResult" role="status" aria-live="polite"></div></div>
         </div>
       </section>
 
@@ -69,6 +69,6 @@
   </main>
 
   <div id="staffDetailModal" class="staff-modal" hidden><div class="staff-modal-card"><button id="closeStaffDetail" type="button" aria-label="Đóng">×</button><h2>Chi tiết thanh toán</h2><div id="staffDetailContent"></div></div></div>
-  <script src="js/config/environment.js"></script><script src="js/core/api-client.js"></script><script src="js/supabase-client.js"></script><script src="js/staff-auth.js"></script><script src="https://cdn.jsdelivr.net/npm/html5-qrcode@2.3.8/html5-qrcode.min.js"></script><script src="js/staff-dashboard.js?v=20260805-2"></script>
+  <script src="js/config/environment.js"></script><script src="js/core/api-client.js"></script><script src="js/supabase-client.js"></script><script src="js/staff-auth.js"></script><script src="https://cdn.jsdelivr.net/npm/html5-qrcode@2.3.8/html5-qrcode.min.js"></script><script src="js/staff-dashboard.js?v=20260805-3"></script>
 </body>
 </html>
