@@ -1,7 +1,7 @@
 -- ============================================================================
 -- GoStay - Auth/Profile Foundation rollback
 -- ============================================================================
--- This file is intentionally outside supabase/migrations so it is not applied
+-- This file is intentionally outside backend/supabase/migrations so it is not applied
 -- automatically after the foundation migration.
 --
 -- Rollback removes only the trigger and functions introduced by foundation.

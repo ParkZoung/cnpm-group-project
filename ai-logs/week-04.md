@@ -36,3 +36,14 @@
 - Tạo prompt rõ ràng, cụ thể giúp AI sinh ra kết quả đúng định dạng mong muốn.
 - Lưu lại prompt sử dụng để dễ tái sử dụng và đảm bảo tính nhất quán giữa các thành viên nhóm.
 - Phần review của nhóm là cần thiết để phát hiện và khắc phục sai sót do AI tạo ra.
+
+## 8. Bổ sung tái cấu trúc repository
+
+- Công cụ: Codex.
+- Mục tiêu: tách rõ frontend/backend, giữ tương thích Supabase CLI và chuẩn bị
+  cấu trúc MVC theo từng giai đoạn.
+- Kết quả: di chuyển Supabase project vào `backend/supabase`, tách Edge Function
+  API thành controller/middleware/repository/validator, tách HTTP transport phía
+  frontend và cập nhật CI/tài liệu.
+- Kiểm soát: không thay đổi hoặc deploy database production; giữ nguyên endpoint,
+  response contract và facade `window.gostaySupabase` để hạn chế regression.

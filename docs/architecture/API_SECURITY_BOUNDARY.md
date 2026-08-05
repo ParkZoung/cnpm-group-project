@@ -7,7 +7,8 @@ Browser (FE) ──HTTPS/JSON──> Edge Function `api` (BE) ──Supabase SDK
 ```
 
 Frontend không chứa Supabase publishable/service key và không khởi tạo database
-client. `frontend/js/supabase-client.js` là adapter của API ứng dụng; tên global
+client. `frontend/js/core/api-client.js` phụ trách HTTP transport, còn
+`frontend/js/supabase-client.js` là adapter tương thích của API ứng dụng; tên global
 được giữ lại để các màn hình cũ không phải thay đổi đồng loạt.
 
 ## Xác thực
@@ -39,3 +40,6 @@ Deploy Edge Function `api` với cấu hình `verify_jwt = false` vì endpoint l
 register chưa có JWT. Đây không phải là bỏ xác thực: các route bảo vệ gọi
 `requireUser` rõ ràng trong function. `SUPABASE_URL` và `SUPABASE_ANON_KEY` phải
 chỉ tồn tại trong environment của Edge Function.
+
+Mã backend và cấu hình Supabase nằm tại `backend/supabase`. Việc đổi vị trí thư
+mục không làm thay đổi tên Edge Function, URL production hoặc biến môi trường.

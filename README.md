@@ -68,6 +68,17 @@ python -m http.server 4173 --directory frontend
 
 Sau đó mở [http://127.0.0.1:4173](http://127.0.0.1:4173). Frontend hiện sử dụng API Supabase development đã được cấu hình trong dự án.
 
+Backend Supabase được đặt tại `backend/supabase`. Có thể chạy local từ thư mục gốc:
+
+```bash
+npm run backend:start
+npm run backend:serve:api
+```
+
+Không chạy `npm run backend:db:push` với production trước khi đối chiếu schema và
+lịch sử migration. Xem thêm [`backend/README.md`](backend/README.md) và
+[`docs/architecture/PROJECT_STRUCTURE.md`](docs/architecture/PROJECT_STRUCTURE.md).
+
 ## Cấu hình kiểm thử
 
 Sao chép `.env.example` thành `.env`, sau đó thay các giá trị mẫu bằng tài khoản và API dành riêng cho môi trường development/test. Không chạy bộ kiểm thử ghi dữ liệu trên production và không commit file `.env`.
@@ -100,12 +111,13 @@ Chi tiết xem tại [`docs/testing/E2E.md`](docs/testing/E2E.md) và thư mục
 ```text
 cnpm-group-project/
 ├── frontend/              # Trang HTML, CSS, JavaScript và hình ảnh
-├── supabase/
-│   ├── functions/         # API và Edge Function gợi ý phòng
-│   ├── migrations/        # Migration cơ sở dữ liệu
-│   ├── seeds/             # Dữ liệu catalog mẫu
-│   ├── preflight/         # Kiểm tra trước khi triển khai
-│   └── rollbacks/         # Kịch bản rollback được kiểm soát
+├── backend/
+│   └── supabase/          # Backend giữ cấu trúc chuẩn của Supabase CLI
+│       ├── functions/     # API và Edge Function gợi ý phòng
+│       ├── migrations/    # Migration cơ sở dữ liệu
+│       ├── seeds/         # Dữ liệu catalog mẫu
+│       ├── preflight/     # Kiểm tra trước khi triển khai
+│       └── rollbacks/     # Kịch bản rollback được kiểm soát
 ├── tests/
 │   ├── e2e/               # Kiểm thử Playwright
 │   └── security/          # Runtime security tests
