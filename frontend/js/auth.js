@@ -245,12 +245,18 @@
         });
 
         if (error) throw error;
+        if (data.user && Array.isArray(data.user.identities) && data.user.identities.length === 0) {
+          const duplicateError = new Error('User already registered.');
+          duplicateError.code = 'user_already_exists';
+          throw duplicateError;
+        }
         if (!data.user) throw new Error('Supabase không trả về tài khoản vừa tạo.');
 
         if (!data.session) {
           setStatus(statusElement, 'Đăng ký thành công. Vui lòng kiểm tra email để xác nhận tài khoản.', 'success');
           form.reset();
           submitButton.disabled = true;
+          submitButton.textContent = 'Đăng Ký';
           return;
         }
 
@@ -287,7 +293,11 @@
 
     if (normalized.includes('invalid login credentials')) return 'Email hoặc mật khẩu không đúng.';
     if (normalized.includes('email not confirmed')) return 'Email chưa được xác nhận. Vui lòng kiểm tra hộp thư.';
-    if (normalized.includes('user already registered')) return 'Email này đã được đăng ký.';
+    if (code === 'user_already_exists' ||
+        normalized.includes('user already registered') ||
+        normalized.includes('already been registered')) {
+      return 'Email này đã có tài khoản.';
+    }
     if (code === 'over_email_send_rate_limit' || normalized.includes('email rate limit exceeded')) {
       return 'Hệ thống đang gửi quá nhiều email xác nhận. Vui lòng chờ một lúc rồi thử lại.';
     }

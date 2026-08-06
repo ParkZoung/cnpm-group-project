@@ -34,6 +34,16 @@ export async function handleAuth(path, body, req) {
         emailRedirectTo: validRedirectUrl(body.options?.emailRedirectTo) || undefined,
       },
     });
+
+    // With email confirmation enabled, Supabase can intentionally return a
+    // sanitized user with no identities instead of an error for an existing
+    // email. Convert that response into an explicit conflict for our UI.
+    if (!result.error && result.data?.user &&
+        Array.isArray(result.data.user.identities) &&
+        result.data.user.identities.length === 0) {
+      return fail("User already registered.", 409, "user_already_exists");
+    }
+
     return json(result, result.error ? 400 : 200);
   }
 
