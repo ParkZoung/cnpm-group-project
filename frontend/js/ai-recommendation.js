@@ -125,7 +125,10 @@
     const need = elements.need.value.trim();
     const checkIn = valueOf(elements.homeCheckIn);
     const checkOut = valueOf(elements.homeCheckOut);
-    const guests = positiveInteger(valueOf(elements.homeGuests));
+    const formGuests = positiveInteger(valueOf(elements.homeGuests));
+    const requestedGuests = readRequestedGuests(need);
+    const guests = formGuests ? Math.max(formGuests, requestedGuests || 0) : null;
+    const areaConstraint = readRequestedAreaConstraint(need);
     const branchId = homepageBranchId(elements);
 
     if (!need) return { error: 'Vui lòng mô tả nhu cầu về phòng.' };
@@ -135,7 +138,7 @@
     if (checkOut <= checkIn) return { error: 'Ngày trả phòng phải sau ngày nhận phòng.' };
     if (!guests) return { error: 'Vui lòng bổ sung số khách tại form tìm kiếm phía trên.' };
 
-    return {
+    const result = {
       value: {
         need: need,
         check_in_date: checkIn,
@@ -146,6 +149,11 @@
         max_price: null
       }
     };
+    if (areaConstraint) {
+      result.value.minimum_area_m2 = areaConstraint.value;
+      result.value.area_exclusive = areaConstraint.exclusive;
+    }
+    return result;
   }
 
   async function requestRecommendations(elements, payload) {
@@ -161,10 +169,30 @@
       });
       if (response.error) throw response.error;
 
+      const appliedGuests = Number(
+        response.data && response.data.appliedCriteria && response.data.appliedCriteria.guests
+      );
+      if (Number.isSafeInteger(appliedGuests) && appliedGuests > payload.guests) {
+        payload.guests = appliedGuests;
+      }
+      const appliedAreaM2 = Number(
+        response.data && response.data.appliedCriteria && response.data.appliedCriteria.minimum_area_m2
+      );
+      if (Number.isFinite(appliedAreaM2) && appliedAreaM2 > 0) {
+        payload.minimum_area_m2 = appliedAreaM2;
+        payload.area_exclusive = Boolean(response.data.appliedCriteria.area_exclusive);
+      }
+
       const rooms = response.data && Array.isArray(response.data.recommendations)
         ? response.data.recommendations.slice(0, MAX_RESULT_COUNT)
         : [];
-      return rooms.filter(isValidRecommendation);
+      return rooms.filter(function (room) {
+        return isValidRecommendation(room) &&
+          Number(room.room_type_capacity) >= payload.guests &&
+          (!payload.minimum_area_m2 || (payload.area_exclusive
+            ? Number(room.room_type_area_m2) > payload.minimum_area_m2
+            : Number(room.room_type_area_m2) >= payload.minimum_area_m2));
+      });
     } catch (error) {
       showRequestError(elements, friendlyError(error));
       return null;
@@ -204,8 +232,9 @@
     image.decoding = 'async';
     image.fetchPriority = 'low';
     image.alt = room.image_alt_text || roomLabel(room) + ' tại ' + room.branch_name;
-    image.addEventListener('error', function () {
-      if (image.src !== FALLBACK_ROOM_IMAGE) image.src = FALLBACK_ROOM_IMAGE;
+    image.addEventListener('error', function handleImageError() {
+      image.removeEventListener('error', handleImageError);
+      image.src = FALLBACK_ROOM_IMAGE;
     });
     image.src = room.image_url || FALLBACK_ROOM_IMAGE;
 
@@ -216,7 +245,8 @@
     appendText(
       body,
       'div',
-      room.room_type_name + ' · Tối đa ' + room.room_type_capacity + ' khách',
+      room.room_type_name + ' · ' + room.room_type_area_m2 + ' m² · Tối đa ' +
+        room.room_type_capacity + ' khách',
       'ai-recommendation-card__meta'
     );
     appendText(
@@ -318,5 +348,32 @@
       .replace(/[\u0300-\u036f]/g, '')
       .toLocaleLowerCase('vi')
       .trim();
+  }
+
+  function readRequestedGuests(need) {
+    const normalized = normalizeText(need).replace(/đ/g, 'd');
+    const match = normalized.match(
+      /\b(tren|hon|tu|it nhat|toi thieu|khoang)?\s*(\d{1,2})\s*(?:nguoi|khach)\b/
+    );
+    if (!match) return null;
+
+    const guests = Number(match[2]);
+    if (!Number.isSafeInteger(guests) || guests < 1) return null;
+    return /^(tren|hon)$/.test(match[1] || '') ? guests + 1 : guests;
+  }
+
+  function readRequestedAreaConstraint(need) {
+    const normalized = normalizeText(need).replace(/đ/g, 'd').replace(/²/g, '2');
+    const match = normalized.match(
+      /\b(tren|hon|tu|it nhat|toi thieu|khoang)?\s*(\d{1,4}(?:[.,]\d+)?)\s*(?:m2|met vuong)\b/
+    );
+    if (!match) return null;
+
+    const areaM2 = Number(match[2].replace(',', '.'));
+    if (!Number.isFinite(areaM2) || areaM2 <= 0) return null;
+    return {
+      value: areaM2,
+      exclusive: /^(tren|hon)$/.test(match[1] || '')
+    };
   }
 }());

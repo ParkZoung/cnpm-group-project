@@ -131,6 +131,73 @@ function validateInput(
   };
 }
 
+function normalizeVietnameseText(value) {
+  return String(value ?? "")
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/đ/g, "d")
+    .replace(/Đ/g, "D")
+    .toLowerCase();
+}
+
+function readRequestedGuests(need) {
+  const normalized = normalizeVietnameseText(need);
+  const patterns = [
+    /\b(tren|hon|tu|it nhat|toi thieu|khoang)?\s*(\d{1,2})\s*(?:nguoi|khach)\b/,
+  ];
+
+  for (const pattern of patterns) {
+    const match = normalized.match(pattern);
+    if (!match) continue;
+    const guests = Number(match[2]);
+    if (Number.isSafeInteger(guests) && guests >= 1) {
+      return /^(tren|hon)$/.test(match[1] || "") ? guests + 1 : guests;
+    }
+  }
+  return null;
+}
+
+function readRequestedAreaConstraint(need) {
+  const normalized = normalizeVietnameseText(need).replace(/²/g, "2");
+  const patterns = [
+    /\b(tren|hon|tu|it nhat|toi thieu|khoang)?\s*(\d{1,4}(?:[.,]\d+)?)\s*(?:m2|met vuong)\b/,
+    /(?:dien tich|rong)\s*(tren|hon|tu|it nhat|toi thieu|khoang)?\s*(\d{1,4}(?:[.,]\d+)?)/,
+  ];
+
+  for (const pattern of patterns) {
+    const match = normalized.match(pattern);
+    if (!match) continue;
+    const areaM2 = Number(match[2].replace(",", "."));
+    if (Number.isFinite(areaM2) && areaM2 > 0) {
+      return {
+        value: areaM2,
+        exclusive: /^(tren|hon)$/.test(match[1] || ""),
+      };
+    }
+  }
+  return null;
+}
+
+function filterAndOrderCandidates(candidates, areaConstraint) {
+  const suitable = areaConstraint === null
+    ? candidates
+    : candidates.filter((room) => {
+      const areaM2 = Number(room.room_type_area_m2);
+      return Number.isFinite(areaM2) && (areaConstraint.exclusive
+        ? areaM2 > areaConstraint.value
+        : areaM2 >= areaConstraint.value);
+    });
+
+  return suitable.slice().sort((left, right) => {
+    if (areaConstraint !== null) {
+      const areaDifference =
+        Number(left.room_type_area_m2) - Number(right.room_type_area_m2);
+      if (areaDifference !== 0) return areaDifference;
+    }
+    return Number(left.price_per_night) - Number(right.price_per_night);
+  });
+}
+
 function toGeminiRoomMetadata(room) {
   return {
     room_id: room.room_id,
@@ -202,6 +269,7 @@ async function rankCandidatesWithGemini(
   candidates,
   apiKey,
   configuredModel,
+  appliedCriteria,
 ) {
   const model = configuredModel.replace(/^models\//, "");
   if (!/^[a-zA-Z0-9._-]+$/.test(model)) {
@@ -216,6 +284,7 @@ async function rankCandidatesWithGemini(
     "Do not invent room facts and do not include any additional fields.",
     JSON.stringify({
       need,
+      appliedCriteria,
       candidateRooms: candidates.map(toGeminiRoomMetadata),
     }),
   ].join("\n");
@@ -366,31 +435,43 @@ Deno.serve(async (request) => {
   }
 
   const input = validation.data;
+  const requestedGuests = readRequestedGuests(input.need);
+  const areaConstraint = readRequestedAreaConstraint(input.need);
+  const appliedGuests = Math.max(input.guests, requestedGuests ?? 0);
+  const appliedCriteria = {
+    guests: appliedGuests,
+    minimum_area_m2: areaConstraint?.value ?? null,
+    area_exclusive: areaConstraint?.exclusive ?? false,
+  };
 
   try {
     const { data, error } = await supabase
       .rpc("search_available_rooms", {
         p_check_in_date: input.checkInDate,
         p_check_out_date: input.checkOutDate,
-        p_guests: input.guests,
+        p_guests: appliedGuests,
         p_branch_id: input.branchId,
         p_room_type_id: input.roomTypeId,
         p_min_price: input.minPrice,
         p_max_price: input.maxPrice,
       })
-      .limit(15);
+      .limit(200);
 
     if (error) {
       console.error("search_available_rooms failed.", { code: error.code });
       return jsonResponse({ error: "Unable to search available rooms." }, 502);
     }
 
-    const candidates = Array.isArray(data) ? data.slice(0, 15) : [];
+    const candidates = filterAndOrderCandidates(
+      Array.isArray(data) ? data : [],
+      areaConstraint,
+    ).slice(0, 30);
     if (candidates.length === 0) {
       return jsonResponse({
         candidateCount: 0,
         candidates: [],
         recommendations: [],
+        appliedCriteria,
       });
     }
 
@@ -401,6 +482,7 @@ Deno.serve(async (request) => {
         candidates,
         geminiApiKey,
         geminiModel,
+        appliedCriteria,
       );
     } catch {
       console.error("Gemini ranking could not be completed.");
@@ -414,6 +496,7 @@ Deno.serve(async (request) => {
       candidateCount: candidates.length,
       candidates,
       recommendations,
+      appliedCriteria,
     });
   } catch {
     console.error("recommend-rooms encountered an unexpected error.");
