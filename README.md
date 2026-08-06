@@ -80,6 +80,7 @@ Backend Supabase được đặt tại `backend/supabase`. Có thể chạy loca
 ```bash
 npm run backend:start
 npm run backend:serve:api
+npm run backend:serve:recommendations
 ```
 
 Không chạy `supabase db push` với production trước khi đối chiếu schema và lịch
@@ -97,11 +98,13 @@ Các lệnh chính:
 npm run test:e2e
 npm run test:e2e:admin
 npm run test:security
+npm run test:staff-contract
 ```
 
 - `test:e2e`: kiểm tra luồng đặt phòng của khách hàng.
 - `test:e2e:admin`: kiểm tra các luồng quản trị.
 - `test:security`: kiểm tra phân quyền và hành vi bảo mật khi chạy thực tế.
+- `test:staff-contract`: kiểm tra contract Staff, payment và online check-in.
 
 Chi tiết xem tại [`docs/testing/E2E.md`](docs/testing/E2E.md) và thư mục [`docs/security`](docs/security).
 

@@ -1,5 +1,11 @@
 # PRODUCT_ANALYSIS.md
 
+> **Trạng thái: Product-discovery snapshot.** Phân tích này giữ lại các quyết
+> định và giả định ban đầu; một số mô tả như đặt phòng theo giờ, “chủ khách sạn”
+> và extension chưa triển khai không còn là hiện trạng. Xem
+> [`PRODUCT_DIRECTION.md`](PRODUCT_DIRECTION.md) và
+> [`REQUIREMENTS.md`](REQUIREMENTS.md) để lấy phạm vi hiện hành.
+
 > **Dự án:** GoStay — ứng dụng web đặt phòng khách sạn (MVP)  
 > **Vai trò tài liệu:** Phân tích sản phẩm (Business Analyst / Product Owner)  
 > **Lưu ý:** GoStay học hỏi một số ý tưởng thiết kế từ các app đặt phòng lớn, nhưng chỉ tập trung vào một chuỗi khách sạn nhỏ với **MVP đơn giản** phù hợp nhóm sinh viên .

@@ -1,5 +1,7 @@
 # Nhật ký AI — Tuần 01 (GoStay)
 
+> **Historical log:** giữ nguyên theo thời điểm tuần 01; không dùng làm nguồn yêu cầu hiện hành.
+
 **Dự án:** GoStay — ứng dụng đặt phòng khách sạn (MVP)  
 **Tuần:** 01  
 **Ngày ghi:** 24/05/2026  

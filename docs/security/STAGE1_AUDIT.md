@@ -2,6 +2,9 @@
 
 > **Trạng thái: Archived.** Báo cáo này phản ánh repository trước khi Supabase
 > Auth, RLS, RPC và cơ chế chống booking đồng thời được triển khai. Nhiều phát
+> hiện bên dưới đã được xử lý và các liên kết dòng tuyệt đối chỉ là bằng chứng từ
+> workspace tại thời điểm audit, có thể không hoạt động trên máy khác. Trạng thái
+> hiện hành xem tại [`CURRENT_SECURITY_STATUS.md`](CURRENT_SECURITY_STATUS.md).
 > hiện bên dưới không còn mô tả code hiện tại. Không dùng tài liệu này làm kết
 > luận bảo mật hiện hành; xem `CURRENT_SECURITY_STATUS.md`.
 

@@ -46,7 +46,8 @@ Chính sách này áp dụng cho **toàn bộ nhóm** dự án GoStay khi dùng 
 
 ### 5.1. Trước khi prompt
 
-- Đọc `PRODUCT_DIRECTION.md` để nhớ phạm vi MVP.
+- Đọc [`docs/product/PRODUCT_DIRECTION.md`](docs/product/PRODUCT_DIRECTION.md) và
+  [`docs/product/REQUIREMENTS.md`](docs/product/REQUIREMENTS.md) để xác định phạm vi hiện hành.
 - Loại bỏ thông tin nhạy cảm khỏi nội dung gửi AI (dùng biến giả, `.env.example`).
 
 ### 5.2. Sau khi nhận kết quả từ AI
@@ -100,8 +101,9 @@ Mỗi tuần (hoặc khi có milestone), cập nhật `ai-logs/week-XX.md` với
 
 ## 10. Tài liệu tham chiếu trong repo
 
-- `PRODUCT_DIRECTION.md`
-- `AGENT_GUIDE.md`
+- [`docs/product/PRODUCT_DIRECTION.md`](docs/product/PRODUCT_DIRECTION.md)
+- [`docs/product/REQUIREMENTS.md`](docs/product/REQUIREMENTS.md)
+- [`AGENT_GUIDE.md`](AGENT_GUIDE.md)
 - `ai-logs/` — nhật ký theo tuần
 
 ---

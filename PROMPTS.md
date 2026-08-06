@@ -1,5 +1,9 @@
 # PROMPTS.md — Tuần 4
 
+> **Trạng thái: Historical prompt log.** Nội dung phản ánh công việc tuần 4 và
+> không phải tài liệu yêu cầu hiện hành. Xem
+> [`docs/product/REQUIREMENTS.md`](docs/product/REQUIREMENTS.md).
+
 ## 1. Prompt đọc repo
 Mô tả repo hiện tại và kiểm tra cấu trúc file:
 - "Bạn hãy phân tích repo hiện tại. Xác định xem đây là loại dự án gì, có mã nguồn hay chỉ là tài liệu, cấu trúc thư mục chính và các file quan trọng."

@@ -1,225 +1,257 @@
-# REQUIREMENTS.md — GoStay
+# GoStay — Yêu cầu sản phẩm
 
-> **Dự án:** GoStay — website đặt phòng cho chuỗi khách sạn nhỏ
-> **Phiên bản tài liệu:** 2.0 (Tuần 04)
+> **Phiên bản:** 3.0
+>
+> **Cập nhật:** 2026-08-06
+>
+> **Nguồn thuật ngữ:** [`DOMAIN_TERMS.md`](../architecture/DOMAIN_TERMS.md)
+>
+> **Phạm vi chuẩn:** [`PRODUCT_DIRECTION.md`](PRODUCT_DIRECTION.md)
 
----
+## 1. Tổng quan
 
-## 1. Product Overview
+GoStay là website đặt phòng cho một chuỗi khách sạn nhỏ có nhiều chi nhánh. Hệ
+thống có ba role chuẩn: `customer`, `staff` và `admin`. Đăng nhập, tìm phòng còn
+trống, đặt phòng và quản trị catalog/booking là lõi sản phẩm. AI gợi ý phòng,
+VietQR/online check-in và nghiệp vụ Staff là extension; các extension không được
+làm gián đoạn luồng booking lõi khi dịch vụ phụ trợ gặp lỗi.
 
-GoStay là website đặt phòng dành cho một chuỗi khách sạn nhỏ. Khách hàng có thể tìm phòng, xem chi tiết, chọn ngày/giờ nhận trả và đặt phòng. Admin có thể quản lý phòng, cập nhật giá và trạng thái để đảm bảo dữ liệu đồng bộ với trải nghiệm khách.
+Booking hiện sử dụng `check_in_date` và `check_out_date` theo ngày. GoStay không
+hỗ trợ đặt phòng theo giờ.
 
----
+## 2. Vai trò
 
-## 2. User Roles
+- **Customer:** quản lý tài khoản, tìm phòng, đặt/hủy phòng của chính mình, xem
+  lịch sử và chủ động sử dụng các extension dành cho khách.
+- **Staff:** chọn chi nhánh làm việc trong phiên, xử lý booking và giao dịch thuộc
+  chi nhánh đó, xác nhận check-in/check-out và hoàn tiền theo quy trình.
+- **Admin:** quản trị toàn hệ thống, bao gồm catalog, tài khoản và booking.
 
-- **Customer**: Người dùng đặt phòng, tìm kiếm phòng, xem chi tiết và quản lý lịch sử booking.
-- **Staff**: Nhân viên một chi nhánh, tiếp nhận khách, thu số dư và hoàn tất trả phòng.
-- **Admin**: Người quản lý hệ thống GoStay, thêm/sửa/xóa phòng và cập nhật trạng thái, giá cả, thông tin phòng.
+Mọi quyền truy cập dữ liệu phải được kiểm tra tại Edge Function và PostgreSQL
+RLS/RPC. Kiểm tra role trên giao diện chỉ phục vụ trải nghiệm người dùng.
 
----
+## 3. Phạm vi lõi
 
-## 3. MVP Scope
+- Đăng ký, đăng nhập, đăng xuất và duy trì phiên bằng Supabase Auth.
+- Đăng nhập Google, xác nhận email và khôi phục mật khẩu bằng OTP.
+- Xem chi nhánh, loại/hạng phòng, phòng, hình ảnh và tiện nghi đang hoạt động.
+- Tìm phòng còn trống theo chi nhánh, ngày lưu trú, số khách, giá và loại phòng.
+- Xem chi tiết phòng và thêm lựa chọn vào giỏ hàng cục bộ.
+- Tạo booking bằng giá authoritative từ database; ngăn khoảng ngày không hợp lệ,
+  booking trùng và hai request đồng thời giữ cùng một phòng.
+- Customer xem lịch sử và hủy booking thuộc quyền sở hữu của mình khi hợp lệ.
+- Admin xem dashboard; quản lý chi nhánh, phòng, loại/hạng phòng, hình ảnh, giá,
+  trạng thái, booking và tài khoản người dùng.
+- Phân quyền `customer`/`staff`/`admin`, trạng thái profile và ownership bằng
+  RLS, RPC, constraint và transaction phía PostgreSQL.
 
-- Đăng ký, đăng nhập cho khách và admin.
-- Danh sách chi nhánh/phòng của chuỗi GoStay.
-- Tìm kiếm và lọc phòng theo vị trí, giá, loại phòng.
-- Xem chi tiết phòng.
-- Đặt phòng chọn ngày/giờ và xác nhận.
-- Lịch sử đặt phòng cho khách.
-- Quản lý phòng, giá và trạng thái bởi admin.
-- AI gợi ý phòng phù hợp theo nhu cầu.
+## 4. Phạm vi extension hiện có
 
----
+### 4.1. AI gợi ý phòng
 
-## 4. Out of Scope
+- Customer chủ động nhập nhu cầu và yêu cầu gợi ý.
+- Hệ thống chỉ gửi tiêu chí cùng metadata phòng đủ điều kiện cho Edge Function
+  `recommend-rooms` và Gemini.
+- AI chỉ xếp hạng phòng có thật và giải thích lựa chọn; không được tạo room ID,
+  giá hoặc booking.
+- Khi AI lỗi, hết quota hoặc không có gợi ý, tìm kiếm thông thường vẫn hoạt động.
+- Kết quả phải được gắn nhãn nội dung do AI tạo.
 
-- Thanh toán online thật.
-- Voucher / mã giảm giá.
-- Tích điểm thành viên.
-- QR check-in.
-- Chatbot hỗ trợ.
-- Bản đồ vị trí khách sạn.
-- Hệ thống đa nền tảng nhiều khách sạn độc lập.
-- Tính năng đặt phòng tự động qua AI.
+### 4.2. VietQR và online check-in
 
----
+- Customer chọn thanh toán đủ hoặc đặt cọc theo quy tắc của database.
+- Customer xem VietQR và khai báo đã chuyển khoản; khai báo không đồng nghĩa tiền
+  đã được ghi nhận.
+- Staff phải duyệt hoặc từ chối yêu cầu thanh toán.
+- Sau khi được duyệt, hệ thống cấp thông tin/token check-in dùng một lần.
+- VietQR hiện là quy trình đối chiếu thủ công, không phải cổng thanh toán tự động
+  hay kết nối ngân hàng thời gian thực.
 
-## 5. User Stories
+### 4.3. Staff operations
 
-### US1 — Đăng ký tài khoản
-- ID: US1
-- User role: Customer
-- Goal: Tôi muốn đăng ký tài khoản để bắt đầu tìm và đặt phòng.
-- Benefit: Khách có thể lưu booking và quản lý thông tin cá nhân.
-- Acceptance Criteria:
-  - Given tôi chưa có tài khoản,
-  - When tôi điền email và mật khẩu hợp lệ và bấm Đăng ký,
-  - Then hệ thống tạo tài khoản và chuyển tôi đến trang danh sách phòng.
-- Priority: Cao
-- Difficulty: Trung bình
-- AI involved: No
+- Staff đang hoạt động chọn một chi nhánh làm việc trong phiên.
+- Staff chỉ xem và xử lý booking thuộc chi nhánh đã chọn.
+- Staff xác nhận booking, duyệt thanh toán, thu số dư, check-in, check-out và ghi
+  nhận hoàn tiền theo transition hợp lệ.
+- Không cho check-in trước ngày đến hoặc check-out trước ngày trả phòng.
 
-### US2 — Đăng nhập
-- ID: US2
-- User role: Customer
-- Goal: Tôi muốn đăng nhập vào GoStay để sử dụng các chức năng đặt phòng.
-- Benefit: Khách có thể xem lịch sử và đặt phòng nhanh hơn.
-- Acceptance Criteria:
-  - Given tôi đã có tài khoản,
-  - When tôi nhập email và mật khẩu đúng và bấm Đăng nhập,
-  - Then tôi được chuyển đến trang phù hợp với vai trò của mình.
-  - Given tôi nhập sai mật khẩu,
-  - When tôi bấm Đăng nhập,
-  - Then hệ thống hiển thị thông báo lỗi.
-- Priority: Cao
-- Difficulty: Dễ
-- AI involved: No
+## 5. Ngoài phạm vi
 
-### US3 — Xem danh sách phòng và chi nhánh
-- ID: US3
-- User role: Customer
-- Goal: Tôi muốn xem các phòng và chi nhánh đang có trong chuỗi GoStay.
-- Benefit: Giúp tôi biết được lựa chọn phòng hiện có.
-- Acceptance Criteria:
-  - Given tôi mở trang chính,
-  - When danh sách phòng được tải,
-  - Then tôi thấy tên phòng, giá, địa điểm và trạng thái cơ bản.
-- Priority: Cao
-- Difficulty: Dễ
-- AI involved: No
+- Cổng thanh toán tự động, webhook ngân hàng và đối soát thời gian thực.
+- Voucher, loyalty hoặc tích điểm thành viên.
+- Marketplace cho nhiều khách sạn độc lập.
+- Bản đồ nâng cao, chatbot, voice assistant và dynamic pricing bằng AI.
+- AI tự tạo phòng, tự sửa giá hoặc tự xác nhận booking.
+- Email/SMS nhắc lịch và đánh giá sau lưu trú.
 
-### US4 — Tìm kiếm và lọc phòng
-- ID: US4
-- User role: Customer
-- Goal: Tôi muốn tìm phòng theo vị trí, mức giá hoặc loại phòng.
-- Benefit: Giúp tôi tìm nhanh phòng phù hợp với nhu cầu.
-- Acceptance Criteria:
-  - Given có nhiều phòng trong hệ thống,
-  - When tôi nhập vị trí hoặc chọn khoảng giá và bấm tìm,
-  - Then danh sách chỉ còn phòng phù hợp.
-  - Given không có kết quả phù hợp,
-  - When tôi tìm kiếm,
-  - Then hệ thống hiển thị thông báo "Không tìm thấy phòng".
-- Priority: Cao
-- Difficulty: Trung bình
-- AI involved: No
+## 6. User stories và acceptance criteria
 
-### US5 — Xem chi tiết phòng
-- ID: US5
-- User role: Customer
-- Goal: Tôi muốn xem thông tin chi tiết một phòng trước khi đặt.
-- Benefit: Tôi có thể kiểm tra giá, tiện ích và trạng thái phòng.
-- Acceptance Criteria:
-  - Given tôi chọn một phòng trong danh sách,
-  - When tôi vào trang chi tiết phòng,
-  - Then tôi thấy ảnh, mô tả, giá, tiện nghi và trạng thái.
-  - Given phòng đang bảo trì,
-  - When tôi xem chi tiết,
-  - Then nút đặt phòng bị vô hiệu hóa hoặc có cảnh báo.
-- Priority: Cao
-- Difficulty: Trung bình
-- AI involved: No
+### AUTH-01 — Đăng ký và xác thực tài khoản
 
-### US6 — Chọn ngày/giờ nhận và trả phòng
-- ID: US6
-- User role: Customer
-- Goal: Tôi muốn chọn thời gian nhận và trả phòng khi đặt.
-- Benefit: Đảm bảo booking có thời gian chính xác.
-- Acceptance Criteria:
-  - Given tôi đang đặt một phòng còn trống,
-  - When tôi chọn check-in và check-out hợp lệ,
-  - Then hệ thống tính tổng tiền ước tính.
-  - Given thời gian không hợp lệ,
-  - When tôi chọn check-out trước check-in,
-  - Then hệ thống báo lỗi và không cho tiếp tục.
-- Priority: Cao
-- Difficulty: Trung bình
-- AI involved: No
+**Role:** Customer
 
-### US7 — Xác nhận đặt phòng
-- ID: US7
-- User role: Customer
-- Goal: Tôi muốn xác nhận thông tin trước khi hoàn tất đặt phòng.
-- Benefit: Giảm rủi ro đặt sai phòng hoặc sai ngày.
-- Acceptance Criteria:
-  - Given tôi đã chọn phòng và thời gian,
-  - When tôi bấm tiếp tục,
-  - Then hệ thống hiển thị màn xác nhận với thông tin rõ ràng.
-  - When tôi bấm Xác nhận,
-  - Then booking được tạo và hiển thị thông báo thành công.
-- Priority: Cao
-- Difficulty: Trung bình
-- AI involved: No
+**Priority:** P0
 
-### US8 — Xem lịch sử đặt phòng
-- ID: US8
-- User role: Customer
-- Goal: Tôi muốn xem lại các booking đã đặt trước đó.
-- Benefit: Giúp tôi quản lý và theo dõi các chuyến đi.
-- Acceptance Criteria:
-  - Given tôi đã đăng nhập và có booking,
-  - When tôi mở trang lịch sử đặt phòng,
-  - Then tôi thấy danh sách booking với thông tin phòng, thời gian và trạng thái.
-  - Given tôi chưa có booking nào,
-  - When tôi mở trang lịch sử,
-  - Then hệ thống hiển thị thông báo phù hợp.
-- Priority: Trung bình
-- Difficulty: Dễ
-- AI involved: No
+- Given email chưa được sử dụng, when customer đăng ký với dữ liệu hợp lệ, then
+  Supabase Auth tạo tài khoản và hệ thống hướng dẫn xác nhận email theo cấu hình.
+- Given dữ liệu không hợp lệ hoặc email đã tồn tại, when đăng ký, then hệ thống
+  báo lỗi an toàn và không tạo profile sai lệch.
 
-### US9 — Admin thêm phòng mới
-- ID: US9
-- User role: Admin
-- Goal: Tôi muốn thêm phòng mới cho chuỗi GoStay.
-- Benefit: Giúp hệ thống cập nhật nhanh phòng còn trống.
-- Acceptance Criteria:
-  - Given tôi đăng nhập với quyền admin,
-  - When tôi điền thông tin phòng mới và lưu,
-  - Then phòng xuất hiện trong danh sách quản lý.
-- Priority: Cao
-- Difficulty: Trung bình
-- AI involved: No
+### AUTH-02 — Đăng nhập, đăng xuất và điều hướng theo role
 
-### US10 — Admin cập nhật trạng thái và giá phòng
-- ID: US10
-- User role: Admin
-- Goal: Tôi muốn cập nhật trạng thái và giá phòng.
-- Benefit: Giúp khách thấy thông tin phòng chính xác.
-- Acceptance Criteria:
-  - Given tôi ở trang quản lý phòng,
-  - When tôi chỉnh trạng thái hoặc giá và lưu,
-  - Then hệ thống cập nhật thông tin tương ứng.
-  - Given chọn trạng thái bảo trì,
-  - When lưu thay đổi,
-  - Then phòng không hiển thị là có thể đặt.
-- Priority: Cao
-- Difficulty: Trung bình
-- AI involved: No
+**Role:** Customer, Staff, Admin
 
-### US11 — AI gợi ý phòng phù hợp theo nhu cầu
-- ID: US11
-- User role: Customer
-- Goal: Tôi muốn nhận gợi ý phòng phù hợp dựa trên nhu cầu của mình.
-- Benefit: Giúp tôi tìm phòng nhanh hơn khi chưa rõ nên chọn phòng nào.
-- Acceptance Criteria:
-  - Given tôi nhập yêu cầu như vị trí, giá và tiện nghi,
-  - When tôi bấm Gợi ý phòng,
-  - Then hệ thống hiển thị phòng gợi ý kèm lý do ngắn.
-  - Given AI không tìm thấy gợi ý phù hợp,
-  - When tôi yêu cầu gợi ý,
-  - Then hệ thống thông báo và vẫn cho phép tìm kiếm tay.
-- Priority: Trung bình
-- Difficulty: Trung bình
-- AI involved: Yes
+**Priority:** P0
 
----
+- Given tài khoản active và thông tin đúng, when đăng nhập, then hệ thống tạo
+  session và điều hướng tới giao diện phù hợp với role.
+- Given tài khoản bị blocked/inactive hoặc thông tin sai, when đăng nhập, then
+  quyền truy cập bị từ chối.
+- When người dùng đăng xuất, then session được xóa và route bảo vệ không còn truy
+  cập được.
 
-## 6. Summary
+### AUTH-03 — Google OAuth và khôi phục mật khẩu
 
-- Product Overview: Website đặt phòng cho chuỗi khách sạn nhỏ.
-- User roles: `customer`, `staff`, `admin` (Staff operations là extension).
-- Core scope: đăng ký/đăng nhập, tìm/filter, chi tiết phòng, booking, lịch sử và quản trị.
-- Extension scope: AI gợi ý, VietQR/online check-in và Staff operations.
-- Out of scope: cổng thanh toán tự động có webhook, voucher, loyalty, chatbot, bản đồ và nhiều khách sạn độc lập. VietQR đối soát thủ công và QR check-in thuộc phạm vi hiện tại.
-- User stories: 11 stories, trong đó US11 là AI gợi ý phòng.
+**Role:** Customer
+
+**Priority:** P1
+
+- Customer có thể bắt đầu đăng nhập Google và quay về đúng callback của GoStay.
+- Customer có thể yêu cầu OTP khôi phục, xác minh OTP và đặt mật khẩu mới mà
+  không làm lộ thông tin tài khoản.
+
+### CAT-01 — Xem catalog và chi tiết phòng
+
+**Role:** Public, Customer
+
+**Priority:** P0
+
+- Chỉ chi nhánh, phòng, loại phòng và tiện nghi được phép công khai mới xuất hiện.
+- Trang chi tiết hiển thị đúng chi nhánh, giá, sức chứa, hình ảnh, tiện nghi và
+  trạng thái vận hành của phòng.
+- Phòng inactive/maintenance không được trình bày như phòng có thể đặt.
+
+### SEARCH-01 — Tìm phòng còn trống
+
+**Role:** Public, Customer
+
+**Priority:** P0
+
+- Given khoảng ngày hợp lệ, when tìm kiếm, then hệ thống chỉ trả phòng phù hợp
+  tiêu chí và không bị booking active khác giữ trong khoảng giao nhau.
+- Given ngày trả không sau ngày nhận hoặc ngày nhận ở quá khứ, then request bị từ
+  chối với thông báo phù hợp.
+- Given không có kết quả, then giao diện hiển thị trạng thái rỗng và cho phép đổi
+  tiêu chí.
+
+### BOOK-01 — Tạo booking an toàn
+
+**Role:** Customer
+
+**Priority:** P0
+
+- Given customer đã đăng nhập và chọn phòng còn trống, when xác nhận, then
+  database tự xác định giá/tổng tiền và tạo booking thuộc customer đó.
+- Client không được tự quyết định `user_id`, tổng tiền, payment status hoặc trạng
+  thái xác nhận.
+- Hai request đồng thời cho cùng phòng và khoảng ngày xung đột chỉ được phép có
+  tối đa một request thành công.
+
+### BOOK-02 — Lịch sử và hủy booking
+
+**Role:** Customer
+
+**Priority:** P0
+
+- Customer chỉ xem được booking thuộc `auth.uid()` của mình.
+- Customer hủy đúng booking của mình khi trạng thái cho phép; không thể hủy hoặc
+  đọc booking của customer khác dù biết UUID hay booking code.
+- Lịch sử hiển thị phòng, khoảng ngày, tổng tiền và trạng thái nghiệp vụ chuẩn.
+
+### ADMIN-01 — Quản lý catalog
+
+**Role:** Admin
+
+**Priority:** P0
+
+- Admin có thể quản lý chi nhánh, phòng, loại/hạng phòng, giá, trạng thái, tiện
+  nghi và hình ảnh thông qua API/RPC được bảo vệ.
+- Thay đổi catalog được validate ở backend; customer hoặc staff không thể gọi
+  mutation dành cho Admin.
+
+### ADMIN-02 — Quản lý booking và tài khoản
+
+**Role:** Admin
+
+**Priority:** P0
+
+- Admin có thể xem booking, cập nhật trạng thái theo transition hợp lệ và hủy
+  booking khi nghiệp vụ cho phép.
+- Admin có thể xem profile kèm email và quản lý trạng thái tài khoản.
+- Admin không thể bỏ qua invariant giá, ownership hoặc booking overlap.
+
+### AI-01 — Nhận gợi ý phòng
+
+**Role:** Customer
+
+**Priority:** P1 — Extension
+
+- Given danh sách phòng đủ điều kiện, when customer yêu cầu AI gợi ý, then kết
+  quả chỉ chứa room ID hợp lệ từ danh sách đó và lý do ngắn dựa trên metadata.
+- AI không tạo booking và không thay đổi giá.
+- Given dịch vụ AI lỗi hoặc không trả kết quả hợp lệ, then UI thông báo phù hợp
+  và customer vẫn có thể tìm phòng thủ công.
+
+### PAY-01 — Khai báo thanh toán VietQR
+
+**Role:** Customer
+
+**Priority:** P1 — Extension
+
+- Customer chọn `full` hoặc phương án đặt cọc được database cho phép và nhận QR
+  tương ứng với số tiền authoritative.
+- Khi customer khai báo đã chuyển khoản, trạng thái chuyển sang chờ Staff duyệt;
+  `paid_amount` không tự tăng trước khi duyệt.
+
+### STAFF-01 — Chọn chi nhánh và xử lý booking
+
+**Role:** Staff
+
+**Priority:** P1 — Extension
+
+- Staff active chọn chi nhánh làm việc và chỉ truy cập booking thuộc chi nhánh đó.
+- Staff có thể xác nhận booking và duyệt/từ chối payment claim theo quyền.
+- Staff ở chi nhánh khác hoặc không có phiên làm việc không được xử lý booking.
+
+### STAFF-02 — Check-in, check-out, thu tiền và hoàn tiền
+
+**Role:** Staff
+
+**Priority:** P1 — Extension
+
+- Token check-in chỉ dùng cho booking tương ứng, sau khi payment claim được duyệt,
+  và không thể tái sử dụng sau khi hoàn tất.
+- Staff không thể check-in trước ngày nhận hoặc check-out trước ngày trả.
+- Check-out yêu cầu số tiền đã thu đáp ứng quy tắc; mọi khoản thu/hoàn tiền được
+  ghi vào `payment_transactions` để audit.
+
+## 7. Yêu cầu phi chức năng
+
+- **Bảo mật:** không đưa secret/service-role key vào frontend; không dùng
+  localStorage làm nguồn phân quyền; dữ liệu động phải được render an toàn.
+- **Toàn vẹn:** database là nguồn quyết định ownership, availability, giá, tiền
+  và transition trạng thái.
+- **Khả dụng:** lỗi AI không được chặn tìm kiếm hoặc booking lõi.
+- **Kiểm thử:** duy trì static checks, migration version check, customer/admin E2E,
+  runtime security và Staff/payment contract tests.
+- **Triển khai:** không chạy `supabase db push` lên production cho tới khi schema
+  và migration history được baseline/reconcile theo tài liệu deployment safety.
+
+## 8. Truy vết tài liệu
+
+- Phạm vi sản phẩm: [`PRODUCT_DIRECTION.md`](PRODUCT_DIRECTION.md)
+- Thuật ngữ và trạng thái: [`DOMAIN_TERMS.md`](../architecture/DOMAIN_TERMS.md)
+- Kiến trúc: [`PROJECT_STRUCTURE.md`](../architecture/PROJECT_STRUCTURE.md)
+- Ranh giới bảo mật: [`API_SECURITY_BOUNDARY.md`](../architecture/API_SECURITY_BOUNDARY.md)
+- Trạng thái bảo mật: [`CURRENT_SECURITY_STATUS.md`](../security/CURRENT_SECURITY_STATUS.md)
+- Kiểm thử: [`E2E.md`](../testing/E2E.md)

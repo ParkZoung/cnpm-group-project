@@ -1,5 +1,10 @@
 # UX_PROTOTYPE.md — GoStay
 
+> **Trạng thái: Historical prototype.** Tài liệu này lưu wireframe và giả định
+> của tuần 03, không mô tả đầy đủ hệ thống hiện tại. Nguồn yêu cầu hiện hành là
+> [`REQUIREMENTS.md`](REQUIREMENTS.md); role và trạng thái chuẩn nằm tại
+> [`DOMAIN_TERMS.md`](../architecture/DOMAIN_TERMS.md).
+
 > **Dự án:** GoStay — website đặt phòng khách sạn (MVP)  
 > **Giai đoạn:** Tuần 03 — UX Prototype (wireframe / mô tả màn hình)  
 > **Lưu ý:** Prototype dùng **dữ liệu mẫu (mock data)**, chưa cần backend phức tạp.

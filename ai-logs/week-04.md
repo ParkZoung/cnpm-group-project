@@ -1,5 +1,7 @@
 # AI Log — Tuần 04
 
+> **Historical log:** giữ nguyên theo thời điểm tuần 04; không dùng làm nguồn yêu cầu hiện hành.
+
 ## 1. Công cụ AI đã dùng
 - GitHub Copilot AI
 

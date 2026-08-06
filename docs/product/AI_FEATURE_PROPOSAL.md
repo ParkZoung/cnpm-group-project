@@ -1,5 +1,10 @@
 # AI_FEATURE_PROPOSAL.md
 
+> **Trạng thái: Historical proposal — một phần đã triển khai.** Tính năng
+> `recommend-rooms` hiện đã dùng Gemini để xếp hạng phòng có thật. Các ý tưởng
+> tóm tắt nội dung và trợ lý viết mô tả vẫn chỉ là đề xuất. Yêu cầu hiện hành xem
+> tại [`REQUIREMENTS.md`](REQUIREMENTS.md).
+
 > **Dự án:** GoStay — ứng dụng web đặt phòng khách sạn (MVP)  
 > **Vai trò tài liệu:** Product Owner & AI Consultant  
 > **Tham chiếu:** `PRODUCT_ANALYSIS.md`, `PRODUCT_DIRECTION.md`, `AI_USAGE_POLICY.md`
@@ -8,7 +13,7 @@
 
 ## 1. Overview
 
-GoStay là ứng dụng đặt phòng tập trung vào luồng **tìm → xem → đặt → quản lý phòng**. Trong tương lai, AI có thể **hỗ trợ trải nghiệm người dùng** — giúp tìm phòng nhanh hơn, đọc thông tin dễ hơn, hoặc giúp chủ khách sạn viết mô tả phòng — mà **không thay thế** luồng đặt phòng chính.
+GoStay là ứng dụng đặt phòng tập trung vào luồng **tìm → xem → đặt → quản lý phòng**. Tài liệu này ban đầu đề xuất ba hướng AI; hiện hướng gợi ý phòng đã được triển khai, còn hai hướng kia vẫn có thể **hỗ trợ trải nghiệm người dùng** trong tương lai mà **không thay thế** luồng đặt phòng chính.
 
 **Nguyên tắc quan trọng:**
 

@@ -1,5 +1,9 @@
 # Tuần 3 - Phân tích yêu cầu
 
+> **Trạng thái: Historical submission.** Đây là snapshot bài nộp tuần 3; không
+> dùng làm nguồn yêu cầu hiện hành. Xem
+> [`../../product/REQUIREMENTS.md`](../../product/REQUIREMENTS.md).
+
 ## Dự án: GoStay
 
 GoStay là một ứng dụng/web đặt phòng khách sạn cho một chuỗi khách sạn nhỏ. Mục tiêu của GoStay là giúp người dùng tìm kiếm chi nhánh/phòng trong chuỗi, xem thông tin chi tiết, đặt phòng và quản lý lịch sử đặt phòng một cách đơn giản, rõ ràng và nhanh chóng.

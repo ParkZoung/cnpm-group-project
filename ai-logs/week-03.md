@@ -1,5 +1,7 @@
 # Week 03 AI Usage Log
 
+> **Historical log:** giữ nguyên theo thời điểm tuần 03; không dùng làm nguồn yêu cầu hiện hành.
+
 **Dự án:** GoStay — website đặt phòng khách sạn (MVP)  
 **Tuần:** 03  
 **Ngày ghi:** 07/06/2026  
